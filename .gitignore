@@ -1,0 +1,4 @@
+#ignorar uploads
+uploads /**/*
+uploadsdocs /**/*
+

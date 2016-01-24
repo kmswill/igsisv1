@@ -1,0 +1,587 @@
+﻿<?php
+/* 
+
+siscontrat 
+
+Exemplo de uso:
+
+require "../funcoes/funcoesSiscontrat.php";
+
+$contrato = siscontrat($idPedido);
+$pj = siscontratDocs($contrato['IdProponente'],$contrato['TipoPessoa']);
+$representante01 = siscontratDocs($pj['Representante01'],3);
+$representante02 = siscontratDocs($pj['Representante02'],3);
+$executante = siscontratDocs($contrato['executante'],1);
+
+$conectar = bancoMysqli(); //cria conexão
+$sql = "SELECT * FROM ig_evento WHERE idEvento = '$idEvento' LIMIT 0,10";
+while($pedido = mysqli_fetch_array(mysqli_query($conectar,$sql))){
+	$nome_do_evento = $pedido['nomeEvento'];
+		
+} //executa query
+
+ 
+*/
+
+
+function siscontratLista($tipoPessoa,$instituicao,$num_registro,$pagina,$ordem,$estado){
+	$con = bancoMysqli();
+	if($estado == "todos"){
+		$est = "";	
+	}else{
+		$est = " AND estado = '$estado' ";
+	}
+	
+	if($tipoPessoa == "todos"){
+		$tipo = "";	
+	}else{
+		$tipo = " AND tipoPessoa = '$tipoPessoa' ";
+	}
+	
+	if($instituicao == ""){
+		$inst = "";		
+	}else{
+		$inst = " AND instituicao = '$instituicao'";
+	}
+	
+	$sql_lista_total = "SELECT * FROM igsis_pedido_contratacao WHERE publicado = '1' $tipo  AND estado <> '' $inst $est ORDER BY idPedidoContratacao $ordem ";
+	$query_lista_total = mysqli_query($con,$sql_lista_total);
+	$total_registros = mysqli_num_rows($query_lista_total);
+	$pag = $pagina - 1;
+	$registro_inicial = $num_registro * $pag;
+	$total_paginas = $total_registros / $num_registro; // gera o número de páginas
+	$sql_lista_pagina = "SELECT * FROM igsis_pedido_contratacao WHERE  publicado = '1' $tipo AND estado <> '' $inst $est ORDER BY idPedidoContratacao $ordem LIMIT $registro_inicial,$num_registro";
+		$query_lista_pagina = mysqli_query($con,$sql_lista_pagina);
+	//$x = $sql_lista_pagina;
+	$i = 0;
+	while($pedido = mysqli_fetch_array($query_lista_pagina)){
+		$evento = recuperaDados("ig_evento",$pedido['idEvento'],"idEvento"); //$tabela,$idEvento,$campo
+		$usuario = recuperaDados("ig_usuario",$evento['idUsuario'],"idUsuario");
+		$instituicao = recuperaDados("ig_instituicao",$usuario['idInstituicao'],"idInstituicao");
+		$local = listaLocais($pedido['idEvento']);
+		$periodo = retornaPeriodo($pedido['idEvento']);
+		$duracao = retornaDuracao($pedido['idEvento']);
+		$pessoa = recuperaPessoa($pedido['idPessoa'],$tipoPessoa);
+		$fiscal = recuperaUsuario($evento['idResponsavel']);
+		$suplente = recuperaUsuario($evento['suplente']);
+		$protocolo = ""; //recuperaDados("sis_protocolo",$pedido['idEvento'],"idEvento");
+		if($pedido['parcelas'] > 1){
+			$valorTotal = somaParcela($pedido['idPedidoContratacao'],$pedido['parcelas']);
+			$formaPagamento = txtParcelas($pedido['idPedidoContratacao'],$pedido['parcelas']);	
+		}else{
+			$valorTotal = $pedido['valor'];
+			$formaPagamento = $pedido['formaPagamento'];
+		}
+		
+		
+				
+		$x[$i] = array(
+		    "idPedido" => $pedido['idPedidoContratacao'],
+			"idEvento" => $pedido['idEvento'], 
+			"idSetor" => $usuario['idInstituicao'],
+			"Setor" => $instituicao['instituicao']  ,
+			"TipoPessoa" => $pedido['tipoPessoa'],
+			"CategoriaContratacao" => $evento['ig_modalidade_IdModalidade'] , //precisa ver se retorna o id
+			"Objeto" => retornaTipo($evento['ig_tipo_evento_idTipoEvento'])." - ".$evento['nomeEvento'] ,
+			"Local" => substr($local,1) , //retira a virgula no começo da string
+			"ValorGlobal" => $valorTotal,
+			"ValorIndividual" => $pedido['valorIndividual'],
+			"FormaPagamento" => $formaPagamento,
+			"Periodo" => $periodo, 
+			"Duracao" => $duracao, 
+			"Verba" => $pedido['idVerba'] ,
+			"Justificativa" => $evento['justificativa'] ,
+			"ParecerTecnico" => $evento['parecerArtistico'],
+			"DataCadastro" => $evento['dataEnvio'],
+			"Fiscal" => $fiscal['nomeCompleto'] ,
+			"Suplente" => $suplente['nomeCompleto'],
+			"Observacao"=> $pedido['observacao'], //verificar
+			"Horario" => "", //SPCultura
+			"IdProponente" => $pedido['idPessoa'],
+			"ProtocoloSIS" => '', //$protocolo['idProtocolo'],
+			"NumeroProcesso" => $pedido['NumeroProcesso'],
+			"NotaEmpenho" => $pedido['NumeroNotaEmpenho'],
+			"EmissaoNE" => $pedido['DataEmissaoNotaEmpenho'],
+			"EntregaNE" => $pedido['DataEntregaNotaEmpenho'],
+			"Assinatura" => "",
+			"Cargo" => "",
+			"Instituicao" => $instituicao['instituicao'],
+			"Sigla" => $instituicao['sigla'],
+			"Contratos" => $pedido['idContratos'],
+			"Status" => $pedido['estado']
+		);
+		
+		$i++;
+	}
+	return $x;
+}
+
+
+function siscontrat($idPedido){ 
+	$con = bancoMysqli();
+	if($idPedido != ""){ //retorna 1 array do pedido ['nomedocampo'];
+		
+		$pedido = recuperaDados("igsis_pedido_contratacao",$idPedido,"idPedidoContratacao");
+		$evento = recuperaDados("ig_evento",$pedido['idEvento'],"idEvento"); //$tabela,$idEvento,$campo
+		$usuario = recuperaDados("ig_usuario",$evento['idUsuario'],"idUsuario");
+		$instituicao = recuperaDados("ig_instituicao",$usuario['idInstituicao'],"idInstituicao");
+		$local = listaLocais($pedido['idEvento']);
+		$periodo = retornaPeriodo($pedido['idEvento']);
+		$duracao = retornaDuracao($pedido['idEvento']);
+		$proponente = recuperaPessoa($pedido['idPessoa'],$pedido['tipoPessoa']);
+		$fiscal = recuperaUsuario($evento['idResponsavel']);
+		$suplente = recuperaUsuario($evento['suplente']);
+		$assinatura = recuperaDados("sis_assinatura",$pedido['instituicao'],"idInstituicao");
+		if($pedido['parcelas'] > 1){
+			$pagamento = txtParcelas($idPedido,$pedido['parcelas']);	
+		}else{
+			$pagamento = $pedido['formaPagamento'];	
+		}
+		
+		$x = array(
+			"idEvento" => $pedido['idEvento'], 
+			"idSetor" => $usuario['idInstituicao'],
+			"Setor" => $instituicao['instituicao']  ,
+			"TipoPessoa" => $pedido['tipoPessoa'],
+			"CategoriaContratacao" => $evento['ig_modalidade_IdModalidade'] , //precisa ver se retorna o id
+			"Objeto" => retornaTipo($evento['ig_tipo_evento_idTipoEvento'])." - ".$evento['nomeEvento'] ,
+			"Local" => substr($local,1) , //retira a virgula no começo da string
+			"ValorGlobal" => $pedido['valor'],
+			"ValorIndividual" => $pedido['valorIndividual'],
+			"FormaPagamento" => $pagamento,
+			"Periodo" => $periodo, 
+			"Duracao" => $duracao." min", 
+			"Verba" => $pedido['idVerba'] ,
+			"Justificativa" => $pedido['justificativa'],
+			"ParecerTecnico" => $pedido['parecerArtistico'],
+			"DataCadastro" => $evento['dataEnvio'],
+			"Fiscal" => $fiscal['nomeCompleto'] ,
+			"Suplente" => $suplente['nomeCompleto'],
+			"Observacao"=> $pedido['observacao'], //verificar
+			"NotaEmpenho" => "",
+			"Horario" => "", //SPCultura
+			"IdProponente" => $pedido['idPessoa'],
+			"idRepresentante01" => $pedido['idRepresentante01'],
+			"idRepresentante02" => $pedido['idRepresentante02'],
+			"IdExecutante" => $pedido['IdExecutante'],
+			"CargaHoraria" => "",
+			"NumeroProcesso" => $pedido['NumeroProcesso'],
+			"NotaEmpenho" => $pedido['NumeroNotaEmpenho'],
+			"EmissaoNE" => $pedido['DataEmissaoNotaEmpenho'],
+			"EntregaNE" => $pedido['DataEntregaNotaEmpenho'],
+			"Assinatura" => $assinatura['Assinatura'],
+			"Cargo" => $assinatura['Cargo'],
+			"parcelas" => $pedido['parcelas'],
+			"RfFiscal" => $fiscal['rf'],
+			"RfSuplente" => $suplente['rf'],
+
+			"Status" => $pedido['estado']	
+			);
+		
+		
+		
+	return $x;	
+	}else{
+		return "Erro";
+	}
+}
+
+function siscontratDocs($idPessoa,$tipo){
+	if($idPessoa == NULL){
+		return NULL;	
+	}else{	
+	$con = bancoMysqli();
+	switch($tipo){
+		case 1: // Pessoa Física
+			$sql = "SELECT * FROM sis_pessoa_fisica WHERE Id_PessoaFisica = $idPessoa";
+			$query = mysqli_query($con,$sql);
+			$x = mysqli_fetch_array($query);
+			$estadoCivil = recuperaEstadoCivil($x['IdEstadoCivil']);
+			$endereco = retornaEndereco($x['CEP'],$x['Numero'],$x['Complemento']);
+			$banco = recuperaDados('igsis_bancos',$x['codBanco'],'ID');
+			
+				$y = array(
+				"Nome" => $x['Nome'],
+				"NomeArtistico" => $x['NomeArtistico'] ,
+				"IdEstadoCivil" => $x['IdEstadoCivil'] ,
+				"EstadoCivil" => $estadoCivil['EstadoCivil'] ,
+				"DataNascimento" => $x['DataNascimento'] ,
+				"LocalNascimento" => $x['LocalNascimento'] ,
+				"Nacionalidade" => $x['Nacionalidade'] ,
+				"DRT" => $x['DRT'] ,
+				"PIS" => $x['Pis'] ,
+				"Observacao" => $x['Observacao'] ,
+				"RG" => $x['RG'] ,
+				"CPF" => $x['CPF'],
+				"CNPJ" => "",
+				"CCM" => $x['CCM'],
+				"docCCM" => "nomedoarquivo",
+				"OMB" => $x['OMB'] ,
+				"Endereco" => $endereco ,
+				"CEP" => $x['CEP'],
+				"NumEndereco" => $x['Numero'],
+				"Complemento" => $x['Complemento'],				
+				"Telefones" => $x['Telefone1']." / ".$x['Telefone2']." / ".$x['Telefone3'],
+				"INSS" => $x['InscricaoINSS'] ,
+				"Email" => $x['Email'] ,
+				"Telefone01" => $x['Telefone1'],
+				"Banco" => $banco['banco'],
+				"Conta" => $x['conta'],
+				"Agencia" => $x['agencia'],
+				"CodigoBanco" => $banco['codigo'],
+				"cbo" => $x['cbo'] ,	
+				"Funcao" => $x['Funcao'],			
+				"Representante01" => "",
+				"Representante02" => ""
+
+
+			);
+			return $y;
+
+		break;
+		case 2: // Pessoa Jurídica
+			$sql = "SELECT * FROM sis_pessoa_juridica WHERE Id_PessoaJuridica = '$idPessoa';";
+			$query = mysqli_query($con,$sql);
+			$x = mysqli_fetch_array($query);
+			$endereco = retornaEndereco($x['CEP'],$x['Numero'],$x['Complemento']);
+						$banco = recuperaDados('igsis_bancos',$x['codBanco'],'ID');
+			
+				$y = array(
+				"Nome" => $x['RazaoSocial'],
+				"NomeArtistico" => "" ,
+				"IdEstadoCivil" => "" ,
+				"EstadoCivil" => "" ,
+				"DataNascimento" => "" ,
+				"LocalNascimento" => "" ,
+				"Nacionalidade" => "" ,
+				"DRT" =>"" ,
+				"PIS" => "" ,
+				"Observacao" => $x['Observacao'] ,
+				"RG" => "" ,
+				"CPF" => "",
+				"CEP" => $x['CEP'],
+				"CNPJ" => $x['CNPJ'],
+				"CCM" => $x['CCM'],
+				"OMB" => "",
+				"Endereco" => $endereco ,
+				"NumEndereco" => $x['Numero'],
+				"Complemento" => $x['Complemento'],				
+				"Telefones" => $x['Telefone1']." / ".$x['Telefone2']." / ".$x['Telefone3'],
+				"Telefone01" => $x['Telefone1'],
+				"Banco" => $banco['banco'],
+				"Conta" => $x['conta'],
+				"Agencia" => $x['agencia'],
+				"CodigoBanco" => $banco['codigo'],
+				"INSS" => "" ,
+				"Email" => $x['Email'] ,
+				"Funcao" => "",
+				"Representante01" => $x['IdRepresentanteLegal1'],
+				"Representante02" => $x['IdRepresentanteLegal2']
+
+
+			);
+			return $y;	
+		break;
+
+		case 3: // Representante legal
+			$sql = "SELECT * FROM sis_representante_legal WHERE Id_RepresentanteLegal = $idPessoa";
+			$query = mysqli_query($con,$sql);
+			$x = mysqli_fetch_array($query);
+			//$endereco = retornaEndereco($x['CEP'],$x['Numero'],$x['Complemento']);
+			$estadoCivil = recuperaEstadoCivil($x['IdEstadoCivil']);
+				$y = array(
+				"Nome" => $x['RepresentanteLegal'],
+				"NomeArtistico" => "" ,
+				"IdEstadoCivil" =>  $x['IdEstadoCivil'] ,
+				"EstadoCivil" => $estadoCivil['EstadoCivil'] ,
+				"DataNascimento" => "" ,
+				"LocalNascimento" => "" ,
+				"Nacionalidade" => $x['Nacionalidade'] ,
+				"DRT" =>"" ,
+				"PIS" => "" ,
+				"Observacao" => "" ,
+				"RG" => $x['RG'] ,
+				"CPF" => $x['CPF'],
+				"CNPJ" => "",
+				"CCM" => "",
+				"OMB" => "",
+				"Endereco" => "" ,
+				"Telefones" => "",
+				"INSS" => "" ,
+				"Email" => "" ,
+				"Funcao" => "",
+				"Representante01" => $x['Id_RepresentanteLegal'],
+				"Representante02" => ""
+
+			);
+			return $y;	
+		break;		
+
+	}
+	}
+}
+function listaPedidoContratacao($idEvento){
+	$con = bancoMysqli();
+	$sql = "SELECT * FROM igsis_pedido_contratacao WHERE idEvento = '$idEvento' AND publicado = '1'";
+	$query = mysqli_query($con,$sql);
+	$num = mysqli_num_rows($query);
+	if($num >0){
+		$i = 0;
+		while($pedido = mysqli_fetch_array($query)){
+			$x[$i] = $pedido['idPedidoContratacao'];
+			$i++;	
+		}		
+	return $x;
+	}else{
+	return NULL;
+	}
+}	
+
+
+function listaArquivosPessoaSiscontrat($idPessoa,$tipo,$pedido,$form,$pag){
+	$con = bancoMysqli();
+	$sql = "SELECT * FROM igsis_arquivos_pessoa WHERE idPessoa = '$idPessoa' AND idTipoPessoa = '$tipo' AND publicado = '1'";
+	$query = mysqli_query($con,$sql);
+	echo "<table class='table table-condensed'>
+					<thead>
+						<tr class='list_menu'>
+							<td width='30%'>Tipo</td>
+							<td>Nome do arquivo</td>
+							<td width='10%'></td>
+						</tr>
+					</thead>
+					<tbody>";
+	while($campo = mysqli_fetch_array($query)){
+		$tipoDoc = recuperaDados("igsis_upload_docs",$campo['tipo'],"idTipoDoc");
+			echo "<tr>";
+			echo "<td class='list_description'>".$tipoDoc['documento']."</td>";
+			echo "<td class='list_description'><a href='../uploadsdocs/".$campo['arquivo']."' target='_blank'>".$campo['arquivo']."</a></td>";
+			echo "
+			<td class='list_description'>
+			<form method='POST' action='?perfil=".$pag."&p=frm_arquivos&id=".$idPessoa."&tipo=".$tipo."'>
+			<input type='hidden' name='idPessoa' value='".$idPessoa."' />
+			<input type='hidden' name='tipoPessoa' value='".$tipo."' />
+			<input type='hidden' name='$form' value='1' />
+			
+			<input type='hidden' name='apagar' value='".$campo['idArquivosPessoa']."' />
+			<input type ='submit' class='btn btn-theme  btn-block' value='apagar'></td></form>"	;
+			echo "</tr>";		
+	}
+					
+						
+
+                        
+
+						
+		
+	echo "					</tbody>
+				</table>";	
+}
+	
+function buscaSiscontrat($busca,$tipo){
+
+
+
+}
+
+function analiseSiscontrat($idPedido){
+
+$pedido = recuperaDados("igsis_pedido_contratacao",$idPedido,"idPedidoContratacao");
+
+if(($pedido['NumeroNotaEmpenho'] != NULL)OR 
+	($pedido['NumeroNotaEmpenho'] != "")){
+		$status = "Nota de Empenho gerada";		
+}else{
+	if(($pedido['NumeroProcesso'] != NULL) OR
+	($pedido['NumeroProcesso'] != "")){
+		$status = "Numero de Processo gerado";
+	}else{
+		
+	}	
+}
+
+
+}
+
+function siscontratListaEvento($tipoPessoa,$instituicao,$num_registro,$pagina,$ordem,$estado,$idUsuario){
+	$con = bancoMysqli();
+	if($estado == "todos"){
+		$est = "";	
+	}else{
+		$est = " AND igsis_pedido_contratacao.estado = '$estado' ";
+	}
+	
+	if($tipoPessoa == "todos"){
+		$tipo = "";	
+	}else{
+		$tipo = " AND tipoPessoa = '$tipoPessoa' ";
+	}
+
+	
+	
+	$sql_lista_total = "SELECT * FROM igsis_pedido_contratacao, ig_evento WHERE igsis_pedido_contratacao.idEvento = ig_evento.idEvento AND (ig_evento.idUsuario = '$idUsuario' OR ig_evento.idResponsavel = '$idUsuario' OR ig_evento.suplente = '$idUsuario') AND igsis_pedido_contratacao.publicado = '1' AND ig_evento.dataEnvio IS NOT NULL $tipo AND ig_evento.idInstituicao = '$instituicao' $est ";
+	$query_lista_total = mysqli_query($con,$sql_lista_total);
+	$total_registros = mysqli_num_rows($query_lista_total);
+	$pag = $pagina - 1;
+	$registro_inicial = $num_registro * $pag;
+	$total_paginas = $total_registros / $num_registro; // gera o número de páginas
+	$sql_lista_pagina = "SELECT * FROM igsis_pedido_contratacao, ig_evento WHERE igsis_pedido_contratacao.idEvento = ig_evento.idEvento AND (ig_evento.idUsuario = '$idUsuario' OR ig_evento.idResponsavel = '$idUsuario' OR ig_evento.suplente = '$idUsuario') AND igsis_pedido_contratacao.publicado = '1' AND ig_evento.dataEnvio IS NOT NULL $tipo AND ig_evento.idInstituicao = '$instituicao' $est LIMIT $registro_inicial,$num_registro";
+		$query_lista_pagina = mysqli_query($con,$sql_lista_pagina);
+	//$x = $sql_lista_pagina;
+	$i = 0;
+	while($pedido = mysqli_fetch_array($query_lista_pagina)){
+		$evento = recuperaDados("ig_evento",$pedido['idEvento'],"idEvento"); //$tabela,$idEvento,$campo
+		$usuario = recuperaDados("ig_usuario",$evento['idUsuario'],"idUsuario");
+		$instituicao = recuperaDados("ig_instituicao",$usuario['idInstituicao'],"idInstituicao");
+		$local = listaLocais($pedido['idEvento']);
+		$periodo = retornaPeriodo($pedido['idEvento']);
+		$duracao = retornaDuracao($pedido['idEvento']);
+		$pessoa = recuperaPessoa($pedido['idPessoa'],$tipoPessoa);
+		$fiscal = recuperaUsuario($evento['idResponsavel']);
+		$suplente = recuperaUsuario($evento['suplente']);
+		$protocolo = ""; //recuperaDados("sis_protocolo",$pedido['idEvento'],"idEvento");
+		if($pedido['parcelas'] > 1){
+			$pagamento = textoParcela($pedido['idPedidoContratacao'],$pedido['parcelas']);	
+		}else{
+			$pagamento = $pedido['formaPagamento'];
+		
+		}
+		$x[$i] = array(
+		    "idPedido" => $pedido['idPedidoContratacao'],
+			"idEvento" => $pedido['idEvento'], 
+			"idSetor" => $usuario['idInstituicao'],
+			"Setor" => $instituicao['instituicao']  ,
+			"TipoPessoa" => $pedido['tipoPessoa'],
+			"CategoriaContratacao" => $evento['ig_modalidade_IdModalidade'] , //precisa ver se retorna o id
+			"Objeto" => retornaTipo($evento['ig_tipo_evento_idTipoEvento'])." - ".$evento['nomeEvento'] ,
+			"Local" => substr($local,1) , //retira a virgula no começo da string
+			"ValorGlobal" => $pedido['valor'],
+			"ValorIndividual" => $pedido['valorIndividual'],
+			"FormaPagamento" => $pagamento,
+			"Periodo" => $periodo, 
+			"Duracao" => $duracao, 
+			"Verba" => $pedido['idVerba'] ,
+			"Justificativa" => $evento['justificativa'] ,
+			"ParecerTecnico" => $evento['parecerArtistico'],
+			"DataCadastro" => $evento['dataEnvio'],
+			"Fiscal" => $fiscal['nomeCompleto'] ,
+			"Suplente" => $suplente['nomeCompleto'],
+			"Observacao"=> $pedido['observacao'], //verificar
+			"Horario" => "", //SPCultura
+			"IdProponente" => $pedido['idPessoa'],
+			"ProtocoloSIS" => '', //$protocolo['idProtocolo'],
+			"NumeroProcesso" => $pedido['NumeroProcesso'],
+			"NotaEmpenho" => $pedido['NumeroNotaEmpenho'],
+			"EmissaoNE" => $pedido['DataEmissaoNotaEmpenho'],
+			"EntregaNE" => $pedido['DataEntregaNotaEmpenho'],
+			"Assinatura" => "",
+			"Cargo" => "",
+			"Status" => $pedido['estado']
+		);
+		
+		$i++;
+	}
+	return $x;
+}
+
+function txtParcelas($idPedido,$numero){
+	$con = bancoMysqli();
+	$sql = "SELECT * FROM igsis_parcelas WHERE idPedido = '$idPedido'";
+	$query = mysqli_query($con,$sql);
+	$i = 1;
+	$num_parcelas = mysqli_num_rows($query);
+	if($num_parcelas > 0){
+		while($parcela = mysqli_fetch_array($query)){
+			$x[$i]['valor'] = $parcela['valor'];
+			$x[$i]['vencimento'] = $parcela['vencimento'];
+			$i++;
+		}
+		
+		$k = 1;
+		$texto = "";
+		for($k = 1; $k <= $numero; $k++){
+			$texto .= $k."ª parcela de R$ ".dinheiroParaBr($x[$k]['valor'])." - liberável a partir de ".exibirDataBr($x[$k]['vencimento']).".\n";		
+		}
+		$texto .= "O pagamento de cada parcela se dará em 15 (quinze) dias úteis após a data de confirmação da correta execução do(s) serviço(s).";
+		
+		return $texto;
+	}else{
+		return "Nenhuma parcela definida.";
+	}
+}
+
+function listaGrupo($idPedido){
+	$con = bancoMysqli();
+	$sql_grupos = "SELECT * FROM igsis_grupos WHERE idPedido = '$idPedido' and publicado = '1'";
+	$query_grupos = mysqli_query($con,$sql_grupos);
+	$num = mysqli_num_rows($query_grupos);
+	if($num > 0){
+		$txt = "";
+		while($grupo = mysqli_fetch_array($query_grupos)){
+			$txt .= $grupo['nomeCompleto']." CPF: ".$grupo['cpf']." RG: ".$grupo['rg']."\n";
+		}
+	}else{
+		$txt = "Não há integrantes de grupo inseridos";
+	}
+	return $txt;
+
+}
+
+function grupos($idPedido){
+	$con = bancoMysqli();
+	$sql = "SELECT * FROM igsis_grupos WHERE idPedido = '$idPedido' AND publicado = '1'";
+	$query = mysqli_query($con,$sql);
+	$y = array();
+	$i = 0;
+	while($x = mysqli_fetch_array($query)){
+		$y[$i]['nomeCompleto'] = $x['nomeCompleto'];
+		$y[$i]['rg'] = $x['rg'];
+		$y[$i]['cpf'] = $x['cpf'];
+		$y[$i]['assinatura'] = "";
+		$i++;
+	}
+	$y['numero'] = $i;
+	return $y;
+}
+
+function sobrenome($string){
+	$partes = explode(' ', $string);
+	$primeiroNome = array_shift($partes);
+	$ultimoNome = array_pop($partes);  
+  return $primeiroNome." ".$ultimoNome;
+  
+}
+
+function geraOpcaoContrato($id){
+	$con = bancoMysqli();
+	$sql = "SELECT * FROM ig_usuario WHERE publicado = '1' AND (contratos = '1' OR contratos = '2')  ORDER BY nomeCompleto";
+	$query = mysqli_query($con,$sql);
+	while($user = mysqli_fetch_array($query)){
+		if($user['idUsuario'] == $id){
+			echo "<option value='".$user['idUsuario']."' selected>".$user['nomeCompleto']."</option>";	
+		}else{
+			echo "<option value='".$user['idUsuario']."'>".$user['nomeCompleto']."</option>";			
+		}
+	}
+}
+
+
+
+function geraOpcaoEstado($select,$area){ //gera os options de um select
+	if($area == "0"){
+		$sql = "SELECT * FROM sis_estado ORDER BY ordem";
+	}else{
+		$sql = "SELECT * FROM sis_estado WHERE area = '$area' ORDER BY ordem";
+	}
+	$con = bancoMysqli();
+	$query = mysqli_query($con,$sql);
+	while($option = mysqli_fetch_row($query)){
+		if($option[0] == $select){
+			echo "<option value='".$option[0]."' selected >".$option[1]."</option>";	
+		}else{
+			echo "<option value='".$option[0]."'>".$option[1]."</option>";	
+		}
+	}
+}
+
+?>
