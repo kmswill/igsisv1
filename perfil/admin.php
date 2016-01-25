@@ -325,7 +325,7 @@ if(isset($_GET['status'])){
 
 		$texto .= $pedido['estado']."<br />";		
 		if(trim($pedido['NumeroProcesso']) != "" OR $pedido['NumeroProcesso'] != NULL){ // Se há número de processo
-			if(trim($pedido['NumeroProcesso']) != "0000-00-00" OR $pedido['NumeroProcesso'] != NULL){ // Se há número de Nota de Empenho
+			if(trim($pedido['NumeroNotaEmpenho']) != "" OR $pedido['NumeroProcesso'] != NULL){ // Se há número de Nota de Empenho
 				$idStatus = "10";
 			$texto .= "O status do pedido $idPedido é Número de Processo.<br />";
 			}else{
@@ -348,17 +348,25 @@ if(isset($_GET['status'])){
 		break;
 
 		case "Pedido":
-		$idStatus = "2";
+		$idStatus = "1";
 		$texto .= "O status do pedido $idPedido é Pedido.<br />";
+		
 		break;
 
 		case "Concluído":
-		$idStatus = "5";
+		$idStatus = "11";
 		$texto .= "O status do pedido $idPedido é Concluído.<br />";
 		break;
-			}
+		}
 		
-	
+		$sql_atualiza = "UPDATE igsis_pedido_contratacao SET estado = '$idStatus' WHERE idPedidoContratacao = '$idPedido'";
+		$query_atualiza = mysqli_query($con, $sql_atualiza);
+		if($query_atualiza){
+			$texto .= "OK<br />";
+			$i++;	
+		}else{
+			$texto .= "Erro<br />";	
+		}
 	}
 	
 	

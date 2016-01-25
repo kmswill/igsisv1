@@ -56,15 +56,7 @@ if($id == "" AND $evento == "" AND $fiscal == 0 AND $tipo == 0 AND $instituicao 
                     <select class="form-control" name="estado" id="inputSubject" >
                    <option value=""></option>
 
-<option value="Pedido">Pedido</option>
-<option value="Análise do Pedido">Análise do Pedido</option>
-<option value="Proposta">Proposta</option>
-<option value="Pedido de Reserva">Pedido de Reserva</option>
-<option value="Despacho">Despacho</option>
-<option value="Publicação no D.O.">Publicação no D.O.</option>
-<option value="Anexo da N.E.">Anexo da N.E.</option>
-<option value="Anexo da N.E.">Anexo da N.E.</option>
-<option value="Pedido de Pagamento">Pedido de Pagamento</option>
+		<?php echo geraOpcao("sis_estado","","") ?>
                     </select>	
 
             	</div>
@@ -242,6 +234,7 @@ $mensagem = "Foram encontradas ".$x['num']." pedido(s) de contratação.";
 $data=date('Y');
 for($h = 0; $h < $x['num']; $h++)
  {
+	 $status = recuperaDados("sis_estado",$x[$h]['status'],"idEstado");
 	if($x[$h]['tipo'] == 'Física'){
 		echo "<tr><td class='lista'> <a href='?perfil=contratos&p=frm_edita_propostapf&id_ped=".$x[$h]['id']."'>".$x[$h]['id']."</a></td>";
 	}else{
@@ -254,7 +247,7 @@ for($h = 0; $h < $x['num']; $h++)
 	echo '<td class="list_description">'.$x[$h]['local'].				'</td> ';
 	echo '<td class="list_description">'.$x[$h]['instituicao'].				'</td> ';
 	echo '<td class="list_description">'.$x[$h]['periodo'].						'</td> ';
-	echo '<td class="list_description">'.$x[$h]['status'].						'</td> </tr>';
+	echo '<td class="list_description">'.$status['estado'].						'</td> </tr>';
 	}
 ?>
 	
@@ -314,16 +307,7 @@ for($h = 0; $h < $x['num']; $h++)
                                         <label>Status do pedido</label>
                     <select class="form-control" name="estado" id="inputSubject" >
                    <option value=""></option>
-
-<option value="Pedido">Pedido</option>
-<option value="Análise do Pedido">Análise do Pedido</option>
-<option value="Proposta">Proposta</option>
-<option value="Pedido de Reserva">Pedido de Reserva</option>
-<option value="Despacho">Despacho</option>
-<option value="Publicação no D.O.">Publicação no D.O.</option>
-<option value="Anexo da N.E.">Anexo da N.E.</option>
-<option value="Anexo da N.E.">Anexo da N.E.</option>
-<option value="Pedido de Pagamento">Pedido de Pagamento</option>
+		<?php echo geraOpcao("sis_estado","","") ?>
                     </select>	
 	
 
