@@ -55,12 +55,9 @@ if($id == "" AND $evento == "" AND $fiscal == 0 AND $tipo == 0 AND $instituicao 
                     <label>Status do pedido</label>
                     <select class="form-control" name="estado" id="inputSubject" >
                    <option value=""></option>
-<<<<<<< HEAD
+
 
 		<?php echo geraOpcao("sis_estado","","") ?>
-=======
-					<?php echo geraOpcao("sis_estado","","") ?>
->>>>>>> 07129fd3bcf6326faac703b1c9ebc26a5222583b
                     </select>	
 
             	</div>
