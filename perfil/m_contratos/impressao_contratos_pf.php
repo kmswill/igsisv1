@@ -27,82 +27,80 @@ $link15=$http."rlt_proposta_reversao_pf.php";
 
  
 	 $last_id = mysqli_insert_id($conexao);
-	 echo "<br><br><h6>Qual modelo de documento deseja imprimir?</h6><br>
-	<div class='row'>
-	<div class='col-md-offset-1 col-md-10'>
-	
-	<form class='form-horizontal' role='form'>
-	
-	<div class='form-group'>
-     <div class='col-md-offset-2 col-md-6'>
-		<a href='$link6?id=$id_ped' class='btn btn-theme btn-lg btn-block' target='_blank'>Detalhes do Evento</a></div>
-     <div class='col-md-6'>
-		<a href='$link0?id=$id_ped' class='btn btn-theme btn-lg btn-block' target='_blank'>Pedido de Contratação</a></div>
-	</div>
-	
-	<br/> 
+	 echo "
 	 
-	<div class='form-group'>
-	 <div class='col-md-offset-2 col-md-6'> 
-		<a href='$link1?id=$id_ped' class='btn btn-theme btn-lg btn-block' target='_blank'>Proposta Padrão</a></div>
-	 <div class='col-md-6'>
-	 <a href='$link2?id=$id_ped' class='btn btn-theme btn-lg btn-block' target='_blank'>Proposta Artístico</a></div>
-	</div>
-	 
-	<div class='form-group'>
-	 <div class='col-md-offset-2 col-md-6'> 	 
-		<a href='$link3?id=$id_ped' class='btn btn-theme btn-lg btn-block' target='_blank'>Proposta Evento Externo</a></div>
-	 <div class='col-md-6'>
-		<a href='$link4?id=$id_ped' class='btn btn-theme btn-lg btn-block' target='_blank'>Proposta Oficina</a></div>
-	</div>
+<section id='list_items' class='home-section bg-white'><h6>Qual modelo de documento deseja imprimir?</h6>
+<div class='container'>
+<div class='col-md-offset-2 col-md-8'>	
+	<div class='table-responsive list_info'>
 	
-	<div class='form-group'>
-	 <div class='col-md-offset-2 col-md-6'> 	 
-		<a href='$link15?id=$id_ped' class='btn btn-theme btn-lg btn-block' target='_blank'>Proposta Reversão</a></div>
-	</div>
-	 
-	<br/> 
-	
-	<div class='form-group'>
-	 <div class='col-md-offset-2 col-md-6'>
-		<a href='$link12?id=$id_ped' class='btn btn-theme btn-lg btn-block' target='_blank'>Declaração Não Servidor</a></div>	
-	<div class='col-md-6'>	 
-		<a href='$link13?id=$id_ped' class='btn btn-theme btn-lg btn-block' target='_blank'>Declaração ISS</a></div>
-	</div>
-	 
-	<div class='form-group'>
-	 <div class='col-md-offset-2 col-md-6'> 
-		<a href='$link5?id=$id_ped' class='btn btn-theme btn-lg btn-block' target='_blank'>FACC</a></div>
-	 <div class='col-md-6'>
-		<a href='$link14?id=$id_ped' class='btn btn-theme btn-lg btn-block' target='_blank'>Parecer da Comissão</a></div>
-	</div>
-	
-	<br/> 
-	
-	<div class='form-group'>
-	 <div class='col-md-offset-2 col-md-6'> 
-		<a href='$link7?id=$id_ped' class='btn btn-theme btn-lg btn-block' target='_blank'>Pedido de Reserva Padrão</a></div>
-	 <div class='col-md-6'>
-		<a href='$link8?id=$id_ped' class='btn btn-theme btn-lg btn-block' target='_blank'>Pedido de Reserva FEPAC</a></div>
-	</div>
-	 
-	<div class='form-group'>
-	 <div class='col-md-offset-2 col-md-6'> 
-		<a href='$link9?id=$id_ped' class='btn btn-theme btn-lg btn-block' target='_blank'>Pedido de Reserva Cooperativas</a></div>
-	 <div class='col-md-6'>
-		<a href='$link10?id=$id_ped' class='btn btn-theme btn-lg btn-block' target='_blank'>Pedido de Reserva Vocacional</a></div>
-	</div>
-	 
-	<br/>  
-	 
-	<div class='form-group'>
-	 <div class='col-md-offset-2 col-md-8'> 
-		<a href='$link11?id=$id_ped' class='btn btn-theme btn-lg btn-block' target='_blank'>Recibo de Entrega de Nota de Empenho</a></div>
-	</div>
-   
-    </form>
-    </div></div>
-	 <br /></center>";
+	<table class='table table-condensed'>					
+	   <tbody>
+		<tr class='list_menu'> 
+			<td colspan='2'><strong>PEDIDO</strong></td>
+		</tr>
+		
+		<tr>
+			<td width='50%'><a href='$link0?id=$id_ped' target='_blank'><strong>Pedido de Contratação</strong></a></td>
+			<td></td>
+		</tr>
+		
+		<tr><td class='list_description'><br/></td></tr>
+		
+		<tr class='list_menu'><td colspan='2'><strong>CONTRATAÇÃO</strong></td></tr>
+		
+		<tr>
+			<td><a href='link1?id=$id_ped' target='_blank'><strong>Padrão</strong></a></td>
+			<td><a href='$link2?id=$id_ped' target='_blank'><strong>Artístico</strong></a></td>
+		</tr>
+		
+		<tr>
+			<td><a href='$link3?id=$id_ped' target='_blank'><strong>Evento Externo</strong></a></td>
+			<td><a href='$link4?id=$id_ped' target='_blank'><strong>Oficinas</strong></a></td>
+		</tr>
+		
+		<tr>
+			<td><a href='$link15?id=$id_ped' target='_blank'><strong>Reversão</strong></a></td>
+		</tr>
+		
+		<tr><td class='list_description'><br/></td></tr>
+		
+		<tr class='list_menu'><td colspan='2'><strong>DECLARAÇÃO</strong></td></tr>
+		
+		<tr>
+			<td><a href='$link12?id=$id_ped' target='_blank'><strong>Não Servidor</strong></a></td>
+			<td><a href='$link13?id=$id_ped' target='_blank'><strong>ISS</strong></a></td>
+		</tr>
+		
+		<tr><td class='list_description'><br/></td></tr>
+		
+		<tr class='list_menu'><td colspan='2'><strong>OUTROS</strong></td></tr>
+		
+		<tr>
+			<td><a href='$link5?id=$id_ped' target='_blank'><strong>FACC</strong></a></td>
+			<td><a href='$link14?id=$id_ped' target='_blank'><strong>Parecer da Comissão</strong></a></td>
+		</tr>
+		
+		<tr><td class='list_description'><br/></td></tr>
+		
+		<tr class='list_menu'><td colspan='2'><strong>PEDIDO DE RESERVA</strong></td></tr>
+		
+		<tr>
+			<td><a href='$link7?id=$id_ped' target='_blank'><strong>Padrão</strong></a></td>
+			<td><a href='$link9?id=$id_ped' target='_blank'><strong>Cooperativa</strong></a></td>
+		</tr>
+		<tr>
+			<td><a href='$link8?id=$id_ped' target='_blank'><strong>FEPAC</strong></a></td>
+			<td><a href='$link10?id=$id_ped' target='_blank'><strong>Vocacional</strong></a></td>
+		</tr>
+		
+	  </tbody>
+	  </table>
+		
+	</div>	
+</div>
+</div>
+</section>";
 
 
 ?>

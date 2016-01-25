@@ -291,6 +291,10 @@ $pedido = recuperaDados("igsis_pedido_contratacao",$_GET['id_ped'],"idPedidoCont
 					<div class="col-md-6"><strong>Carga Horária:</strong> <?php echo $linha_tabelas['CargaHoraria'];?><br/>
 					</div>
 				  </div>
+                  
+                  <div class="form-group">
+						<div class="col-md-offset-2 col-md-8"><br /></div>
+				  </div>
 				  
                   <form class="form-horizontal" role="form" action="?perfil=contratos&p=frm_edita_propostapf&id_ped=<?php echo $id_ped; ?>" method="post">
                <!--                    <div class="form-group">
@@ -305,7 +309,7 @@ $pedido = recuperaDados("igsis_pedido_contratacao",$_GET['id_ped'],"idPedidoCont
 				  </div>-->
                   	<?php if($pedido['parcelas'] > 1){ ?>
                   <div class="form-group">
-					<div class="col-md-offset-2 col-md-6"><strong>Valor:</strong><br/>
+					<div class="col-md-offset-2 col-md-8"><strong>Valor:</strong><br/>
 					  <input type='text' disabled name="valor_parcela" id='valor' class='form-control' value="<?php echo dinheiroParaBr($pedido['valor']) ?>" >
 					</div>					
 				<?php }else{ ?>
