@@ -1,4 +1,5 @@
 #ignorar uploads
 uploads /**/*
 uploadsdocs /**/*
+teste /**/*
 

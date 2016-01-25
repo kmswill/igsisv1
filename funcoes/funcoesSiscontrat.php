@@ -375,7 +375,10 @@ function listaArquivosPessoaSiscontrat($idPessoa,$tipo,$pedido,$form,$pag){
 						
 		
 	echo "					</tbody>
-				</table>";	
+				</table>
+				
+				";	
+				
 }
 	
 function buscaSiscontrat($busca,$tipo){

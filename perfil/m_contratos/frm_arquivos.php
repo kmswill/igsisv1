@@ -190,7 +190,15 @@ if($_GET['tipoPessoa'] == 1){
 			<?php $pag = "contratos"; ?>
 
                          <?php listaArquivosPessoaSiscontrat($idPessoa,$tipo,$_SESSION['idPedido'],$p,$pag); ?>
+                         
 			</div>
+             <div class="form-group">
+            <div class="col-md-offset-2 col-md-8">
+	            <a href="../perfil/m_contratos/frm_arquivos_todos.php?idPessoa=<?php echo $idPessoa ?>&tipo=<?php echo $tipo ?>" class="btn btn-theme btn-lg btn-block" target="_blank">Baixar todos os arquivos de uma vez</a>
+
+
+            </div>
+          </div>
 				  </div>
 			  </div>  
 
