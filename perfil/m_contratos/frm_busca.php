@@ -242,7 +242,12 @@ $mensagem = "Foram encontradas ".$x['num']." pedido(s) de contratação.";
 $data=date('Y');
 for($h = 0; $h < $x['num']; $h++)
  {
-	echo "<tr><td class='lista'> <a href='?perfil=contratos&p=frm_edita_propostapj&id_ped=".$x[$h]['id']."'>".$x[$h]['id']."</a></td>";
+	if($x[$h]['tipo'] == 'Física'){
+		echo "<tr><td class='lista'> <a href='?perfil=contratos&p=frm_edita_propostapf&id_ped=".$x[$h]['id']."'>".$x[$h]['id']."</a></td>";
+	}else{
+		echo "<tr><td class='lista'> <a href='?perfil=contratos&p=frm_edita_propostapj&id_ped=".$x[$h]['id']."'>".$x[$h]['id']."</a></td>";
+		
+	}
 	echo '<td class="list_description">'.$x[$h]['proponente'].					'</td> ';
 	echo '<td class="list_description">'.$x[$h]['tipo'].					'</td> ';
 	echo '<td class="list_description">'.$x[$h]['objeto'].						'</td> ';

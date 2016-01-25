@@ -14,6 +14,7 @@ $pasta = "?perfil=contratos&p=";
 				<li><a href="<?php echo $pasta ?>frm_lista_pj">Pessoa Jurídica</a></li>
 			</ul>
         </li>
+        <!--
 		<li><a href="#">Contratos Pessoa Física</a>
 			<ul class="dl-submenu">
 				<li><a href="<?php echo $pasta ?>frm_lista_pedidocontratacaopf">Pedido de Contratação</a></li>
@@ -28,9 +29,9 @@ $pasta = "?perfil=contratos&p=";
 				<li><a href="<?php echo $pasta ?>frm_lista_propostapj">Listar Todos</a></li>
 			</ul>
 		</li>
-        <?php if($_SESSION['perfil'] ==1){ ?>
-		<li><a href="<?php echo $pasta ?>frm_busca">Pesquisa</a></li>
-		<?php } ?>
+        -->
+        
+		<li><a href="<?php echo $pasta ?>frm_busca">Contratos</a></li>
   		<li><a href="index.php?secao=perfil">Carregar módulos</a></li>
 		<li><a href="<?php echo $pasta ?>ajuda">Ajuda</a></li>
 		<li><a href="../index.php">Sair</a></li>
