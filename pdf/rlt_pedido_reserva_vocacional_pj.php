@@ -10,7 +10,7 @@
 
 //CONSULTA 
 $id_ped=$_GET['id'];
-
+dataReserva($id_ped);
 $ano=date('Y');
 
 $pedido = siscontrat($id_ped);

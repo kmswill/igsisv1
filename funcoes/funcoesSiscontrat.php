@@ -690,8 +690,18 @@ function dataProposta($idPedido){
 	if($query){
 		atualizaEstado($idPedido);
 	}
-
 }
+
+function dataReserva($idPedido){
+	$con = bancoMysqli();
+	$dataAgora = date('Y-m-d H:s:i');
+	$sql = "UPDATE igsis_pedido_contratacao SET DataReserva = '$dataAgora' WHERE idPedidoContratacao = '$idPedido'";
+	$query = mysqli_query($con,$sql);
+	if($query){
+		atualizaEstado($idPedido);
+	}
+}
+
 
 
 ?>

@@ -28,7 +28,7 @@ function Header()
 
 //CONSULTA 
 $id_ped=$_GET['id'];
-
+dataReserva($id_ped);
 $sql_query_tabela_pedcontpj ="
 						SELECT 	sis_pedido_contratacao_pj.Id_PedidoContratacaoPJ,
 								sis_pedido_contratacao_pj.Objeto,

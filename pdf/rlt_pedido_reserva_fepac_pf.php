@@ -10,7 +10,7 @@
 
 //CONSULTA 
 $id_ped=$_GET['id'];
-
+dataReserva($id_ped);
 $linha_tabelas = siscontrat($id_ped);
 
 $codPed = $id_ped;

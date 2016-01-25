@@ -6,7 +6,7 @@ $_SESSION['idPedido'] = $_GET['id_ped'];
 $id_ped = $_GET['id_ped'];
 $id = $id_ped;
 
-$server = "http://".$_SERVER['SERVER_NAME']."/igsis_OK/";
+$server = "http://".$_SERVER['SERVER_NAME']."/igsis_OK/"; //mudar para pasta do igsis
 $http = $server."/pdf/";
 $link0 = $http."rlt_pedido_contratacao_pf.php";
 $link1 = $http."rlt_proposta_padrao_pf.php";
