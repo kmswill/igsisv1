@@ -6,24 +6,24 @@ $_SESSION['idPedido'] = $_GET['id_ped'];
 $id_ped = $_GET['id_ped'];
 $id = $id_ped;
 
-$server = "http://".$_SERVER['SERVER_NAME']."/igsis/";
+$server = "http://".$_SERVER['SERVER_NAME']."/igsis_OK/";
 $http = $server."/pdf/";
-$link0=$http."rlt_pedido_contratacao_pf.php";
-$link1=$http."rlt_proposta_padrao_pf.php";
-$link2=$http."rlt_proposta_artistico_pf.php";
-$link3=$http."rlt_proposta_eventoexterno_pf.php";
-$link4=$http."rlt_proposta_oficina_pf.php";
-$link5=$http."rlt_fac_pf.php";
-$link6=$http."rlt_evento_pf.php";
-$link7=$http."rlt_pedido_reserva_padrao_pf.php";
-$link8=$http."rlt_pedido_reserva_fepac_pf.php";
-$link9=$http."rlt_pedido_reserva_cooperativa_pf.php";
-$link10=$http."rlt_pedido_reserva_vocacional_pf.php";
-$link11=$http."rlt_recibo_ne_pf.php";
-$link12=$http."rlt_declaracao_naoservidor_pf.php";
-$link13=$http."rlt_declaracao_iss_pf.php";
-$link14=$http."rlt_parecer_pf.php";
-$link15=$http."rlt_proposta_reversao_pf.php";
+$link0 = $http."rlt_pedido_contratacao_pf.php";
+$link1 = $http."rlt_proposta_padrao_pf.php";
+$link2 = $http."rlt_proposta_artistico_pf.php";
+$link3 = $http."rlt_proposta_eventoexterno_pf.php";
+$link4 = $http."rlt_proposta_oficina_pf.php";
+$link5 = $http."rlt_fac_pf.php";
+$link6 = $http."rlt_evento_pf.php";
+$link7 = $http."rlt_pedido_reserva_padrao_pf.php";
+$link8 = $http."rlt_pedido_reserva_fepac_pf.php";
+$link9 = $http."rlt_pedido_reserva_cooperativa_pf.php";
+$link10 = $http."rlt_pedido_reserva_vocacional_pf.php";
+$link11 = $http."rlt_recibo_ne_pf.php";
+$link12 = $http."rlt_declaracao_naoservidor_pf.php";
+$link13 = $http."rlt_declaracao_iss_pf.php";
+$link14 = $http."rlt_parecer_pf.php";
+$link15 = $http."rlt_proposta_reversao_pf.php";
 
  
 	 $last_id = mysqli_insert_id($conexao);
@@ -50,7 +50,7 @@ $link15=$http."rlt_proposta_reversao_pf.php";
 		<tr class='list_menu'><td colspan='2'><strong>CONTRATAÇÃO</strong></td></tr>
 		
 		<tr>
-			<td><a href='link1?id=$id_ped' target='_blank'><strong>Padrão</strong></a></td>
+			<td><a href='$link1?id=$id_ped' target='_blank'><strong>Padrão</strong></a></td>
 			<td><a href='$link2?id=$id_ped' target='_blank'><strong>Artístico</strong></a></td>
 		</tr>
 		

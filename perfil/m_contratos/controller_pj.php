@@ -23,7 +23,7 @@ if(isset($_POST['input'])){
 	$input = $_POST['input'];
 	@$con = bancoMysqli();
 	if($con){
-		$query = mysqli_query($con, "SELECT * FROM `sis_pessoa_juridica` WHERE RazaoSocial LIKE '%$input%' OR CNPJ LIKE '%$input%'");
+		$query = mysqli_query($con, "SELECT * FROM `sis_pessoa_juridica` WHERE RazaoSocial LIKE '%$input%' OR CNPJ LIKE '%$input%' ORDER BY RazaoSocial");
 		if($query){
 			if(mysqli_num_rows($query) >= 1){
 				while($res = mysqli_fetch_assoc($query)){

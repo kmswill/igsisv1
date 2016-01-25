@@ -914,7 +914,9 @@ function descricaoEvento($idEvento){ //imprime dados de um evento
 
 	//exibe as informações principais
 	echo "Número da IG: <b>".$idEvento."</b><br />";
-	echo "Evento enviado em ".exibirDataHoraBr($evento['dataEnvio'])."<br />";
+	if($evento['dataEnvio'] != NULL){
+		echo "Evento enviado em ".exibirDataHoraBr($evento['dataEnvio'])."<br />";
+	}
 	echo "<b>Tipo de evento:</b> ".$tipoEvento['tipoEvento']."<br />";
 	if($evento['ig_programa_idPrograma'] != 0){ echo "<b>Programa especial:</b> ".$programa['programa']."<br />";}
 	if($evento['projetoEspecial'] != 0){ echo "<b>Projeto especial:</b> ".$projetoEspecial['projetoEspecial']."<br />";}
@@ -1696,7 +1698,7 @@ function listaOcorrenciasCinema($idCinema){ //lista ocorrencias de determinado e
 			$valor = dinheiroParaBr($campo['valorIngresso']);
 			$local = recuperaDados("ig_local",$campo['local'],"idLocal");
 			$espaco = $local['sala'];
-			$inst = recuperaDados("ig_instituicao",$local['ig_instituicao_idInstituicao'],"idInstituicao");
+			$inst = recuperaDados("ig_instituicao",$local['idInstituicao'],"idInstituicao");
 			$instituicao = $inst['instituicao'];
 			$id = $campo['idOcorrencia'];
 			
@@ -2413,10 +2415,13 @@ function gradeFilmes($idEvento){
 		$filme = recuperaDados("ig_cinema",$idCinema,"idCinema");
 		$local = recuperaDados("ig_local",$cinema['local'],"idLocal");
 		$retirada = recuperaDados("ig_retirada",$cinema['retiradaIngresso'],"idRetirada");
-
 		if($data_antiga != $data){
 				echo "<h4>".exibirDataBr($cinema['dataInicio'])." - ".diasemana($cinema['dataInicio'])."</h4>";
 		}
+		if($cinema['idTipoOcorrencia'] != 5){
+			
+		}else{
+
 
 		echo "<div class='left'>".substr($cinema['horaInicio'], 0, -3)."<h5>".$filme['titulo']."</h5>";
 		echo "(".$filme['tituloOriginal'].", ".$filme['anoProducao'].", ".$filme['minutagem']." min, ".$filme['bitola'].", ".$filme['genero'].")<br />";
@@ -2427,6 +2432,7 @@ function gradeFilmes($idEvento){
 		
 		echo "</div><br /><br /><br />";
 		$data_antiga = $data;			
+		}
 	}
 	
 	
@@ -2722,170 +2728,172 @@ function listaOcorrenciasContrato($idEvento){ //lista ocorrencias de determinado
 function reloadAgenda(){
 	
 	$con = bancoMysqli();
+	$novaTabela = "igsis_agenda_".date('YmdHis');
+	$sql_backup = "CREATE TABLE $novaTabela SELECT * FROM igsis_agenda";
+	$query_backup = mysqli_query($con,$sql_backup);
+	if($query_backup){
+		$sql_limpa = "TRUNCATE TABLE igsis_agenda";
+		if(mysqli_query($con,$sql_limpa)){
+			$sql_auto = "ALTER TABLE igsis_agenda AUTO_INCREMENT = 1";
+			$sql_query = mysqli_query($con,$sql_auto);
+			mysqli_query($con,$sql_auto);		
+		}
+	
+	$sql_pesquisar = "SELECT ig_ocorrencia.idEvento, dataInicio, idTipoOcorrencia, local, horaInicio, idInstituicao, dataFinal, segunda, terca, quarta, quinta, sexta, sabado, domingo, idOcorrencia, idCinema FROM ig_ocorrencia, ig_evento WHERE ig_evento.dataEnvio IS NOT NULL AND ig_evento.publicado = '1' AND ig_evento.idInstituicao IS NOT NULL AND ig_evento.publicado = '1' AND ig_evento.idEvento = ig_ocorrencia.idEvento AND ig_ocorrencia.publicado = '1' ORDER BY dataInicio, horaInicio";
+	$query_pesquisar = mysqli_query($con,$sql_pesquisar);
+	$data = "";
+	$data_antigo = "1";
+	while($evento = mysqli_fetch_array($query_pesquisar)){
+		$idEvento = $evento['idEvento'];
+		$dataInicio = $evento['dataInicio'];
+		$dataFinal = $evento['dataFinal'];
+		$local = $evento['local'];
+		$idTipo = $evento['idTipoOcorrencia'];
+		$hora = $evento['horaInicio'];
+		$idInstituicao = $evento['idInstituicao'];
+		$segunda = $evento['segunda'];
+		$terca = $evento['terca'];
+		$quarta = $evento['quarta'];
+		$quinta = $evento['quinta'];
+		$sexta = $evento['sexta'];
+		$sabado = $evento['sabado'];
+		$domingo = $evento['domingo'];
+		$idOcorrencia = $evento['idOcorrencia'];
+		$idCinema = $evento['idCinema'];
 	
 	
-	$sql_limpa = "TRUNCATE TABLE igsis_agenda";
-	if(mysqli_query($con,$sql_limpa)){
-		$sql_auto = "ALTER TABLE igsis_agenda AUTO_INCREMENT = 1";
-		$sql_query = mysqli_query($con,$sql_auto);
-		mysqli_query($con,$sql_auto);		
-	}
-
-$sql_pesquisar = "SELECT ig_ocorrencia.idEvento, dataInicio, idTipoOcorrencia, local, horaInicio, idInstituicao, dataFinal, segunda, terca, quarta, quinta, sexta, sabado, domingo, idOcorrencia, idCinema FROM ig_ocorrencia, ig_evento WHERE ig_evento.dataEnvio IS NOT NULL AND ig_evento.publicado = '1' AND ig_evento.idInstituicao IS NOT NULL AND ig_evento.publicado = '1' AND ig_evento.idEvento = ig_ocorrencia.idEvento AND ig_ocorrencia.publicado = '1' ORDER BY dataInicio, horaInicio";
-$query_pesquisar = mysqli_query($con,$sql_pesquisar);
-$data = "";
-$data_antigo = "1";
-while($evento = mysqli_fetch_array($query_pesquisar)){
-	$idEvento = $evento['idEvento'];
-	$dataInicio = $evento['dataInicio'];
-	$dataFinal = $evento['dataFinal'];
-	$local = $evento['local'];
-	$idTipo = $evento['idTipoOcorrencia'];
-	$hora = $evento['horaInicio'];
-	$idInstituicao = $evento['idInstituicao'];
-	$segunda = $evento['segunda'];
-	$terca = $evento['terca'];
-	$quarta = $evento['quarta'];
-	$quinta = $evento['quinta'];
-	$sexta = $evento['sexta'];
-	$sabado = $evento['sabado'];
-	$domingo = $evento['domingo'];
-	$idOcorrencia = $evento['idOcorrencia'];
-	$idCinema = $evento['idCinema'];
-
-
+		
+		if($dataFinal == '0000-00-00' OR $dataFinal == $dataInicio){ //Evento de data única
 	
-	if($dataFinal == '0000-00-00' OR $dataFinal == $dataInicio){ //Evento de data única
-
-	$sql = "INSERT INTO `igsis_agenda` (`idAgenda`, `idEvento`, `data`, `hora`, `idLocal`, `idInstituicao`, `idTipo`, `idOcorrencia`, `idCinema`) 
-	VALUES (NULL, '$idEvento', '$dataInicio', '$hora', '$local', '$idInstituicao', '$idTipo', '$idOcorrencia', '$idCinema');";
-		$query = mysqli_query($con,$sql);
-		if($query){
-			//echo "Data importada na agenda.<br />";	
-		}else{
-			//echo "Erro.<br />";		
-		}		
-	}else{ // Evento de tempoarada
-		while(strtotime($dataInicio) <=  strtotime($dataFinal)){
-			$semana = diaSemanaBase($dataInicio);
+		$sql = "INSERT INTO `igsis_agenda` (`idAgenda`, `idEvento`, `data`, `hora`, `idLocal`, `idInstituicao`, `idTipo`, `idOcorrencia`, `idCinema`) 
+		VALUES (NULL, '$idEvento', '$dataInicio', '$hora', '$local', '$idInstituicao', '$idTipo', '$idOcorrencia', '$idCinema');";
+			$query = mysqli_query($con,$sql);
+			if($query){
+				//echo "Data importada na agenda.<br />";	
+			}else{
+				//echo "Erro.<br />";		
+			}		
+		}else{ // Evento de tempoarada
+			while(strtotime($dataInicio) <=  strtotime($dataFinal)){
+				$semana = diaSemanaBase($dataInicio);
+				
+				switch($semana){
+				case 'segunda':
+				if($segunda == '1'){
+		$sql = "INSERT INTO `igsis_agenda` (`idAgenda`, `idEvento`, `data`, `hora`, `idLocal`, `idInstituicao`, `idTipo`, `idOcorrencia`, `idCinema`) 
+		VALUES (NULL, '$idEvento', '$dataInicio', '$hora', '$local', '$idInstituicao', '$idTipo', '$idOcorrencia', '$idCinema');";
+	
+					$query = mysqli_query($con,$sql);
+					if($query){
+						//echo "Data importada na agenda.<br />";	
+					}else{
+						//echo "Erro.<br />";		
+					}		
+					
+				}
+				break;
+				case 'terca':
+				
+				if($terca == '1'){
+		$sql = "INSERT INTO `igsis_agenda` (`idAgenda`, `idEvento`, `data`, `hora`, `idLocal`, `idInstituicao`, `idTipo`, `idOcorrencia`, `idCinema`) 
+		VALUES (NULL, '$idEvento', '$dataInicio', '$hora', '$local', '$idInstituicao', '$idTipo', '$idOcorrencia', '$idCinema');";
+	
+					$query = mysqli_query($con,$sql);
+					if($query){
+						//echo "Data importada na agenda.<br />";	
+					}else{
+						//echo "Erro.<br />";		
+					}		
+					
+				}
+				break;
+				case 'quarta':
+				if($quarta == '1'){
+		$sql = "INSERT INTO `igsis_agenda` (`idAgenda`, `idEvento`, `data`, `hora`, `idLocal`, `idInstituicao`, `idTipo`, `idOcorrencia`, `idCinema`) 
+		VALUES (NULL, '$idEvento', '$dataInicio', '$hora', '$local', '$idInstituicao', '$idTipo', '$idOcorrencia', '$idCinema');";
+	
+					$query = mysqli_query($con,$sql);
+					if($query){
+						//echo "Data importada na agenda.<br />";	
+					}else{
+						//echo "Erro.<br />";		
+					}		
+					
+				}
+				break;
+				case 'quinta':
+				if($quinta == '1'){
+		$sql = "INSERT INTO `igsis_agenda` (`idAgenda`, `idEvento`, `data`, `hora`, `idLocal`, `idInstituicao`, `idTipo`, `idOcorrencia`, `idCinema`) 
+		VALUES (NULL, '$idEvento', '$dataInicio', '$hora', '$local', '$idInstituicao', '$idTipo', '$idOcorrencia', '$idCinema');";
+	
+					$query = mysqli_query($con,$sql);
+					if($query){
+						//echo "Data importada na agenda.<br />";	
+					}else{
+						//echo "Erro.<br />";		
+	
+	
+					}		
+					
+				}
+				break;
+				case 'sexta':
+				if($sexta == '1'){
+		$sql = "INSERT INTO `igsis_agenda` (`idAgenda`, `idEvento`, `data`, `hora`, `idLocal`, `idInstituicao`, `idTipo`, `idOcorrencia`, `idCinema`) 
+		VALUES (NULL, '$idEvento', '$dataInicio', '$hora', '$local', '$idInstituicao', '$idTipo', '$idOcorrencia', '$idCinema');";
+	
+					$query = mysqli_query($con,$sql);
+					if($query){
+						//echo "Data importada na agenda.<br />";	
+					}else{
+						//echo "Erro.<br />";		
+					}		
+					
+				}
+				break;
+				case 'sabado':
+				if($sabado == '1'){
+	
+		$sql = "INSERT INTO `igsis_agenda` (`idAgenda`, `idEvento`, `data`, `hora`, `idLocal`, `idInstituicao`, `idTipo`, `idOcorrencia`, `idCinema`) 
+		VALUES (NULL, '$idEvento', '$dataInicio', '$hora', '$local', '$idInstituicao', '$idTipo', '$idOcorrencia', '$idCinema');";
+					$query = mysqli_query($con,$sql);
+					if($query){
+						//echo "Data importada na agenda.<br />";	
+					}else{
+						//echo "Erro.<br />";		
+					}		
+					
+				}
+				break;
+				case 'domingo':
+				
+				if($domingo == '1'){
+	
+		$sql = "INSERT INTO `igsis_agenda` (`idAgenda`, `idEvento`, `data`, `hora`, `idLocal`, `idInstituicao`, `idTipo`, `idOcorrencia`, `idCinema`) 
+		VALUES (NULL, '$idEvento', '$dataInicio', '$hora', '$local', '$idInstituicao', '$idTipo', '$idOcorrencia', '$idCinema');";
+					$query = mysqli_query($con,$sql);
+					if($query){
+						//echo "Data importada na agenda.<br />";	
+					}else{
+						//echo "Erro.<br />";		
+					}		
+					
+				}
+				break;
+			}// fim da switch
+	
+	
+	
+				$dataInicio = date('Y-m-d', strtotime("+1 days",strtotime($dataInicio)));
+			}
 			
-			switch($semana){
-			case 'segunda':
-			if($segunda == '1'){
-	$sql = "INSERT INTO `igsis_agenda` (`idAgenda`, `idEvento`, `data`, `hora`, `idLocal`, `idInstituicao`, `idTipo`, `idOcorrencia`, `idCinema`) 
-	VALUES (NULL, '$idEvento', '$dataInicio', '$hora', '$local', '$idInstituicao', '$idTipo', '$idOcorrencia', '$idCinema');";
-
-				$query = mysqli_query($con,$sql);
-				if($query){
-					//echo "Data importada na agenda.<br />";	
-				}else{
-					//echo "Erro.<br />";		
-				}		
-				
-			}
-			break;
-			case 'terca':
-			
-			if($terca == '1'){
-	$sql = "INSERT INTO `igsis_agenda` (`idAgenda`, `idEvento`, `data`, `hora`, `idLocal`, `idInstituicao`, `idTipo`, `idOcorrencia`, `idCinema`) 
-	VALUES (NULL, '$idEvento', '$dataInicio', '$hora', '$local', '$idInstituicao', '$idTipo', '$idOcorrencia', '$idCinema');";
-
-				$query = mysqli_query($con,$sql);
-				if($query){
-					//echo "Data importada na agenda.<br />";	
-				}else{
-					//echo "Erro.<br />";		
-				}		
-				
-			}
-			break;
-			case 'quarta':
-			if($quarta == '1'){
-	$sql = "INSERT INTO `igsis_agenda` (`idAgenda`, `idEvento`, `data`, `hora`, `idLocal`, `idInstituicao`, `idTipo`, `idOcorrencia`, `idCinema`) 
-	VALUES (NULL, '$idEvento', '$dataInicio', '$hora', '$local', '$idInstituicao', '$idTipo', '$idOcorrencia', '$idCinema');";
-
-				$query = mysqli_query($con,$sql);
-				if($query){
-					//echo "Data importada na agenda.<br />";	
-				}else{
-					//echo "Erro.<br />";		
-				}		
-				
-			}
-			break;
-			case 'quinta':
-			if($quinta == '1'){
-	$sql = "INSERT INTO `igsis_agenda` (`idAgenda`, `idEvento`, `data`, `hora`, `idLocal`, `idInstituicao`, `idTipo`, `idOcorrencia`, `idCinema`) 
-	VALUES (NULL, '$idEvento', '$dataInicio', '$hora', '$local', '$idInstituicao', '$idTipo', '$idOcorrencia', '$idCinema');";
-
-				$query = mysqli_query($con,$sql);
-				if($query){
-					//echo "Data importada na agenda.<br />";	
-				}else{
-					//echo "Erro.<br />";		
-
-
-				}		
-				
-			}
-			break;
-			case 'sexta':
-			if($sexta == '1'){
-	$sql = "INSERT INTO `igsis_agenda` (`idAgenda`, `idEvento`, `data`, `hora`, `idLocal`, `idInstituicao`, `idTipo`, `idOcorrencia`, `idCinema`) 
-	VALUES (NULL, '$idEvento', '$dataInicio', '$hora', '$local', '$idInstituicao', '$idTipo', '$idOcorrencia', '$idCinema');";
-
-				$query = mysqli_query($con,$sql);
-				if($query){
-					//echo "Data importada na agenda.<br />";	
-				}else{
-					//echo "Erro.<br />";		
-				}		
-				
-			}
-			break;
-			case 'sabado':
-			if($sabado == '1'){
-
-	$sql = "INSERT INTO `igsis_agenda` (`idAgenda`, `idEvento`, `data`, `hora`, `idLocal`, `idInstituicao`, `idTipo`, `idOcorrencia`, `idCinema`) 
-	VALUES (NULL, '$idEvento', '$dataInicio', '$hora', '$local', '$idInstituicao', '$idTipo', '$idOcorrencia', '$idCinema');";
-				$query = mysqli_query($con,$sql);
-				if($query){
-					//echo "Data importada na agenda.<br />";	
-				}else{
-					//echo "Erro.<br />";		
-				}		
-				
-			}
-			break;
-			case 'domingo':
-			
-			if($domingo == '1'){
-
-	$sql = "INSERT INTO `igsis_agenda` (`idAgenda`, `idEvento`, `data`, `hora`, `idLocal`, `idInstituicao`, `idTipo`, `idOcorrencia`, `idCinema`) 
-	VALUES (NULL, '$idEvento', '$dataInicio', '$hora', '$local', '$idInstituicao', '$idTipo', '$idOcorrencia', '$idCinema');";
-				$query = mysqli_query($con,$sql);
-				if($query){
-					//echo "Data importada na agenda.<br />";	
-				}else{
-					//echo "Erro.<br />";		
-				}		
-				
-			}
-			break;
-		}// fim da switch
-
-
-
-			$dataInicio = date('Y-m-d', strtotime("+1 days",strtotime($dataInicio)));
 		}
 		
-	}
+		
+		
+	}	
 	
-	
- 	
-}	
-
-
+		}
 }
 
 function atualizarAgenda($idEvento){
@@ -3114,6 +3122,14 @@ function detalhesEmail($idEvento){
 </p>";
 	
 	return $conteudo;
+}
+
+function geraFrase(){
+	$con = bancoMysqli();
+	$sql = "SELECT * FROM igsis_frases ORDER BY RAND() LIMIT 1";
+	$query = mysqli_query($con,$sql);
+	$frase = mysqli_fetch_array($query);
+	echo $frase['frase'];
 }
 
 ?>

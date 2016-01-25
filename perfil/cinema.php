@@ -181,16 +181,16 @@ if(isset($_POST['editarFilme'])){ //Atualiza um filme
 
 	$pais1 = $_POST['pais1'];
 	$idEvento = $_SESSION['idEvento'];
-	$titulo = $_POST['titulo'];
-	$tituloOriginal = $_POST['tituloOriginal'];
+	$titulo = addslashes($_POST['titulo']);
+	$tituloOriginal = addslashes($_POST['tituloOriginal']);
 	$anoProducao = $_POST['ano'];
 	$genero = $_POST['genero'];
 	$bitola = $_POST['bitola'];
 	$direcao = $_POST['direcao'];
-	$sinopse = $_POST['sinopse'];
+	$sinopse = addslashes($_POST['sinopse']);
 	$minutagem = $_POST['minutagem'];
 	$linkTrailer = $_POST['link'];
-	$elenco = $_POST['elenco'];
+	$elenco = addslashes($_POST['elenco']);
 	$pais2 = $_POST['pais2'];
 	$classificacao = $_POST['classificacao'];
 	$idCinema = $_POST['editarFilme'];
@@ -310,7 +310,7 @@ $filme = recuperaDados("ig_cinema",$_POST['carregarFilme'],"idCinema");
 					   <input type="text" class="form-control" id="classificacao" name="classificacao" placeholder="Somente numeros" value="<?php echo $filme['indicacaoEtaria']; ?>">
 					</div>				  
 					<div class=" col-md-6"><strong>Link para trailer</strong><br/>
-					 					  <input type="text" class="form-control" id="link" name="link" placeholder="link">
+					 					  <input type="text" class="form-control" id="link" name="link" placeholder="link" value="<?php echo $filme['linkTrailer']; ?>">
 					</div>
 				  </div>
 				  <div class="form-group">

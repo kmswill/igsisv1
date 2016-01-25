@@ -529,7 +529,7 @@ function listaGrupo($idPedido){
 	return $txt;
 
 }
-
+/*
 function grupos($idPedido){
 	$con = bancoMysqli();
 	$sql = "SELECT * FROM igsis_grupos WHERE idPedido = '$idPedido' AND publicado = '1'";
@@ -546,6 +546,29 @@ function grupos($idPedido){
 	$y['numero'] = $i;
 	return $y;
 }
+*/
+
+
+function grupos($idPedido){
+	$con = bancoMysqli();
+	$sql = "SELECT * FROM igsis_grupos WHERE idPedido = '$idPedido' AND publicado = '1'";
+	$query = mysqli_query($con,$sql);
+	$y = array();
+	$i = 0;
+	$texto = "";
+	while($x = mysqli_fetch_array($query)){
+		$y[$i]['nomeCompleto'] = $x['nomeCompleto'];
+		$y[$i]['rg'] = $x['rg'];
+		$y[$i]['cpf'] = $x['cpf'];
+		$y[$i]['assinatura'] = "";
+		$texto .= $x['nomeCompleto'].", RG nº ".$x['rg'].", CPF nº ".$x['cpf'].", ";
+		$i++;
+	}
+	$y['texto'] = substr($texto,0,-1);
+	$y['numero'] = $i;
+	return $y;
+}
+
 
 function sobrenome($string){
 	$partes = explode(' ', $string);
@@ -586,5 +609,89 @@ function geraOpcaoEstado($select,$area){ //gera os options de um select
 		}
 	}
 }
+
+
+function atualizaEstado($idPedido){
+	$con = bancoMysqli();
+	$pedido = recuperaDados("igsis_pedido_contratacao",$idPedido,"idPedidoContratacao");
+	
+	//Inicio do algorítimo
+	
+	if($pedido['estado'] == 11){  //Se estão nesses estados, não haverá atualização
+
+
+		
+	}else{ // Esses estados restantes permitem alteração automática
+	
+		if(trim($pedido['NumeroNotaEmpenho']) != "" && $pedido['NumeroNotaEmpenho'] != NULL){ // Se há um Número de Empenho Válido
+
+			$sql = "UPDATE igsis_pedido_contratacao SET estado = '10' WHERE idPedidoContratacao = '$idPedido'";
+			
+		}else{ // Se não há um Número de Empenho Válido
+			
+			if(trim($pedido['DataReserva']) != "" && $pedido['DataReserva'] != NULL && $pedido['DataReserva'] != '0000-00-00'){ //Se há um pedido de reserva
+
+				$sql = "UPDATE igsis_pedido_contratacao SET estado = '6' WHERE idPedidoContratacao = '$idPedido'";
+				
+				
+			}else{ // Se não há um Pedido de Reserva
+
+				if(trim($pedido['DataProposta']) != "" && $pedido['DataProposta'] != NULL && $pedido['DataProposta'] != '0000-00-00'){ //Se já foi gerado uma Proposta
+
+					$sql = "UPDATE igsis_pedido_contratacao SET estado = '5' WHERE idPedidoContratacao = '$idPedido'";
+
+
+				}else{ //Caso não tenha sido gerado uma Proposta
+					
+					if($pedido['NumeroProcesso'] != NULL && trim($pedido['NumeroProcesso']) != ""){ // Caso possua um Número de Processo SEI
+					
+						$sql = "UPDATE igsis_pedido_contratacao SET estado = '4' WHERE idPedidoContratacao = '$idPedido'";
+
+					
+					}else{ // Caso não possua ainda um Número de Processo SEI
+						
+						if(trim($pedido['DataContrato']) != "" && $pedido['DataContrato'] != NULL && $pedido['DataContrato'] != '0000-00-00'){ //Caso o contrato tenha visto						
+							$sql = "UPDATE igsis_pedido_contratacao SET estado = '3' WHERE idPedidoContratacao = '$idPedido'";
+
+							
+						}else{
+							
+							return "Não houve atualização de status";
+						}
+					
+						
+					}
+					
+				}
+				
+			}
+			
+		}
+	
+		
+	}
+	
+	if(isset($sql)){
+		$query = mysqli_query($con,$sql);
+		if($query){
+			return "Status atualizado";	
+		}else{
+			return "Erro ao atualizar status";	
+		}
+		
+	}
+}
+
+function dataProposta($idPedido){
+	$con = bancoMysqli();
+	$dataAgora = date('Y-m-d H:s:i');
+	$sql = "UPDATE igsis_pedido_contratacao SET DataProposta = '$dataAgora' WHERE idPedidoContratacao = '$idPedido'";
+	$query = mysqli_query($con,$sql);
+	if($query){
+		atualizaEstado($idPedido);
+	}
+
+}
+
 
 ?>

@@ -6,31 +6,31 @@ $_SESSION['idPedido'] = $_GET['id_ped'];
 $id_ped = $_GET['id_ped'];
 $id = $id_ped;
 
-$server = "http://".$_SERVER['SERVER_NAME']."/igsis/";
+$server = "http://".$_SERVER['SERVER_NAME']."/igsis_OK/"; //mudar para pasta do igsis
 $http = $server."/pdf/";
-$link0=$http."rlt_pedido_contratacao_pj.php";
-$link1=$http."rlt_proposta_padrao_pj.php";
-$link2=$http."rlt_proposta_artistico_pj.php";
-$link3=$http."rlt_proposta_comunicado_001-15_pj.php";
-$link4=$http."rlt_proposta_eventoexterno_pj.php";
-$link5=$http."rlt_fac_pj.php";
-$link6=$http."rlt_evento_pj.php";
-$link7=$http."rlt_direitos_conexos.php";
-$link8=$http."rlt_parecer_pj.php";
-$link9=$http."rlt_pedido_reserva_padrao_pj.php";
-$link10=$http."rlt_pedido_reserva_cooperativa_pj.php";
-$link11=$http."rlt_pedido_reserva_fepac_pj.php";
-$link12=$http."rlt_pedido_reserva_atividadecultural_pj.php";
-$link13=$http."rlt_pedido_reserva_atividadecultural_cooperativa_pj.php";
-$link14=$http."rlt_pedido_reserva_vocacional_pj.php";
-$link15=$http."rlt_recibo_ne_1rep_pj.php";
-$link16=$http."rlt_recibo_ne_2rep_pj.php";
-$link17=$http."rlt_declaracao_iss_1rep_pj.php";
-$link18=$http."rlt_declaracao_iss_2rep_pj.php";
-$link19=$http."rlt_declaracao_exclusividade_1rep_pj.php";
-$link20=$http."rlt_declaracao_exclusividade_2rep_pj.php";
-$link21=$http."rlt_proposta_reversao_pj.php";
-$link22=$http."rlt_ordemservico_pj.php";
+$link0 = $http."rlt_pedido_contratacao_pj.php";
+$link1 = $http."rlt_proposta_padrao_pj.php";
+$link2 = $http."rlt_proposta_artistico_pj.php";
+$link3 = $http."rlt_proposta_comunicado_001-15_pj.php";
+$link4 = $http."rlt_proposta_eventoexterno_pj.php";
+$link5 = $http."rlt_fac_pj.php";
+$link6 = $http."rlt_evento_pj.php";
+$link7 = $http."rlt_direitos_conexos.php";
+$link8 = $http."rlt_parecer_pj.php";
+$link9 = $http."rlt_pedido_reserva_padrao_pj.php";
+$link10 = $http."rlt_pedido_reserva_cooperativa_pj.php";
+$link11 = $http."rlt_pedido_reserva_fepac_pj.php";
+$link12 = $http."rlt_pedido_reserva_atividadecultural_pj.php";
+$link13 = $http."rlt_pedido_reserva_atividadecultural_cooperativa_pj.php";
+$link14 = $http."rlt_pedido_reserva_vocacional_pj.php";
+$link15 = $http."rlt_proposta_reversaolonga_pj.php";
+$link16 = $http."rlt_proposta_reversaocurta_pj.php";
+$link17 = $http."rlt_declaracao_iss_1rep_pj.php";
+$link18 = $http."rlt_declaracao_iss_2rep_pj.php";
+$link19 = $http."rlt_declaracao_exclusividade_1rep_pj.php";
+$link20 = $http."rlt_declaracao_exclusividade_2rep_pj.php";
+$link21 = $http."rlt_proposta_doacao_pj.php";
+$link22 = $http."rlt_ordemservico_pj.php";
 
 
 
@@ -57,10 +57,10 @@ $link22=$http."rlt_ordemservico_pj.php";
 		
 		<tr><td class='list_description'><br/></td></tr>
 		
-		<tr class='list_menu'><td colspan='2'><strong>CONTRATAÇÃO</strong></td></tr>
+		<tr class='list_menu'><td colspan='2'><strong>PROPOSTA</strong></td></tr>
 		
 		<tr>
-			<td><a href='link1?id=$id_ped' target='_blank'><strong>Padrão</strong></a></td>
+			<td><a href='$link1?id=$id_ped' target='_blank'><strong>Padrão</strong></a></td>
 			<td><a href='$link2?id=$id_ped' target='_blank'><strong>Artístico</strong></a></td>
 		</tr>
 		
@@ -70,7 +70,12 @@ $link22=$http."rlt_ordemservico_pj.php";
 		</tr>
 		
 		<tr>
-			<td><a href='$link21?id=$id_ped' target='_blank'><strong>Reversão</strong></a></td>
+			<td><a href='$link15?id=$id_ped' target='_blank'><strong>Reversão Longa Temporada</strong></a></td>
+			<td><a href='$link16?id=$id_ped' target='_blank'><strong>Reversão Curta Temporada</strong></a></td>
+		</tr>
+		<tr>
+			<td><a href='$link21?id=$id_ped' target='_blank'><strong>Doação de Serviços</strong></a></td>
+			<td></td>
 		</tr>
 		
 		<tr><td class='list_description'><br/></td></tr>

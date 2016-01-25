@@ -291,13 +291,7 @@ $l=7; //DEFINE A ALTURA DA LINHA
    $pdf->Cell(82,$l,utf8_decode('Tempo Aproximado de Duração do Espetáculo:'),0,0,'L');
    $pdf->SetFont('Arial','', 10);
    $pdf->MultiCell(98,$l,utf8_decode("$Duracao"."utos"));
-   
-   $pdf->SetX($x);
-   $pdf->SetFont('Arial','B', 10);
-   $pdf->Cell(27,$l,utf8_decode('Carga Horária:'),0,0,'L');
-   $pdf->SetFont('Arial','', 10);
-   $pdf->MultiCell(180,$l,$CargaHoraria);
-   
+      
    $pdf->SetX($x);
    $pdf->SetFont('Arial','B', 10);
    $pdf->Cell(15,$l,'Local:',0,0,'L');
@@ -312,7 +306,9 @@ $l=7; //DEFINE A ALTURA DA LINHA
    
    $pdf->SetX($x);
    $pdf->SetFont('Arial','B', 10);
-   $pdf->Cell(40,$l,'Forma de Pagamento:',0,0,'L');
+   $pdf->Cell(40,$l,utf8_decode('Valor da Prestação do Serviço:'),0,1,'L');
+   
+   $pdf->SetX($x);
    $pdf->SetFont('Arial','', 10);
    $pdf->MultiCell(140,$l,utf8_decode($FormaPagamento));
    
@@ -338,143 +334,155 @@ $l=7; //DEFINE A ALTURA DA LINHA
 //	QUEBRA DE PÁGINA
 $pdf->AddPage('','');
 
-$pdf->SetXY( $x , 35 );// SetXY - DEFINE O X (largura) E O Y (altura) NA PÁGINA
+$pdf->SetXY( $x , 33 );// SetXY - DEFINE O X (largura) E O Y (altura) NA PÁGINA
 
-$l=5; //DEFINE A ALTURA DA LINHA  
+$l=4; //DEFINE A ALTURA DA LINHA  
 
 	//Pessoa Jurídica
 
 $pdf->SetX($x);
    $pdf->SetFont('Arial','', 10);
    $pdf->Cell(10,5,'(C)',0,0,'L');
-   $pdf->SetFont('Arial','B', 12);
+   $pdf->SetFont('Arial','B', 10);
    $pdf->Cell(170,5,utf8_decode('PESSOA JURÍDICA'),0,1,'C');
    
    $pdf->SetX($x);
-   $pdf->SetFont('Arial','I', 9);
+   $pdf->SetFont('Arial','I', 8);
    $pdf->Cell(10,10,utf8_decode('(empresário exclusivo SE FOR O CASO)'),0,0,'L');
    
    $pdf->Ln();
    
    $pdf->SetX($x);
-   $pdf->SetFont('Arial','B', 10);
+   $pdf->SetFont('Arial','B', 9);
    $pdf->Cell(33,$l,'Nome da empresa:',0,0,'L');
-   $pdf->SetFont('Arial','', 10);
+   $pdf->SetFont('Arial','', 9);
    $pdf->MultiCell(155,$l,utf8_decode($pjRazaoSocial));
    
    $pdf->SetX($x);
-   $pdf->SetFont('Arial','B', 10);
+   $pdf->SetFont('Arial','B', 9);
    $pdf->Cell(10,$l,utf8_decode('CCM:'),0,0,'L');
-   $pdf->SetFont('Arial','', 10);
+   $pdf->SetFont('Arial','', 9);
    $pdf->Cell(65,$l,utf8_decode($pjCCM),0,0,'L');
-   $pdf->SetFont('Arial','B', 10);
+   $pdf->SetFont('Arial','B', 9);
    $pdf->Cell(12,$l,utf8_decode('CNPJ:'),0,0,'L');
-   $pdf->SetFont('Arial','', 10);
+   $pdf->SetFont('Arial','', 9);
    $pdf->Cell(65,$l,utf8_decode($pjCNPJ),0,1,'L');
    
    $pdf->SetX($x);
-   $pdf->SetFont('Arial','B', 10);
+   $pdf->SetFont('Arial','B', 9);
    $pdf->Cell(20,$l,utf8_decode('Endereço:'),0,0,'L');
-   $pdf->SetFont('Arial','', 10);
+   $pdf->SetFont('Arial','', 9);
    $pdf->MultiCell(160,$l,utf8_decode($pjEndereco));
    
    $pdf->SetX($x);
-   $pdf->SetFont('Arial','B', 10);
+   $pdf->SetFont('Arial','B', 9);
    $pdf->Cell(17,$l,utf8_decode('Telefone:'),0,0,'L');
-   $pdf->SetFont('Arial','', 10);
+   $pdf->SetFont('Arial','', 9);
    $pdf->Cell(75,$l,utf8_decode($pjTelefones),0,0,'L');
-   $pdf->SetFont('Arial','B', 10);
+   $pdf->SetFont('Arial','B', 9);
    $pdf->Cell(13,$l,utf8_decode('E-mail:'),0,0,'L');
-   $pdf->SetFont('Arial','', 10);
+   $pdf->SetFont('Arial','', 9);
    $pdf->Cell(65,$l,utf8_decode($pjEmail),0,1,'L');
    
-   $pdf->Ln();
-
+   
 	//Representante01
    
    $pdf->SetX($x);
-   $pdf->SetFont('Arial','B', 10);
+   $pdf->SetFont('Arial','B', 9);
    $pdf->Cell(28,$l,'Representante:',0,0,'L');
-   $pdf->SetFont('Arial','', 10);
+   $pdf->SetFont('Arial','', 9);
    $pdf->MultiCell(155,$l,utf8_decode($rep01Nome));
    
    $pdf->SetX($x);
-   $pdf->SetFont('Arial','B', 10);
+   $pdf->SetFont('Arial','B', 9);
    $pdf->Cell(23,$l,utf8_decode('Estado Civil:'),0,0,'L');
-   $pdf->SetFont('Arial','', 10);
+   $pdf->SetFont('Arial','', 9);
    $pdf->Cell(67,$l,utf8_decode($rep01EstadoCivil),0,0,'L');
-   $pdf->SetFont('Arial','B', 10);
+   $pdf->SetFont('Arial','B', 9);
    $pdf->Cell(27,$l,utf8_decode('Nacionalidade:'),0,0,'L');
-   $pdf->SetFont('Arial','', 10);
+   $pdf->SetFont('Arial','', 9);
    $pdf->Cell(16,$l,utf8_decode($rep01Nacionalidade),0,1,'L');
    
    $pdf->SetX($x);
-   $pdf->SetFont('Arial','B', 10);
+   $pdf->SetFont('Arial','B', 9);
    $pdf->Cell(8,$l,utf8_decode('RG:'),0,0,'L');
-   $pdf->SetFont('Arial','', 10);
+   $pdf->SetFont('Arial','', 9);
    $pdf->Cell(82,$l,utf8_decode($rep01RG),0,0,'L');
-   $pdf->SetFont('Arial','B', 10);
+   $pdf->SetFont('Arial','B', 9);
    $pdf->Cell(10,$l,utf8_decode('CPF:'),0,0,'L');
-   $pdf->SetFont('Arial','', 10);
+   $pdf->SetFont('Arial','', 9);
    $pdf->Cell(48,$l,utf8_decode($rep01CPF),0,1,'L');
    
-   //$pdf->Ln();
-
-	// Representante02
+   	// Representante02
    
    $pdf->SetX($x);
-   $pdf->SetFont('Arial','B', 10);
+   $pdf->SetFont('Arial','B', 9);
    $pdf->Cell(28,7,'Representante:',0,0,'L');
-   $pdf->SetFont('Arial','', 10);
+   $pdf->SetFont('Arial','', 9);
    $pdf->MultiCell(155,7,utf8_decode($rep02Nome));
    
    $pdf->SetX($x);
-   $pdf->SetFont('Arial','B', 10);
+   $pdf->SetFont('Arial','B', 9);
    $pdf->Cell(23,$l,utf8_decode('Estado Civil:'),0,0,'L');
-   $pdf->SetFont('Arial','', 10);
+   $pdf->SetFont('Arial','', 9);
    $pdf->Cell(67,$l,utf8_decode($rep02EstadoCivil),0,0,'L');
-   $pdf->SetFont('Arial','B', 10);
+   $pdf->SetFont('Arial','B', 9);
    $pdf->Cell(27,$l,utf8_decode('Nacionalidade:'),0,0,'L');
-   $pdf->SetFont('Arial','', 10);
+   $pdf->SetFont('Arial','', 9);
    $pdf->Cell(16,$l,utf8_decode($rep02Nacionalidade),0,1,'L');
    
    $pdf->SetX($x);
-   $pdf->SetFont('Arial','B', 10);
+   $pdf->SetFont('Arial','B', 9);
    $pdf->Cell(8,$l,utf8_decode('RG:'),0,0,'L');
-   $pdf->SetFont('Arial','', 10);
+   $pdf->SetFont('Arial','', 9);
    $pdf->Cell(82,$l,utf8_decode($rep02RG),0,0,'L');
-   $pdf->SetFont('Arial','B', 10);
+   $pdf->SetFont('Arial','B', 9);
    $pdf->Cell(10,$l,utf8_decode('CPF:'),0,0,'L');
-   $pdf->SetFont('Arial','', 10);
+   $pdf->SetFont('Arial','', 9);
    $pdf->Cell(48,$l,utf8_decode($rep02CPF),0,1,'L');
    
    
    $pdf->SetX($x);
    $pdf->Cell(180,5,'','B',1,'C');
    
-   $pdf->Ln();
+   //$pdf->Ln();
 
+$l=3; //DEFINE A ALTURA DA LINHA
 
 $pdf->SetX($x);
-   $pdf->SetFont('Arial','', 10);
+   $pdf->SetFont('Arial','', 9);
    $pdf->Cell(10,5,'(D)',0,0,'L');
-   $pdf->SetFont('Arial','B', 12);
-   $pdf->Cell(170,5,'PENALIDADES',0,1,'C');
+   $pdf->SetFont('Arial','B', 10);
+   $pdf->Cell(170,5,utf8_decode('OBSERVAÇÕES E DECLARAÇÕES'),0,1,'C');
    
+   $pdf->SetX($x);
+   $pdf->SetFont('Arial','', 8);
+   $pdf->MultiCell(180,$l,utf8_decode("Ciente da obrigatoriedade de fazer menção dos créditos PREFEITURA DA CIDADE DE SÃO PAULO, SECRETARIA MUNICIPAL DE CULTURA, em toda divulgação, escrita ou falada, realizada sobre o espetáculo programado, sob pena de cancelamento sumário do mesmo se não cumpridas estas determinações. 
+No caso de reversão de bilheteria, fica sujeito ao atendimento no disposto nas Leis municipais no 10.973/91, regulamentada pelo Decreto Municipal n° 30.730/91; 11.113/91; 11.357/93 e 12.975/2000 e portaria nº 66/SMC/2007; Leis Estaduais nº 7.844/92, regulamentada pelo Decreto Estadual nº 35.606/92; 10.858/2001, alterada pela Lei Estadual 14.729/2012 e Medida Provisória Federal 12.933/2013 e Lei Federal nº 10.741/2003 (Estatuto do Idoso).
+Nos casos de lançamento de CD ou outro produto artístico-cultural, assumo inteira responsabilidade fiscal e tributária quanto a sua comercialização, isentando a Municipalidade de quaisquer ônus ou encargos , nos termos da O.I. n o 01/2002 – SMC-G.
+No caso de espetáculo musical, declaro assumir quaisquer ônus decorrentes da fiscalização e autuação da Ordem dos Músicos do Brasil - OMB."));
+
+   
+   $pdf->SetX($x);
+   $pdf->SetFont('Arial','', 8);
+   $pdf->MultiCell(180,$l,utf8_decode("Declaramos  que não temos débitos perante as Fazendas Públicas, Federal, Estadual e, em especial perante a Prefeitura do Município de São Paulo.
+Declaramos que assumimos inteira responsabilidade, conforme o caso:
+-	pelo recolhimento de direitos autorais perante à SBAT;
+-	pela adoção de providências junto à OMB; 
+-	pela adoção das providências administrativas para liberação da autorização do ECAD, sendo que eventuais pagamentos serão efetuados pela SMC.
+Declaramos que estamos cientes da penalidade de multa de 10% (dez por cento) para casos de infração de cláusula contratual e/ou inexecução parcial do ajuste, e de 30%  (trinta por cento)  para casos de inexecução total do ajuste. O valor da multa será calculado sobre o valor do contrato ou sobre o valor integral da venda de todos os ingressos disponíveis.
+Declaramos que estamos cientes de que no caso de haver atraso de até 30 minutos será aplicada multa de 5% sobre o valor do contrato ou sobre o valor integral da venda de todos os ingressos disponíveis, por dia de apresentação. Ultrapassado esse tempo, e independentemente da aplicação da penalidade, fica a critério da Diretoria  autorizar a realização do evento, visando evitar prejuízos à grade de programação. Não sendo autorizada a realização do evento, será considerada inexecução parcial do ajuste, limitado a dois dias de ocorrência.  Havendo o terceiro atraso na temporada, será considerada inexecução total do contrato e deverá ser rescindido o ajuste, com aplicação da multa por inexecução total de 30% sobre o valor do contrato ou sobre o valor integral da venda de todos os ingressos disponíveis, acumulada com a multa de 20% do valor do contrato por rescisão contratual por culpa do contratado.
+Declaramos que estamos  cientes de que haverá multa de 10% sobre o valor do contrato ou sobre o valor integral da venda de todos os ingressos disponíveis, em função da falta de regularidade fiscal da contratada, bem como, pela verificação de que a contratada possui pendências junto ao Cadastro Informativo Municipal-CADIN Municipal.
+As penalidades serão aplicadas sem prejuízo das demais sanções previstas na legislação que rege a matéria.
+Declaramos que estamos cientes de que do valor do serviço serão descontados os impostos cabíveis.
+Declaramos que estamos  cientes de que é vedada a colocação de anúncios (lambe-lambe e similares) com base na legislação municipal que disciplina a matéria.
+Declaramos que no caso de apresentação de espetáculo (s) de dança, estamos  cientes de que é de nossa responsabilidade providenciar operador (es) de som e luz.
+Declaramos, ainda, neste ato, que autorizamos, a título gratuito, por prazo indeterminado, a Municipalidade de São Paulo, o uso de  imagem do artista/grupo/cia.  do espetáculo em pauta, nas suas publicações em papel e qualquer mídia digital ou internet existente ou que venha a existir, ou qualquer outro produto cultural, como também para os fins de arquivo e material de pesquisa e consulta.
+Todas as informações precedentes são formadas sob as penas da Lei.
+"));
+
+
    $pdf->Ln();
-
-$pdf->SetX($x);
-$pdf->PrintChapter('txt/proposta_com001-15_pj.txt');
-
-    
-   
-   	$pdf->SetX($x);
-   	$pdf->MultiCell( 180, 5,
-      utf8_decode(
-      "DECLARO ESTAR CIENTE DA PENALIDADE PREVISTA NO CAMPO (D).  \n".
-      "TODAS AS INFORMAÇÕES PRECEDENTES SÃO FIRMADAS SOB AS PENAS DA LEI."),'T'
-   );
-
    $pdf->Ln();
 
 
@@ -487,7 +495,7 @@ $pdf->PrintChapter('txt/proposta_com001-15_pj.txt');
    $pdf->Ln();
    $pdf->Ln();
    $pdf->Ln();
-
+   
    
 //RODAPÉ PERSONALIZADO
    $pdf->SetXY($x,262);

@@ -75,13 +75,20 @@ if(isset($_POST['aprova'])){
 	$status = 1;
 	}
 	
-	$sql_aprova = "UPDATE igsis_pedido_contratacao SET aprovacaoFinanca = '$status' WHERE idPedidoContratacao = '$idPedido'";
+	if($status == 1){	
+		$sql_aprova = "UPDATE igsis_pedido_contratacao SET aprovacaoFinanca = '$status', estado = '2' WHERE idPedidoContratacao = '$idPedido'";
+	}else{
+		$sql_aprova = "UPDATE igsis_pedido_contratacao SET aprovacaoFinanca = '$status', estado = '1' WHERE idPedidoContratacao = '$idPedido'";
+		
+	}
 	$query_aprova = mysqli_query($con,$sql_aprova);
 	if($query_aprova){
+		gravarLog($sql_aprova);
 		if($status == 0){
 			$mensagem = "Pedido $idPedido NÃO APROVADO";	
 		}else{
 			$mensagem = "Pedido $idPedido APROVADO";
+			
 		}	
 	}
 }

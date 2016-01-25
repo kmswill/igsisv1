@@ -21,7 +21,7 @@ require "../funcoes/funcoesSiscontrat.php"; //chamar funcoes do administrador
 							<li>
 								<a href="?secao=inicio">Visão Geral</a>
 							</li>
-   							<li><a href="?perfil=admin&p=visaogeral"> Reabrir eventos enviados</a></li>
+   							<li><a href="?perfil=admin&p=reabertura"> Reabrir eventos enviados</a></li>
    							<li><a href="?perfil=admin&p=scripts"> Scripts</a></li>
 							<li><a href="?secao=perfil">Carregar módulo</a></li>
 							<li><a href="?secao=ajuda">Ajuda</a></li>
@@ -91,21 +91,22 @@ case "visaogeral":
 							//$horaNovaFormatada = date("H:i:s",$horaNova);
 							// Mostro na tela
 							$con = bancoMysqli();
-							$sql_user = "SELECT * FROM igsis_time";
+							$sql_user = "SELECT DISTINCT idUsuario, ip, time FROM igsis_time";
 							$query_user = mysqli_query($con,$sql_user);
-							while($x = mysqli_fetch_array($query_user)){ 
-							$usuario = recuperaDados("ig_usuario",$x['idUsuario'],"idUsuario");
-							$hora = strtotime($x['time']);
-							$novaHora = strtotime('+30 minute',$hora);
-							$agora = strtotime(date('H:m:i'));
-							if($novaHora > $agora){				
-							?>                            
-							<p><?php echo $usuario['nomeCompleto'] ?> pelo IP: <?php echo $x['ip']; ?> às <?php echo $x['time']; ?> </p>
-    
-						    <?php
-							}
-							}
-							
+							while($x = mysqli_fetch_array($query_user)){
+								 
+								$usuario = recuperaDados("ig_usuario",$x['idUsuario'],"idUsuario");
+								$hora = strtotime($x['time']);
+								$novaHora = strtotime('+30 minute',$hora);
+								$agora = strtotime(date('H:m:i'));
+								if($novaHora > $agora){				
+								?>                            
+									<p><?php echo $usuario['nomeCompleto'] ?> pelo IP: <?php echo $x['ip']; ?> às <?php echo $x['time']; ?> </p>
+		
+								<?php
+									}
+								}
+								
 							?>
                             </div>
                             <br />
@@ -201,7 +202,7 @@ if(isset($_POST['reabertura'])){
 				Equipe IGSIS<br />
 				";
 				$instituicao = 4;
-				$subject = "O evento [ ".$evento['nomeEvento']." ] foi reaberto";
+				$subject = "O evento '".$evento['nomeEvento']."' foi reaberto";
 				$email = "sistema.igsis@gmail.com";
 				$usuario = "IGSIS";
 				

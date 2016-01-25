@@ -63,7 +63,7 @@ function PrintChapter($file)
 
 //CONSULTA  (copia inteira em todos os docs)
 $id_ped=$_GET['id'];
-
+dataProposta($id_ped);
 $ano=date('Y');
 
 $pedido = siscontrat($id_ped);

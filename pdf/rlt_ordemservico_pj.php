@@ -119,6 +119,7 @@ $data_entrega_empenho = exibirDataBr($pedido['EntregaNE']);
 $data_emissao_empenho = exibirDataBr($pedido['EmissaoNE']);
 
 $grupo = grupos($id_ped);
+$integrantes = $grupo["texto"];
 
 //PessoaJuridica
 
@@ -199,11 +200,11 @@ $pdf->AddPage();
 
    
 $x=20;
-$l=7; //DEFINE A ALTURA DA LINHA   
+$l=6; //DEFINE A ALTURA DA LINHA   
 
 	//Executante
    
-   $pdf->SetXY( $x , 37 );// SetXY - DEFINE O X (largura) E O Y (altura) NA PÁGINA
+   $pdf->SetXY( $x , 40 );// SetXY - DEFINE O X (largura) E O Y (altura) NA PÁGINA
 
    $pdf->SetX($x);
    $pdf->SetFont('Arial','B', 12);
@@ -334,30 +335,10 @@ $l=7; //DEFINE A ALTURA DA LINHA
    $pdf->SetX($x);
    $pdf->SetFont('Arial','B', 10);
    $pdf->Cell(180,$l,utf8_decode('SERVIÇO'),0,1,'C');
-   
-   
+     
    $pdf->SetX($x);
    $pdf->SetFont('Arial','', 10);
-   $pdf->Cell(180,$l,utf8_decode('Especificações: Contratação dos serviços profissionais de natureza artística de:'),0,1,'L');
-    
-   
-     // Column headings
-   $header = array('NOME', 'RG', 'CPF');
-   $data = array($grupo);
-   
-   $pdf->SetX($x);
-   $pdf->SetFont('Arial','',8);
-   $pdf->Cabecalho($header,$data);
-        
-	for($i = 0;$i < $grupo['numero']; $i++){
-	$data = array(utf8_decode(sobrenome($grupo[$i]['nomeCompleto'])), $grupo[$i]['rg'],$grupo[$i]['cpf']);	
-    $pdf->SetX($x);
-	$pdf->Tabela($header,$data);
-	}
-	   
-   $pdf->SetX($x);
-   $pdf->SetFont('Arial','', 10);
-   $pdf->MultiCell(180,$l,utf8_decode("Através da empresa "."$pjRazaoSocial".", CNPJ nº "."$pjCNPJ". ", representada por "."$rep01Nome". ", RG nº "."$rep01RG".", para apresentação de "."$Objeto".", no(s) local(is)"."$Local"." no perído de "."$Periodo"." conforme cronograma."));
+   $pdf->MultiCell(180,$l,utf8_decode("Especificações: Contratação dos serviços profissionais de natureza artística de: ".$integrantes." através da empresa "."$pjRazaoSocial".", CNPJ nº "."$pjCNPJ". ", representada por "."$rep01Nome". ", RG nº "."$rep01RG".", para apresentação de "."$Objeto".", no(s) local(is)"."$Local"." no perído de "."$Periodo"." conforme cronograma."));		
    
    $pdf->SetX($x);
    $pdf->SetFont('Arial','', 10);
@@ -368,7 +349,7 @@ $l=7; //DEFINE A ALTURA DA LINHA
    $pdf->MultiCell(180,$l,utf8_decode("Fica designado como fiscal do contrato o(a) Sr(a) ".$Fiscal.", RF nº ".$rfFiscal." e como suplente, Sr(a) ".$Suplente.", RF nº ".$rfSuplente.", da Secretaria Municipal de Cultura."));
    
    $pdf->Ln();
-   
+    
    $pdf->SetX($x);
    $pdf->SetFont('Arial','B', 10);
    $pdf->Cell(180,$l,utf8_decode('RECURSOS FINANCEIROS'),0,1,'C');
@@ -394,7 +375,9 @@ $l=7; //DEFINE A ALTURA DA LINHA
    $pdf->SetFont('Arial','', 11);
    $pdf->Cell(60,$l,utf8_decode($data_emissao_empenho),0,1,'L');
    
-   $pdf->Ln();
+//	QUEBRA DE PÁGINA
+$pdf->AddPage('','');
+$pdf->SetXY( $x , 40 );// SetXY - DEFINE O X (largura) E O Y (altura) NA PÁGINA
    
    $pdf->SetX($x);
    $pdf->SetFont('Arial','B', 10);

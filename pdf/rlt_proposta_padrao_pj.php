@@ -8,6 +8,8 @@
    require_once("../funcoes/funcoesConecta.php");
    require_once("../funcoes/funcoesGerais.php");
    require_once("../funcoes/funcoesSiscontrat.php");
+   
+   
 
    //CONEXÃO COM BANCO DE DADOS 
    $conexao = bancoMysqli(); 
@@ -65,7 +67,7 @@ function PrintChapter($file)
 
 //CONSULTA  (copia inteira em todos os docs)
 $id_ped=$_GET['id'];
-
+dataProposta($id_ped);
 $ano=date('Y');
 
 $pedido = siscontrat($id_ped);

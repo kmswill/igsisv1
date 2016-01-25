@@ -39,6 +39,7 @@ if(isset($_POST['atualizar'])){ // atualiza o pedido
 	$observacao = addslashes($_POST['Observacao']);
 	$parcelas = $_POST['parcelas'];
 	$processo = $_POST['NumeroProcesso'];
+	$dataAgora = date('Y-m-d H:i:s');
 
 if($_POST['atualizar'] > '1'){
 
@@ -47,10 +48,12 @@ if($_POST['atualizar'] > '1'){
 		justificativa = '$justificativa',
 		observacao = '$observacao',
 		parecerArtistico = '$parecer',
+				DataContrato = '$dataAgora',
 		NumeroProcesso = '$processo'
 		WHERE idPedidoContratacao = '$ped'";
 	$query_atualiza_pedido = mysqli_query($con,$sql_atualiza_pedido);
 	if($query_atualiza_pedido){
+		atualizaEstado($ped);
 		$recupera = recuperaDados("igsis_pedido_contratacao",$ped,"idPedidoContratacao");
 		$idEvento = $recupera['idEvento'];
 		$sql_atualiza_evento = "UPDATE ig_evento SET
@@ -90,6 +93,7 @@ if($_POST['atualizar'] > '1'){
 		justificativa = '$justificativa',
 		observacao = '$observacao',
 		parecerArtistico = '$parecer',
+				DataContrato = '$dataAgora',
 		NumeroProcesso = '$processo'
 		WHERE idPedidoContratacao = '$ped'";
 	$query_atualiza_pedido = mysqli_query($con,$sql_atualiza_pedido);
@@ -102,6 +106,7 @@ if($_POST['atualizar'] > '1'){
 		WHERE idEvento = '$idEvento'";
 		$query_atualiza_evento = mysqli_query($con,$sql_atualiza_evento);
 		if($query_atualiza_evento){
+			atualizaEstado($ped);
 			$mensagem = "Pedido atualizado com sucesso. <br/> <br><br>
 	<div class='row'>
 	<div class='col-md-offset-1 col-md-10'>	

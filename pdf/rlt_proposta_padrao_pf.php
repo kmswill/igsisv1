@@ -6,6 +6,8 @@
    require_once("../funcoes/funcoesGerais.php");
    require_once("../funcoes/funcoesSiscontrat.php");
 
+
+
    //CONEXÃO COM BANCO DE DADOS 
    $conexao = bancoMysqli(); 
    
@@ -57,6 +59,8 @@ function PrintChapter($file)
 
 //CONSULTA 
 $id_ped=$_GET['id'];
+
+dataProposta($id_ped);
 
 $ano=date('Y');
 

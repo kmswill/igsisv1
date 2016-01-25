@@ -1127,7 +1127,7 @@ default:
 	            <div class="col-md-offset-2 col-md-8">
                 <?php
 				if($_SESSION['cinema'] == 1){
-					echo "<h4>Você selecionou o evento como 'Mostra de Cinema'. Por favor, acesso o Módulo Cinema</h4>";
+					echo "<h4>Você selecionou o evento como 'Mostra de Cinema'. Por favor, acesse o Módulo Cinema no Menu.</h4>";
                 }else{ 
                 	echo "<h4>Não há campos específicos para o tipo de evento selecionado</h4>";
                 } ?>
@@ -1826,7 +1826,7 @@ function habilitar(){
       			  <div class="row">
 				  <div class="col-md-offset-2 col-md-8">
 					<div class="section-heading">
-					 <h2>Eventos gravados mas não enviados</h2>
+					 <h2>Ocorrências</h2>
 					<h4>Selecione o evento para carregar.</h4>
                     <h5><?php if(isset($mensagem)){echo $mensagem;} ?></h5>
                  </div>
@@ -2202,13 +2202,17 @@ if(isset($_POST['editar'])){
 $sub = recuperaDados("ig_sub_evento",$ultimo,"idSubEvento");
 $campo = recuperaEvento($_SESSION['idEvento']); //carrega os dados do evento em questão
 ?>
-
-    <div class="container">
+       		 <div class="form-group">
+            	<div class="col-md-offset-2 col-md-8">
+            		<br /><br />
+            	</div> 
+            </div>
+         <div class="container">
         <div class="row">
             <div class="col-md-offset-2 col-md-8">
                 <div class="text-hide">
                     <h3>Inserir sub-evento</h3>
-                    <h1><?php echo $campo["nomeEvento"] ?> - <?php echo $_SESSION['idEvento'];  ?></h1>
+                    <h1><?php echo $campo["nomeEvento"] ?></h1>
                     <h4><?php if(isset($mensagem)){echo $mensagem;} ?></h4>
                 </div>
             </div>
@@ -2262,7 +2266,8 @@ $campo = recuperaEvento($_SESSION['idEvento']); //carrega os dados do evento em 
             </div>
             </div>
     </div>
-</section>  
+</section>
+<br /><br />  
 <?php
 break;
 case "listar":

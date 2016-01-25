@@ -1,61 +1,12 @@
 ﻿<?php
 
-function eventosDiarios($dia){
-	$semana = diaSemanaBase($dia);
-	$con = bancoMysqli();
-	$sql = "SELECT DISTINCT idEvento FROM ig_ocorrencia WHERE 
-		(".
-		"(dataInicio = '$dia' AND dataFinal <> '0000-00-00')". //data única 
-		" OR (dataInicio = '$dia' AND dataFinal = '$dia') ". //data única 
-		" OR (dataInicio <= '$dia' AND dataFinal >= '$dia' AND dataFinal <> '0000-00-00' )".
-		") AND publicado = '1' ".
-		
-		"  ORDER BY dataInicio ASC";
-	$query = mysqli_query($con,$sql);
-	$i = 0;
-	while($evento = mysqli_fetch_array($query)){
-		$id = $evento['idEvento'];
-		$y = recuperaDados("ig_evento",$evento['idEvento'],"idEvento");
-		$sql_o = "SELECT * FROM ig_ocorrencia WHERE idEvento = '$id' AND publicado = '1'";
-		$query_o = mysqli_query($con,$sql_o);
-		while($o = mysqli_fetch_array($query_o)){
-			if($o['dataFinal'] == '0000-00-00' AND $o['dataInicio'] == '$dia'){
-				$print =  true;	
-			}else{
-				if(($o['segunda'] == 1 AND $semana == 'segunda') OR
-				($o['terca'] == 1 AND $semana == 'terca') OR
-				($o['quarta'] == 1 AND $semana == 'quarta') OR
-				($o['quinta'] == 1 AND $semana == 'quinta') OR
-				($o['sexta'] == 1 AND $semana == 'sexta') OR
-				($o['sabado'] == 1 AND $semana == 'sabado') OR
-				($o['domingo'] == 1 AND $semana == 'domingo')){
-					$print = true;
-				}else{
-					$print = false; 
-				}
-				
-			} 
-			if($print == true){
-				$x[$i]['evento'] = $y['nomeEvento'];
-				$x[$i]['instituicao'] = $y['idInstituicao'];
-				$x[$i]['hora'] = $o['horaInicio'];
-				$i++;
-			}
-		}
-	}
-	return $x;
-}
-
-
-
-
 	if(isset($_POST['inicio']) AND $_POST['inicio'] != ""){
 		if($_POST['final'] == ""){
 			$mensagem = "É preciso informar a data final do filtro";	
 		}else{
 			$inicio = exibirDataMysql($_POST['inicio']);
 			$final = exibirDataMysql($_POST['final']);
-			if($_POST['inicio'] > $_POST['final']){
+			if(strtotime($_POST['inicio']) > strtotime($_POST['final'])){
 				$mensagem = "A data final do filtro deve ser maior que a data inicio";		
 			}else{
 				$data_inicio = exibirDataMysql($_POST['inicio']);

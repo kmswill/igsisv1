@@ -111,8 +111,19 @@ $num = mysqli_num_rows($query_grupos);
 
 
             <div class="col-md-offset-2 col-md-8">
-                <a href="?perfil=contratos&p=frm_grupos&action=inserir" class="btn btn-theme btn-md btn-block">Inserir outro integrante</a>
-	        <a href="?perfil=contratos&p=frm_edita_pedidocontratacaopj&id_ped=<?php echo $_SESSION['idPedido'] ?>" class="btn btn-theme btn-md btn-block">Voltar ao pedido</a>
+               <a href="?perfil=contratos&p=frm_grupos&action=inserir" class="btn btn-theme btn-md btn-block">Inserir outro integrante</a>
+            	        <?php 
+			$pedido = recuperaDados("igsis_pedido_contratacao",$_SESSION['idPedido'],"idPedidoContratacao");
+			if($pedido['tipoPessoa'] == 2){
+			?>        
+            <a href="?perfil=contratos&p=frm_edita_propostapj&id_ped=<?php echo $_SESSION['idPedido'] ?>" class="btn btn-theme btn-md btn-block">Voltar ao pedido</a>
+            <?php }else{ ?>
+            <a href="?perfil=contratos&p=frm_edita_propostapf&id_ped=<?php echo $_SESSION['idPedido'] ?>" class="btn btn-theme btn-md btn-block">Voltar ao pedido</a>
+            
+            <?php } ?>
+             
+                
+	       
 	         </div>
           </div>
 				   

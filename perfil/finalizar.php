@@ -1,10 +1,4 @@
 ﻿<?php
-
-   @ini_set('display_errors', '1');
-	error_reporting(E_ALL); 	
-
-$mensagem_email = 0;
-
 if(isset($_POST['finalizar'])){
 
 	$con = bancoMysqli();
@@ -14,11 +8,11 @@ if(isset($_POST['finalizar'])){
 	$sql_atualiza_evento = "UPDATE ig_evento SET dataEnvio = '$datetime' WHERE idEvento = '$idEvento'";
 	$query_atualiza_evento = mysqli_query($con,$sql_atualiza_evento);
 	if($query_atualiza_evento){
-		gravarLog($sql_atualiza_evento);	
+		gravarLog($sql_atualiza_evento);
+		atualizarAgenda($idEvento);	
 	}
 	$sql_atualiza_pedido = "UPDATE `igsis`.`igsis_pedido_contratacao` SET 
-	`estado` = 'Pedido',
-	 `instituicao` = '$instituicao'
+	`estado` = '1'
 	WHERE `igsis_pedido_contratacao`.`idEvento` = '$idEvento' AND `igsis_pedido_contratacao`.`publicado` = '1' ";
 	$query_atualiza_pedido = mysqli_query($con,$sql_atualiza_pedido);
 		if($query_atualiza_evento){

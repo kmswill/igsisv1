@@ -294,33 +294,9 @@ $l=7; //DEFINE A ALTURA DA LINHA
    
    $pdf->SetX($x);
    $pdf->SetFont('Arial','B', 10);
-   $pdf->Cell(27,$l,utf8_decode('Carga Horária:'),0,0,'L');
-   $pdf->SetFont('Arial','', 10);
-   $pdf->MultiCell(180,$l,$CargaHoraria);
-   
-   $pdf->SetX($x);
-   $pdf->SetFont('Arial','B', 10);
    $pdf->Cell(15,$l,'Local:',0,0,'L');
    $pdf->SetFont('Arial','', 10);
    $pdf->MultiCell(165,$l,utf8_decode($Local));
-   
-   $pdf->SetX($x);
-   $pdf->SetFont('Arial','B', 10);
-   $pdf->Cell(15,$l,'Valor:',0,0,'L');
-   $pdf->SetFont('Arial','', 10);
-   $pdf->MultiCell(168,$l,utf8_decode("R$ $ValorGlobal"."  "."($ValorPorExtenso )"));
-   
-   $pdf->SetX($x);
-   $pdf->SetFont('Arial','B', 10);
-   $pdf->Cell(40,$l,'Forma de Pagamento:',0,0,'L');
-   $pdf->SetFont('Arial','', 10);
-   $pdf->MultiCell(140,$l,utf8_decode($FormaPagamento));
-   
-   $pdf->SetX($x);
-   $pdf->SetFont('Arial','B', 10);
-   $pdf->Cell(25,$l,'Justificativa:',0,0,'L');
-   $pdf->SetFont('Arial','', 10);
-   $pdf->MultiCell(155,$l,utf8_decode($Justificativa));
 
 
 //RODAPÉ PERSONALIZADO
@@ -459,12 +435,12 @@ $pdf->SetX($x);
    $pdf->SetFont('Arial','', 10);
    $pdf->Cell(10,5,'(D)',0,0,'L');
    $pdf->SetFont('Arial','B', 12);
-   $pdf->Cell(170,5,'PENALIDADES',0,1,'C');
+   $pdf->Cell(170,5,utf8_decode('DECLARAÇÕES'),0,1,'C');
    
    $pdf->Ln();
 
 $pdf->SetX($x);
-$pdf->PrintChapter('txt/proposta_com001-15_pj.txt');
+$pdf->PrintChapter('txt/proposta_doacao_pj.txt');
 
     
    
@@ -487,7 +463,7 @@ $pdf->PrintChapter('txt/proposta_com001-15_pj.txt');
    $pdf->Ln();
    $pdf->Ln();
    $pdf->Ln();
-
+   
    
 //RODAPÉ PERSONALIZADO
    $pdf->SetXY($x,262);

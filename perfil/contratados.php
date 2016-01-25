@@ -98,7 +98,7 @@ if(isset($_POST['insereFisica'])){ //insere pessoa física
 		$sql_insere_pf = "INSERT INTO igsis_pedido_contratacao (idPessoa, tipoPessoa, publicado,idEvento,instituicao) VALUES ('$idPessoa','1','1','$idEvento','$idInstituicao')";
 		$query_insere_pf = mysqli_query($con,$sql_insere_pf);
 		if($query_insere_pf){
-			gravarLog(query_insere_pf);
+			gravarLog($query_insere_pf);
 			$mensagem = "Pedido inserido com sucesso!";
 		}else{
 			$mensagem = "Erro ao criar pedido. Tente novamente.";
@@ -1203,7 +1203,7 @@ $pedido = recuperaDados("igsis_pedido_contratacao",$_SESSION['idPedido'],"idPedi
 				  </div>
 				  		<?php if($pedido['parcelas'] > 1){ ?>
                   <div class="form-group">
-					<div class="col-md-offset-2 col-md-8"><strong>Forma de Pagamento:</strong><br/>
+					<div class="col-md-offset-2 col-md-8"><strong>Forma de Pagamento / Valor da Prestação de Serviço:</strong><br/>
                       <textarea  disabled name="FormaPagamento" class="form-control" cols="40" rows="5"><?php echo txtParcelas($_SESSION['idPedido'],$pedido['parcelas']); ?> 
                       
                       </textarea>
@@ -1212,7 +1212,7 @@ $pedido = recuperaDados("igsis_pedido_contratacao",$_SESSION['idPedido'],"idPedi
 				  </div>
 				<?php }else{ ?>				
                   <div class="form-group">
-					<div class="col-md-offset-2 col-md-8"><strong>Forma de Pagamento:</strong><br/>
+					<div class="col-md-offset-2 col-md-8"><strong>Forma de Pagamento / Valor da Prestação de Serviço:</strong><br/>
                       <textarea name="FormaPagamento" class="form-control" cols="40" rows="5"><?php echo $pedido['formaPagamento'] ?></textarea>
 					</div>
 				  </div>
