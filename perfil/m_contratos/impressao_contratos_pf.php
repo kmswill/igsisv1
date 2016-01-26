@@ -28,6 +28,7 @@ $link16 = $http."rlt_proposta_reversaolonga_pf.php";
 $link17 = $http."rlt_proposta_reversaocurta_pf.php";
 $link18 = $http."rlt_proposta_doacao_pf.php";
 $link19 = $http."rlt_ordemservico_pf.php";
+$link20 = $http."rlt_declaracao_exclusividade_pf.php";
  
  
 	 $last_id = mysqli_insert_id($conexao);
@@ -82,7 +83,7 @@ $link19 = $http."rlt_ordemservico_pf.php";
 		</tr>
 		<tr>
 			<td><a href='$link15?id=$id_ped' target='_blank'><strong>Direitos Conexos</strong></a></td>
-			<td></td>
+			<td><a href='$link20?id=$id_ped' target='_blank'><strong>Exclusividade</strong></a></td>
 		</tr>
 		
 		<tr><td class='list_description'><br/></td></tr>
