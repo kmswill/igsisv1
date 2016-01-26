@@ -1,7 +1,4 @@
 <?php 
-	session_start();
-	   @ini_set('display_errors', '1');
-	error_reporting(E_ALL); 	
    
    // INSTALAÇÃO DA CLASSE NA PASTA FPDF.
 	require_once("../include/lib/fpdf/fpdf.php");
@@ -9,16 +6,25 @@
    require_once("../funcoes/funcoesGerais.php");
    require_once("../funcoes/funcoesSiscontrat.php");
 
+
+
    //CONEXÃO COM BANCO DE DADOS 
    $conexao = bancoMysqli(); 
    
+// logo da instituição 
+session_start();
 
+
+//var_dump($_SESSION);
+  
 class PDF extends FPDF
 {
 // Page header
 function Header()
 {
-	$inst = recuperaDados("ig_instituicao",$_SESSION['idInstituicao'],"idInstituicao");	$logo = "img/".$inst['logo']; // Logo
+	$inst = recuperaDados("ig_instituicao",$_SESSION['idInstituicao'],"idInstituicao");
+	$logo = "../visual/img/".$inst['logo']; 
+    // Logo
     $this->Image($logo,20,20,50);
     // Move to the right
     $this->Cell(80);
@@ -27,19 +33,6 @@ function Header()
     $this->Ln(20);
 }
 
-
-// Page footer
-/*
-function Footer()
-{
-    // Position at 1.5 cm from bottom
-    $this->SetY(-15);
-    // Arial italic 8
-    $this->SetFont('Arial','I',8);
-    // Page number
-    $this->Cell(0,10,'Page '.$this->PageNo().'/{nb}',0,0,'C');
-}
-*/
 
 //INSERIR ARQUIVOS
 
@@ -63,14 +56,16 @@ function PrintChapter($file)
 }
 
 
-//CONSULTA  (copia inteira em todos os docs)
+
+//CONSULTA 
+$id_ped=$_GET['id'];
+
+dataProposta($id_ped);
 
 $ano=date('Y');
 
 $pedido = siscontrat($id_ped);
 $pessoa = siscontratDocs($pedido['IdProponente'],1);
-
-dataProposta($id_ped);
 
 $id = $pedido['idEvento'];
 $Objeto = $pedido["Objeto"];

@@ -52,7 +52,7 @@ $link20 = $http."rlt_declaracao_exclusividade_pf.php";
 		
 		<tr><td class='list_description'><br/></td></tr>
 		
-		<tr class='list_menu'><td colspan='2'><strong>CONTRATAÇÃO</strong></td></tr>
+		<tr class='list_menu'><td colspan='2'><strong>PROPOSTA</strong></td></tr>
 		
 		<tr>
 			<td><a href='$link1?id=$id_ped' target='_blank'><strong>Padrão</strong></a></td>
