@@ -6,7 +6,7 @@ $_SESSION['idPedido'] = $_GET['id_ped'];
 $id_ped = $_GET['id_ped'];
 $id = $id_ped;
 
-$server = "http://".$_SERVER['SERVER_NAME']."/igsis_OK/"; //mudar para pasta do igsis
+$server = "http://".$_SERVER['SERVER_NAME']."/igsis/"; //mudar para pasta do igsis
 $http = $server."/pdf/";
 $link0 = $http."rlt_pedido_contratacao_pf.php";
 $link1 = $http."rlt_proposta_padrao_pf.php";
@@ -23,8 +23,12 @@ $link11 = $http."rlt_recibo_ne_pf.php";
 $link12 = $http."rlt_declaracao_naoservidor_pf.php";
 $link13 = $http."rlt_declaracao_iss_pf.php";
 $link14 = $http."rlt_parecer_pf.php";
-$link15 = $http."rlt_proposta_reversao_pf.php";
-
+$link15 = $http."rlt_direitos_conexos.php";
+$link16 = $http."rlt_proposta_reversaolonga_pf.php"; 
+$link17 = $http."rlt_proposta_reversaocurta_pf.php";
+$link18 = $http."rlt_proposta_doacao_pf.php";
+$link19 = $http."rlt_ordemservico_pf.php";
+ 
  
 	 $last_id = mysqli_insert_id($conexao);
 	 echo "
@@ -60,7 +64,12 @@ $link15 = $http."rlt_proposta_reversao_pf.php";
 		</tr>
 		
 		<tr>
-			<td><a href='$link15?id=$id_ped' target='_blank'><strong>Reversão</strong></a></td>
+			<td><a href='$link16?id=$id_ped' target='_blank'><strong>Reversão Longa Temporada</strong></a></td>
+			<td><a href='$link17?id=$id_ped' target='_blank'><strong>Reversão Curta Temporada</strong></a></td>
+		</tr>
+		<tr>
+			<td><a href='$link18?id=$id_ped' target='_blank'><strong>Doação de Serviços</strong></a></td>
+			<td></td>
 		</tr>
 		
 		<tr><td class='list_description'><br/></td></tr>
@@ -71,6 +80,10 @@ $link15 = $http."rlt_proposta_reversao_pf.php";
 			<td><a href='$link12?id=$id_ped' target='_blank'><strong>Não Servidor</strong></a></td>
 			<td><a href='$link13?id=$id_ped' target='_blank'><strong>ISS</strong></a></td>
 		</tr>
+		<tr>
+			<td><a href='$link15?id=$id_ped' target='_blank'><strong>Direitos Conexos</strong></a></td>
+			<td></td>
+		</tr>
 		
 		<tr><td class='list_description'><br/></td></tr>
 		
@@ -79,6 +92,10 @@ $link15 = $http."rlt_proposta_reversao_pf.php";
 		<tr>
 			<td><a href='$link5?id=$id_ped' target='_blank'><strong>FACC</strong></a></td>
 			<td><a href='$link14?id=$id_ped' target='_blank'><strong>Parecer da Comissão</strong></a></td>
+		</tr>
+		<tr>
+			<td><a href='$link19?id=$id_ped' target='_blank'><strong>Ordem de serviço</strong></a></td>
+			<td></td>
 		</tr>
 		
 		<tr><td class='list_description'><br/></td></tr>
