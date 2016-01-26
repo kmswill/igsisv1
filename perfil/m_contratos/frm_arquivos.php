@@ -154,9 +154,9 @@ while($arq = mysqli_fetch_array($query_arquivos)){ ?>
 <?php 
 if($_GET['tipoPessoa'] == 1){
 ?>
-<form method="POST" action="?perfil=contratos&p=frm_edita_pedidocontratacaopf&id_ped=<?php echo $_SESSION['idPedido']; ?>" >
+<form method="POST" action="?perfil=contratos&p=frm_edita_propostapf&id_ped=<?php echo $_SESSION['idPedido']; ?>" >
 <?php }else{ ?>
-<form method="POST" action="?perfil=contratos&p=frm_edita_pedidocontratacaopj&id_ped=<?php echo $_SESSION['idPedido']; ?>" >
+<form method="POST" action="?perfil=contratos&p=frm_edita_propostapj&id_ped=<?php echo $_SESSION['idPedido']; ?>" >
 
 <?php } ?>
     <input type="hidden" name="idPessoa" value="<?php echo $idPessoa; ?>"  />
