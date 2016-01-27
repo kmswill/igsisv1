@@ -284,7 +284,7 @@ $fisica = recuperaDados("sis_pessoa_fisica",$ultimo,"Id_PessoaFisica");
 					</div>
 					<div class=" col-md-6">
                     <?php if(isset($id_pedido)){ ?>
-                     <a href="?perfil=contratos&p=frm_edita_pedidocontratacaopf&id_ped=<?php echo $id_pedido ?>"><input type="submit" value="Voltar ao pedido" class="btn btn-theme btn-block"></a>
+                     <a href="?perfil=contratos&p=frm_edita_propostapf&id_ped=<?php echo $id_pedido ?>"><input type="submit" value="Voltar ao pedido" class="btn btn-theme btn-block"></a>
                    <?php } ?>
 
 					</div>

@@ -294,7 +294,7 @@ $res02 = siscontratDocs($pj['IdRepresentanteLegal2'],3);
                 </div>
                 <!-- Botão para verificar arquivos da pessoa -->
 				  <div class="form-group">
-               	<div class="col-md-offset-2 col-md-8">
+               	<div class="col-md-offset-2 col-md-6">
                 <form class="form-horizontal" role="form" action="?perfil=contratos&p=frm_arquivos&idPessoa=<?php echo $ultimo; ?>&tipoPessoa=2" method="post">
                     <input type="hidden" name="editaJuridica" value="<?php echo $pj['Id_PessoaJuridica'] ?>" />
                    <input type="hidden" name="Juridica" value="<?php echo $pj['Id_PessoaJuridica'] ?>" />
@@ -302,14 +302,14 @@ $res02 = siscontratDocs($pj['IdRepresentanteLegal2'],3);
                    <input type="hidden" name="idPedido" value="<?php echo $id_pedido ?>" />
                    <?php } ?>
 
-                    <input type="hidden" name="Sucesso" id="Sucesso" />
+                    <input type="hidden" name="Sucesso" id="Sucesso" /><br />
 					 <input type="submit" value="Anexos" class="btn btn-theme btn-block">
 				</form>
 					</div>
                     
-					<div class="col-md-offset-2 col-md-6">
+					<div class="col-md-6">
                     <?php if(isset($id_pedido)){ ?>
-                     <br/><a href="?perfil=contratos&p=frm_edita_pedidocontratacaopj&id_ped=<?php echo $id_pedido ?>"><input type="submit" value="Voltar ao pedido" class="btn btn-theme btn-block"></a>
+                     <br/><a href="?perfil=contratos&p=frm_edita_propostapj&id_ped=<?php echo $id_pedido ?>"><input type="submit" value="Voltar ao pedido" class="btn btn-theme btn-block"></a>
                    <?php } ?>
 
 					</div>
