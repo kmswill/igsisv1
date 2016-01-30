@@ -1,6 +1,7 @@
 <?php
 //geram o insert pro framework da igsis
 $pasta = "?perfil=contratos&p=";
+$usuario = recuperaDados("ig_usuario",$_SESSION['idUsuario'],"idUsuario");
  ?>
 
 
@@ -14,7 +15,7 @@ $pasta = "?perfil=contratos&p=";
 				<li><a href="<?php echo $pasta ?>frm_lista_pj">Pessoa Jurídica</a></li>
 			</ul>
         </li>
-        <!--
+		<li><a href="<?php echo $pasta ?>frm_chamados">Listar chamados</a></li>        <!--
 		<li><a href="#">Contratos Pessoa Física</a>
 			<ul class="dl-submenu">
 				<li><a href="<?php echo $pasta ?>frm_lista_pedidocontratacaopf">Pedido de Contratação</a></li>
@@ -32,7 +33,10 @@ $pasta = "?perfil=contratos&p=";
         -->
         
 		<li><a href="<?php echo $pasta ?>frm_busca">Contratos</a></li>
-  		<li>-------------------------</li>
+        <?php if($usuario['contratos'] == 2){ ?>
+					<li><a href="<?php echo $pasta ?>frm_reabertura">Reabertura de Eventos/Pedidos</a></li>
+        <?php } ?>
+  		<li style="color:white;">-------------------------</li>
         <li><a href="index.php?secao=perfil">Carregar módulos</a></li>
 		<li><a href="<?php echo $pasta ?>ajuda">Ajuda</a></li>
 		<li><a href="../index.php">Sair</a></li>

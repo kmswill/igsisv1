@@ -23,10 +23,20 @@ if(isset($_GET['action'])){
 				  </div>
 			  </div>  
 <?php
+$idEvento = $evento['idEvento'];
+$chamado = recuperaAlteracoesEvento($idEvento);	
 switch($action){
 case "evento":
+
  ?>
-			  <h5>Dados do evento | <a href="?perfil=contratos&p=evento&action=servicos&id_ped=<?php echo $_GET['id_ped']; ?>">Solicitação de serviços</a> | <a href="?perfil=contratos&p=evento&action=pedidos&id_ped=<?php echo $_GET['id_ped']; ?>">Pedidos de contratação</a></h5>
+			  <h5>Dados do evento | <a href="?perfil=contratos&p=evento&action=servicos&id_ped=<?php echo $_GET['id_ped']; ?>">Solicitação de serviços</a> | <a href="?perfil=contratos&p=evento&action=pedidos&id_ped=<?php echo $_GET['id_ped']; ?>">Pedidos de contratação</a>  | <?php 
+					if($chamado['numero'] == '0'){
+						echo "Chamados [0]";
+					}else{
+						echo "<a href='?perfil=chamado&p=evento&id=".$idEvento."' target='_blank'>Chamados [".$chamado['numero']."]</a>";	
+					}
+					
+					?></h5>
 			<div class="table-responsive list_info" >
             <h4></h4>
             <p align="left">
@@ -44,7 +54,14 @@ break;
 case "pedidos":
 $pedido = listaPedidoContratacao($_GET['id_ped']);
 ?>
-			  <h5> <a href="?perfil=contratos&p=evento&action=evento&id_ped=<?php echo $_GET['id_ped']; ?>">Dados do evento </a>|<a href="?perfil=contratos&p=evento&action=servicos&id_ped=<?php echo $_GET['id_ped']; ?>">Solicitação de serviços</a> | Pedidos de contratação</h5>
+			  <h5> <a href="?perfil=contratos&p=evento&action=evento&id_ped=<?php echo $_GET['id_ped']; ?>">Dados do evento </a>|<a href="?perfil=contratos&p=evento&action=servicos&id_ped=<?php echo $_GET['id_ped']; ?>">Solicitação de serviços</a> | Pedidos de contratação | <?php 
+					if($chamado['numero'] == '0'){
+						echo "Chamados [0]";
+					}else{
+						echo "<a href='?perfil=chamado&p=evento&id=".$idEvento."' target='_blank'>Chamados [".$chamado['numero']."]</a>";	
+					}
+					?>
+					</h5>
 			  <div class="table-responsive list_info" >
             <h4><?php echo $evento['nomeEvento'] ?></h4>
 
@@ -66,7 +83,13 @@ break;
 case "servicos":
 
 ?>    
-			  <h5> <a href="?perfil=contratos&p=evento&action=evento&id_ped=<?php echo $_GET['id_ped']; ?>">Dados do evento </a>| Solicitação de serviços | <a href="?perfil=contratos&p=evento&action=pedidos&id_ped=<?php echo $_GET['id_ped']; ?>">Pedidos de contratação</a></h5>
+			  <h5> <a href="?perfil=contratos&p=evento&action=evento&id_ped=<?php echo $_GET['id_ped']; ?>">Dados do evento </a>| Solicitação de serviços | <a href="?perfil=contratos&p=evento&action=pedidos&id_ped=<?php echo $_GET['id_ped']; ?>">Pedidos de contratação</a>| <?php 
+					if($chamado['numero'] == '0'){
+						echo "Chamados [0]";
+					}else{
+						echo "<a href='?perfil=chamado&p=evento&id=".$idEvento."' target='_blank'>Chamados [".$chamado['numero']."]</a>";	
+					} ?>
+					</h5>
 			<div class="table-responsive list_info" >
             <h4><?php echo $evento['nomeEvento'] ?></h4>
             <div class="left">

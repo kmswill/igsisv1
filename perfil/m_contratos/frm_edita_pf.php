@@ -1,15 +1,10 @@
 <?php
-
 $ultimo = $_GET['id_pf']; //recupera o id da pessoa
-
 if(isset($_POST['idPedido'])){
 	$id_pedido = $_POST['idPedido']; //recupera o id do pedido
 	$mensagem = $id_pedido;
 }
-
-
 $con = bancoMysqli();
-
 	if(isset($_POST['cadastrarFisica'])){
 		$idPessoaFisica = $_POST['cadastrarFisica'];
 		$Nome = $_POST['Nome'];
@@ -82,11 +77,7 @@ $con = bancoMysqli();
 		}
 		
 	}
-
-
-
 $fisica = recuperaDados("sis_pessoa_fisica",$ultimo,"Id_PessoaFisica");
-
 ?>
 
 <?php include 'includes/menu.php';?>

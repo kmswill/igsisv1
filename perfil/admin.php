@@ -375,6 +375,40 @@ if(isset($_GET['status'])){
 
 }
 
+if(isset($_GET['inst_agenda'])){
+	$con = bancoMysqli();	
+	$sql_data = "SELECT * FROM igsis_agenda";
+	$query_data = mysqli_query($con,$sql_data);
+	$i = 0;
+	$num = mysqli_num_rows($query_data);
+	while($agenda = mysqli_fetch_array($query_data)){
+		
+		$id = $agenda['idAgenda'];
+		$inst = recuperaDados("ig_local",$agenda['idLocal'],"idLocal");
+		$idInst = $inst['idInstituicao'];
+		$sql_atualiza = "UPDATE igsis_agenda SET idInstituicao = '$idInst' WHERE idAgenda = '$id'";
+		$query_atualiza = mysqli_query($con,$sql_atualiza);
+		if($query_atualiza){
+			$i++;	
+		}
+	}
+	$mensagem = "Foram atualizados $i de $num registros.";
+}
+
+
+if(isset($_GET['limpar_base'])){
+	$con = bancoMysqli();	
+	$sql_data = "DELETE FROM ig_evento WHERE ig_tipo_evento_idTipoEvento = '0'";
+	$query_data = mysqli_query($con,$sql_data);
+	$num = mysqli_affected_rows($query_data);
+	if($query_data){
+		$mensagem = "Base de eventos limpa. Foram deletados $num registros.";
+	}else{
+		$mensagem = "Erro ao limpar a base";
+	}
+}
+
+
 ?>
 <section id="contact" class="home-section bg-white">
     <div class="container">
@@ -383,12 +417,16 @@ if(isset($_GET['status'])){
                 <div class="text-hide">
                 <h2>Administrador do Sistema</h2>
 	                <h5>Scripts - use com moderação</h5>
+                    <h5><?php if(isset($mensagem)){ echo $mensagem; } ?></h5>
+                    
                 </div>
             </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-8">
                 <a href="?perfil=admin&p=scripts&atualizar=agenda" class="btn btn-theme btn-lg btn-block">Atualizar agenda</a>
                 <a href="?perfil=admin&p=scripts&status=1" class="btn btn-theme btn-lg btn-block">Atualizar status</a>
+              <a href="?perfil=admin&p=scripts&inst_agenda=1" class="btn btn-theme btn-lg btn-block">Atualizar Instituições/Agenda</a>
+               <a href="?perfil=admin&p=scripts&limpar_base=1" class="btn btn-theme btn-lg btn-block">Limpar base de eventos</a>
 
 	            <!--<a href="?perfil=busca&p=pedidos" class="btn btn-theme btn-lg btn-block">Pedidos de contratação</a>-->
 

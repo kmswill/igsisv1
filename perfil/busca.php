@@ -85,8 +85,14 @@ $mensagem = "Foram encontradas ".$resultado['numReg']." eventos com o termo '".$
 			   if($resultado['numReg'] > 0){
 				   for($i = 0; $i < $resultado['numReg']; $i++){
 					   echo "<p><a href='".$link_evento.$resultado[$i]['idEvento']."' target='_blank'>".$resultado[$i]['nomeEvento']." (".retornaTipo($resultado[$i]['tipo']).")</a><br />";
-						echo "Responsável: ".$resultado[$i]['responsavel']." (".$resultado[$i]['instituicao'].")  - enviado em ".exibirDataBr($resultado[$i]['dataEnvio'])."</p>";
-							
+						echo "Responsável: ".$resultado[$i]['responsavel']." (".$resultado[$i]['instituicao'].") ";
+						/*
+						if($resultado[$i]['dataEnvio'] == '0000-00-00' OR $resultado[$i]['dataEnvio'] == NULL){
+							echo " - evento não enviado.";`
+						}else{
+							echo " - enviado em ".exibirDataBr($resultado[$i]['dataEnvio'])."</p>";
+						}
+						*/
 				   }
 			   }else{
 					echo "Não foram encontrados eventos com o termo de pesquisa.";

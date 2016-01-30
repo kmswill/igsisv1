@@ -1,13 +1,9 @@
 <?php
-
 $ultimo = $_GET['id_pj']; //recupera o id da pessoa
-
 if(isset($_POST['idPedido'])){
 	$id_pedido = $_POST['idPedido']; //recupera o id do pedido
 	$mensagem = $id_pedido;
 }
-
-
 $con = bancoMysqli();
 /*
 if(isset($_POST['numero'])){ //atualiza a tabela com o id do representante encontrado
@@ -16,9 +12,7 @@ if(isset($_POST['numero'])){ //atualiza a tabela com o id do representante encon
 		
 }
 */
-
 //insere representante
-
 if(isset($_POST['apagarRepresentante'])){
 	$x = "IdRepresentanteLegal".$_POST['apagarRepresentante'];
 	$sql_retira_representante = "UPDATE sis_pessoa_juridica SET $x = NULL WHERE Id_PessoaJuridica = '$ultimo'";
@@ -29,7 +23,6 @@ if(isset($_POST['apagarRepresentante'])){
 		$mesnagem = "Erro ao retirar representante.";	
 	}	
 }
-
 if(isset($_POST['cadastraRepresentante'])){
 	$cpf = $_POST['CPF'];
 	$verificaCPF = verificaExiste("sis_representante_legal","CPF",$cpf,"");
@@ -72,8 +65,6 @@ if(isset($_POST['cadastraRepresentante'])){
 		}
 	}
 }
-
-
 if(isset($_POST['insereRepresentante'])){ //insere IdExecutante
 	$id_representante = $_POST['insereRepresentante'];
 	if($_POST['numero'] == 1){
@@ -89,9 +80,6 @@ if(isset($_POST['insereRepresentante'])){ //insere IdExecutante
 		$mensagem = "Representante legal $campo inserido com sucesso!";	
 	}
 }
-
-
-
 //insere pj
 	if(isset($_POST['editaJuridica'])){
 		$idJuridica = $_POST['editaJuridica'];
@@ -120,12 +108,9 @@ if(isset($_POST['insereRepresentante'])){ //insere IdExecutante
 		}
 		
 }
-
-
 $pj = recuperaDados("sis_pessoa_juridica",$ultimo,"Id_PessoaJuridica");
 $res01 = siscontratDocs($pj['IdRepresentanteLegal1'],3);
 $res02 = siscontratDocs($pj['IdRepresentanteLegal2'],3);
-
 ?>
 
 <?php include 'includes/menu.php';?>

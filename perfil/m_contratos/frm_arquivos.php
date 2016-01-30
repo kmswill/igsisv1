@@ -40,6 +40,7 @@ if(isset($_POST['juridica']) OR ($_GET['tipoPessoa'] == 2)){
 
 if(isset($_POST["enviar"])){
 
+
 $sql_arquivos = "SELECT * FROM igsis_upload_docs";
 $query_arquivos = mysqli_query($con,$sql_arquivos);
 while($arq = mysqli_fetch_array($query_arquivos)){ 
@@ -49,7 +50,7 @@ while($arq = mysqli_fetch_array($query_arquivos)){
 	if($nome_arquivo != ""){
 	$nome_temporario = $_FILES['arquivo']['tmp_name'][$x];
     //$ext = strtolower(substr($nome_arquivo[$i],-4)); //Pegando extensão do arquivo
-      $new_name = date("YmdHis")."_". $nome_arquivo; //Definindo um novo nome para o arquivo
+      $new_name = date("YmdHis")."_".semAcento($nome_arquivo); //Definindo um novo nome para o arquivo
 	  $hoje = date("Y-m-d H:i:s");
       $dir = '../uploadsdocs/'; //Diretório para uploads
 	  
@@ -187,6 +188,7 @@ if($_GET['tipoPessoa'] == 1){
 			<?php if($tipoPessoa == 4){$tipo = 1; } ?>
 			<?php if($tipoPessoa == 2){$tipo = 2; } ?>
 			<?php if($tipoPessoa == 1){$tipo = 1; } ?>
+			<?php if($tipoPessoa == 3){$tipo = 3; } ?>			
 			<?php $pag = "contratos"; ?>
 
                          <?php listaArquivosPessoaSiscontrat($idPessoa,$tipo,$_SESSION['idPedido'],$p,$pag); ?>
@@ -205,4 +207,3 @@ if($_GET['tipoPessoa'] == 1){
 
 		</div>
 	</section>
-<?php echo $_POST['volta']; ?>

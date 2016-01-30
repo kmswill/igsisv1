@@ -46,53 +46,19 @@ header("Content-Disposition: attachment;Filename=revista.doc");
 }
 </style>
 
-<?php
-	$t = "";
-	$p = "";
-	$sql_consulta = "SELECT * FROM temp_emcartaz ORDER BY idProjeto, idTipo";
-	$query_consulta = mysqli_query($conexao,$sql_consulta);
-	while($consulta = mysqli_fetch_array($query_consulta)){
-	$evento = recuperaDados("ig_evento",$consulta['idEvento'],"idEvento");
-	$tipo = recuperaDados("ig_tipo_evento",$consulta['idTipo'],"idTipoEvento");
-	$projeto = recuperaDados("ig_projeto_especial",$consulta['idProjeto'],"idProjetoEspecial");
-	$servico = geraServico($consulta['idEvento']);
-	$faixa = recuperaDados("ig_etaria", $evento['faixaEtaria'],"idIdade");
-?>
-	<?php if($consulta['idProjeto'] != 1){ 
-		if($consulta['idProjeto'] != $p){
-	?>
-    <h2><?php echo $projeto['projetoEspecial'] ?></h2>
-    <?php }
-	$p = $projeto['idProjetoEspecial'];
-	}?>
-	<?php if($consulta['idTipo'] != $t){ ?>
-    <h3>
-	<br />
-	<?php echo $tipo['tipoEvento'] ?>
-    <?php 
-	$t = $tipo['idTipoEvento'];	
-	} ?>
-    </h3>
-  	<h4><?php echo $evento['nomeEvento'] ?></h4>
-	<p>Com: <?php echo nl2br($evento['autor']); ?></p>
-	<p>Ficha técnica: <?php echo nl2br($evento['fichaTecnica']); ?></p>
-    <p><?php echo $evento['sinopse'] ?></p>
-	    <p>Faixa etária: <?php echo $faixa['faixa']; ?></p>
-	<?php 
-		if($consulta['idTipo'] == 1){
-			listaFilmesCom($consulta['idEvento']);	
-			
-		}
-	?>	
-	<p><?php echo $servico; ?></p>
 
-	
-	
-	
-	
+<?php
+for($j = 0; $j < count($evhoj); $j++){
+
+ ?>
+<div class="titulo"> <?php echo $evhoj[$j]['nome']; ?></div>
+<p><?php echo substr($evhoj[$j]['sala'], 7); ?><p>
+<p><?php echo $evhoj[$j]['valor']; ?></p>
+<p><?php echo $evhoj[$j]['horario']; ?></p> 
 
 <?php 
 	}
+ 
 ?>
 </body>
 </html>

@@ -1351,6 +1351,42 @@ function listaArquivosPessoa($idPessoa,$tipo){
 				</table>";	
 }
 
+function listaArquivosPedido($idPedido){
+	$con = bancoMysqli();
+	$sql = "SELECT * FROM igsis_arquivos_pedidos WHERE idPedido = '$idPedido' AND publicado = 1";
+	$query = mysqli_query($con,$sql);
+	echo "<table class='table table-condensed'>
+					<thead>
+						<tr class='list_menu'>
+							<td width='30%'>Tipo</td>
+							<td>Nome do arquivo</td>
+							<td width='10%'></td>
+						</tr>
+					</thead>
+					<tbody>";
+	while($campo = mysqli_fetch_array($query)){
+		$tipoDoc = recuperaDados("igsis_upload_docs",$campo['tipo'],"idTipoDoc");
+			echo "<tr>";
+			echo "<td class='list_description'>".$tipoDoc['documento']."</td>";
+			echo "<td class='list_description'><a href='../uploadsdocs/".$campo['arquivo']."' target='_blank'>".$campo['arquivo']."</a></td>";
+			echo "
+			<td class='list_description'>
+			<form method='POST' action='?perfil=contratados&p=arq_pedidos&id_ped=$idPedido'>
+			<input type='hidden' name='apagar' value='".$campo['idArquivosPedidos']."' />
+			<input type ='submit' class='btn btn-theme  btn-block' value='apagar'></td></form>"	;
+			echo "</tr>";		
+	}
+					
+						
+
+                        
+
+						
+		
+	echo "					</tbody>
+				</table>";	
+}
+
 	
 
 function listaLocais($idEvento){
@@ -2908,13 +2944,15 @@ $query_pesquisar = mysqli_query($con,$sql_pesquisar);
 $data = "";
 $data_antigo = "1";
 while($evento = mysqli_fetch_array($query_pesquisar)){
+	$$inst = recuperaDados("ig_local",$agenda['idLocal'],"idLocal");
+	$idInst = $inst['idInstituicao'];
 	$idEvento = $evento['idEvento'];
 	$dataInicio = $evento['dataInicio'];
 	$dataFinal = $evento['dataFinal'];
 	$local = $evento['local'];
 	$idTipo = $evento['idTipoOcorrencia'];
 	$hora = $evento['horaInicio'];
-	$idInstituicao = $evento['idInstituicao'];
+	$idInstituicao = $idInst;
 	$segunda = $evento['segunda'];
 	$terca = $evento['terca'];
 	$quarta = $evento['quarta'];

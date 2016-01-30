@@ -172,13 +172,14 @@ if(isset($_POST['ruas'])){
    							<td>Linguagem</td>
 							<td>Locais</td>
 							<td>Origem</td>
+   							<td width="10%">Data de envio</td>
 
 						</tr>
 					</thead>
 					<tbody>
 <?php
 	$conn = bancoMysqli();
-	$sql_filtro = "SELECT * FROM propostas WHERE sete > '0' $ling $biblioteca $centrosculturais $ceus $teatros $ruas";
+	$sql_filtro = "SELECT * FROM propostas WHERE sete > '0' $ling $biblioteca $centrosculturais $ceus $teatros $ruas ORDER BY id DESC";
 	$query_filtro = mysqli_query($conn,$sql_filtro); 
 while($proposta = mysqli_fetch_array($query_filtro)){
 
@@ -188,6 +189,7 @@ while($proposta = mysqli_fetch_array($query_filtro)){
 <td><?php echo $proposta['oito']; ?></td>
 <td><?php echo $proposta['onze']; ?></td>
 <td><?php echo $proposta['seis']; ?></td>
+<td><?php echo exibirDataHoraBr($proposta['um']); ?></td>
 
 </tr>
 	

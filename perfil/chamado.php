@@ -134,7 +134,7 @@ case "inserir":
             <div class="form-group">
 	            <div class="col-md-offset-2 col-md-8">
                 	<input type="hidden" name="inserir" value="1" />
-    		        <input type="submit" class="btn btn-theme btn-lg btn-block" value="Enviar">
+    		        <input type="submit" class="btn btn-theme btn-lg btn-block" value="Enviar" onclick="this.disabled = true; this.value = 'Enviando…'; this.form.submit();">
             	</div>
             </div>
             </form>

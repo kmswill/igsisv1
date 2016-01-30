@@ -1,13 +1,28 @@
 ﻿<?php
 
+function dataTime($data){
+	$x = explode("/",$data);
+	$dia = $x[0];
+	$mes = $x[1];
+	$ano = $x[2];
+
+$data_nova = mktime(0,0,0, $mes, $dia, $ano);	
+
+return $data_nova;
+
+	
+}
+
+
 	if(isset($_POST['inicio']) AND $_POST['inicio'] != ""){
 		if($_POST['final'] == ""){
 			$mensagem = "É preciso informar a data final do filtro";	
 		}else{
-			$inicio = exibirDataMysql($_POST['inicio']);
-			$final = exibirDataMysql($_POST['final']);
-			if(strtotime($_POST['inicio']) > strtotime($_POST['final'])){
+			if(dataTime($_POST['inicio']) > dataTime($_POST['final'])){
 				$mensagem = "A data final do filtro deve ser maior que a data inicio";		
+		$data_inicio = date('Y-m-d');
+		$data_final = date('Y-m-d', strtotime("+30 days",strtotime($data_inicio)));
+		$mensagem .= "Filtro aplicado: eventos de ".exibirDataBr($data_inicio)." a ".exibirDataBr($data_final);	
 			}else{
 				$data_inicio = exibirDataMysql($_POST['inicio']);
 				$data_final = exibirDataMysql($_POST['final']);
@@ -24,13 +39,25 @@
 		$mensagem = "Filtro aplicado: eventos de ".exibirDataBr($data_inicio)." a ".exibirDataBr($data_final);	
 	}
 	
-	if(isset($_POST['local'])){
-		$idLocal = $_POST['local'];
+	if(isset($_POST['local']) AND trim($_POST['local'])){
+		$idLocal = trim($_POST['local']);
 		$local = " AND idLocal = '$idLocal' ";	
 	}else{
 		$local = "";	
 	}
 	
+	if(isset($_POST['instituicao']) AND trim($_POST['instituicao'])){
+		$idInstituicao = $_POST['instituicao'];
+		$instituicao = " AND idInstituicao = '$idInstituicao' ";	
+	}else{
+		$instituicao = "";	
+	}
+
+
+		$con = bancoMysqli();
+		$sql_busca = "SELECT * FROM igsis_agenda WHERE data >= '$data_inicio' AND data <= '$data_final' $instituicao $local ORDER BY data, hora";
+		$query_busca = mysqli_query($con,$sql_busca);
+		$data_antiga = "";
 
 	
 	?>
@@ -41,7 +68,7 @@ $(function(){
 			$('#local').hide();
 			$('.carregando').show();
 			$.getJSON('local.ajax.php?instituicao=',{instituicao: $(this).val(), ajax: 'true'}, function(j){
-				var options = '<option value=""></option>';	
+				var options = '<option value="0"></option>';	
 				for (var i = 0; i < j.length; i++) {
 					options += '<option value="' + j[i].idEspaco + '">' + j[i].espaco + '</option>';
 				}	
@@ -74,6 +101,7 @@ $(function(){
 					 <h2>Agenda</h2>
 					<h4></h4>
                     <h5><?php if(isset($mensagem)){echo $mensagem;} ?></h5>
+
                  </div>
 				  </div>
 			  </div>  
@@ -92,7 +120,7 @@ $(function(){
                 	<div class="col-md-offset-2 col-md-8">
                 		<label>Local / instituição *</label><img src="images/loading.gif" class="loading" style="display:none" />
                 		<select class="form-control" name="instituicao" id="instituicao" >
-                		<option>Selecione</option>
+                		<option value="">Selecione</option>
                 		<?php geraOpcao("ig_instituicao","","") ?>
                 		</select>
                 	</div>
@@ -126,10 +154,7 @@ $(function(){
 					<tbody>
                     <?php
 		//reloadAgenda();			
-		$con = bancoMysqli();
-		$sql_busca = "SELECT * FROM igsis_agenda WHERE data >= '$data_inicio' AND data <= '$data_final' $local ORDER BY data, hora";
-		$query_busca = mysqli_query($con,$sql_busca);
-		$data_antiga = "";
+
 		while($busca = mysqli_fetch_array($query_busca)){
 			$evento = recuperaDados("ig_evento",$busca['idEvento'],"idEvento");
 			$tipo = recuperaDados("ig_tipo_evento",$evento['ig_tipo_evento_idTipoEvento'],"idTipoEvento");

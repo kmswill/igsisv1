@@ -543,8 +543,27 @@ $res02 = siscontratDocs($ped['idRepresentante02'],3);
                     	<br />
                 </div>
 				</div>
+					<div class="col-md-offset-2 col-md-8">
+			 <a href="?perfil=contratos&p=frm_arquivos_pedidos&id_ped=<?php echo $_GET['id_ped'];  ?>" class="btn btn-theme btn-block" >Abrir Anexos do Pedido</a>	
 
-		
+					</div>	
+			</div>
+					<div class="form-group">
+                    <div class="col-md-offset-2 col-md-8">
+                    	<br />
+                </div>
+				</div>
+
+					<div class="col-md-offset-2 col-md-8">
+			 <a href="../perfil/m_contratos/frm_arquivos_todos.php?idPedido=<?php echo $_GET['id_ped'];  ?>&all=true" class="btn btn-theme btn-block" >Baixar todos os arquivos do pedido e do proponente</a>	
+
+					</div>	
+			</div>
+					<div class="form-group">
+                    <div class="col-md-offset-2 col-md-8">
+                    	<br />
+                </div>
+				</div>		
 				</div>				  
 
 	  	</div>

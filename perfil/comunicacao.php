@@ -526,7 +526,7 @@ case "chamados":
 					<?php
 					$con = bancoMysqli();
 					$idInstituicao = $_SESSION['idInstituicao'];
-					$sql_busca = "SELECT * FROM igsis_chamado, ig_evento WHERE igsis_chamado.idEvento = ig_evento.idEvento AND idInstituicao = '$idInstituicao' ORDER BY idChamado DESC";
+					$sql_busca = "SELECT * FROM igsis_chamado' ORDER BY idChamado DESC";
 					$query_busca = mysqli_query($con,$sql_busca);
 						while($chamado = mysqli_fetch_array($query_busca)){ 
 						$tipo = recuperaDados("igsis_tipo_chamado",$chamado['tipo'],"idTipoChamado");

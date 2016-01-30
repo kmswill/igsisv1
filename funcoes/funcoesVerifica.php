@@ -132,4 +132,12 @@ function verificaPendencias($idEvento){
 	
 }
 
+function autorizaBotao($idUsuario,$idInstituicao){
+
+	$x['botao'] = TRUE;
+	$x['mensagem'] = "Envio desabilitado até 05/02/2016 para balanço do sistema. Qualquer urgência, enviar e-mail para sistema.igsis@gmail.com mencionando usuário de sistema.";
+	return $x;
+	
+}
+
 ?>

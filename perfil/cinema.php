@@ -165,7 +165,7 @@ if(isset($_POST['inserirFilme'])){ //Insere um filme
 	$sql_inserir_filme = "INSERT INTO `ig_cinema` (`idCinema`, `ig_pais_idPais`, `ig_evento_idEvento`, `titulo`, `tituloOriginal`, `anoProducao`, `genero`, `bitola`, `direcao`, `sinopse`, `minutagem`, `linkTrailer`, `elenco`, `ig_pais_IdPais_2`, `publicado`, `indicacaoEtaria`) VALUES (NULL, '$pais1', '$idEvento', '$titulo', '$tituloOriginal', '$anoProducao', '$genero', '$bitola', '$direcao', '$sinopse', '$minutagem', '$linkTrailer', '$elenco','$pais2','1', '$classificao')";
 	if(mysqli_query($con,$sql_inserir_filme)){
 		$mensagem = "Filme inserido com sucesso";
-		$ultimo = recuperaUltimo("ig_cinema");
+		$ultimo =  mysqli_insert_id($con);
 			
 	}else{
 		$mensagem = "Erro ao inserir. Tente novamente.";

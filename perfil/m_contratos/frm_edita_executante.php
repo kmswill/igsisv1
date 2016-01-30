@@ -112,7 +112,7 @@ case "pesquisar":
 			echo "<td class='list_description'>".$descricao['CPF']."</td>";
 			echo "
 			<td class='list_description'>
-			<form method='POST' action='?perfil=contratos&p=frm_edita_pedidocontratacaopj&id_ped=".$_SESSION['idPedido']."'>
+			<form method='POST' action='?perfil=contratos&p=frm_edita_propostapj&id_ped=".$_SESSION['idPedido']."'>
 			<input type='hidden' name='insereExecutante' value='".$descricao['Id_PessoaFisica']."'>
 			<input type ='submit' class='btn btn-theme btn-md btn-block' value='inserir'></td></form>"	;
 			echo "</tr>";
@@ -142,7 +142,7 @@ case "pesquisar":
 	  		<div class="row">
 	  			<div class="col-md-offset-1 col-md-10">
 
-				<form class="form-horizontal" role="form" action="?perfil=contratos&p=frm_edita_pedidocontratacaopj&id_ped=<?php echo $_SESSION['idPedido'] ?>" method="post">
+				<form class="form-horizontal" role="form" action="?perfil=contratos&p=frm_edita_propostapj&id_ped=<?php echo $_SESSION['idPedido'] ?>" method="post">
 				  
 			 
                   <div class="form-group">
@@ -529,7 +529,7 @@ $fisica = recuperaDados("sis_pessoa_fisica",$ultimo,"Id_PessoaFisica");
 
                   <div class="form-group">
 					<div class="col-md-offset-2 col-md-8">
-   <a href="?perfil=contratos&p=frm_edita_pedidocontratacaopj&id_ped=<?php echo $_SESSION['idPedido']; ?>"><input type="submit" value="Voltar ao Pedido" class="btn btn-theme btn-block"></a> 
+   <a href="?perfil=contratos&p=frm_edita_propostapj&id_ped=<?php echo $_SESSION['idPedido']; ?>"><input type="submit" value="Voltar ao Pedido" class="btn btn-theme btn-block"></a> 
 					</div>
 				  </div>
                   

@@ -854,16 +854,16 @@ $data_oficinas = recuperaDados("ig_ocorrencia",$_SESSION['idEvento'],"idEvento")
 					  </select>
 					</div>				  
 					<div class=" col-md-6"><strong>Início de inscrição:</strong><br/>
-					  <input type="text" class="form-control" id="datepicker01" name="inicio_inscricao" placeholder="" value = "<?php echo exibirDataBr($data_oficinas['dataInicio']) ?>">
+					  <input type="text" class="form-control datepicker" id="" name="inicio_inscricao" placeholder="" value = "<?php echo exibirDataBr($data_oficinas['dataInicio']) ?>">
 					</div>
 
 				  </div>
 				    <div class="form-group">
                   					<div class="col-md-offset-2 col-md-6"><strong>Encerramento de inscrição:</strong><br/>
-					  <input type="text" class="form-control" id="datepicker02" name="encerra_inscricao" placeholder="" value = "<?php echo exibirDataBr($data_oficinas['dataFinal']) ?>">
+					  <input type="text" class="form-control datepicker" id="" name="encerra_inscricao" placeholder="" value = "<?php echo exibirDataBr($data_oficinas['dataFinal']) ?>">
 					</div>				  
 					<div class=" col-md-6"><strong>Divulgação de inscrição:</strong><br/>
-					  <input type="text" class="form-control" id="datepicker03" name="divulga_inscricao" placeholder="" value = "<?php echo exibirDataBr($oficina['divulgacao']) ?>">
+					  <input type="text" class="form-control datepicker" id="" name="divulga_inscricao" placeholder="" value = "<?php echo exibirDataBr($oficina['divulgacao']) ?>">
 					</div>
 
 				  </div>
@@ -2488,9 +2488,22 @@ if($verifica == 0){
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-8">
+			<?php 
+			$mensagem_verifica = autorizaBotao($idUsuario,$idInstituicao);
+			if($mensagem_verifica['botao'] == TRUE){
+			?>
+	            
 	       	        	       	          <form method='POST' action='?perfil=finalizar'>
 			<input type='hidden' name='finalizar' value='".$campo['idEvento']."' />
-			<input type ='submit' class='btn btn-theme btn-lg btn-block' value='Enviar'></form>
+			<input type ='submit' class='btn btn-theme btn-lg btn-block' value='Enviar' onclick="this.disabled = true; this.value = 'Enviando…'; this.form.submit();"></form>
+            <?php }else{ ?>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-8">
+			<p><?php echo $mensagem_verifica['mensagem']; ?></p>
+            </div>
+          </div>
+
+<?php } ?>            
             </div>
           </div>
         </div>
