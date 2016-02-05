@@ -29,6 +29,11 @@ $link17 = $http."rlt_proposta_reversaocurta_pf.php";
 $link18 = $http."rlt_proposta_doacao_pf.php";
 $link19 = $http."rlt_ordemservico_pf.php";
 $link20 = $http."rlt_declaracao_exclusividade_pf.php";
+$link21 = $http."rlt_proposta_cinema_pf.php";
+$link22 = $http."rlt_proposta_comissaojulgadora_pf.php";
+$link23 = $http."rlt_proposta_exposicao_pf.php";
+$link24 = $http."rlt_proposta_oficinassemedital_pf.php";
+$link25 = $http."rlt_proposta_palestra_pf.php";
  
  
 	 $last_id = mysqli_insert_id($conexao);
@@ -53,7 +58,7 @@ $link20 = $http."rlt_declaracao_exclusividade_pf.php";
 		<tr><td class='list_description'><br/></td></tr>
 		
 		<tr class='list_menu'><td colspan='2'><strong>PROPOSTA</strong></td></tr>
-		
+		<!--
 		<tr>
 			<td><a href='$link1?id=$id_ped' target='_blank'><strong>Padrão</strong></a></td>
 			<td><a href='$link2?id=$id_ped' target='_blank'><strong>Artístico</strong></a></td>
@@ -63,14 +68,26 @@ $link20 = $http."rlt_declaracao_exclusividade_pf.php";
 			<td><a href='$link3?id=$id_ped' target='_blank'><strong>Evento Externo</strong></a></td>
 			<td><a href='$link4?id=$id_ped' target='_blank'><strong>Oficinas</strong></a></td>
 		</tr>
+		-->
 		
 		<tr>
-			<td><a href='$link16?id=$id_ped' target='_blank'><strong>Reversão Longa Temporada</strong></a></td>
-			<td><a href='$link17?id=$id_ped' target='_blank'><strong>Reversão Curta Temporada</strong></a></td>
+			<td><a href='$link21?id=$id_ped' target='_blank'><strong>Cinema</strong></a></td>
+			<td><a href='$link22?id=$id_ped' target='_blank'><strong>Comissão Julgadora</strong></a></td>
 		</tr>
+		
 		<tr>
 			<td><a href='$link18?id=$id_ped' target='_blank'><strong>Doação de Serviços</strong></a></td>
-			<td></td>
+			<td><a href='$link23?id=$id_ped' target='_blank'><strong>Exposição | Outros</strong></a></td>
+		</tr>
+		
+		<tr>
+			<td><a href='$link24?id=$id_ped' target='_blank'><strong>Oficinas sem Edital</strong></a></td>
+			<td><a href='$link25?id=$id_ped' target='_blank'><strong>Palestra | Debate | Workshop</strong></a></td>
+		</tr>
+		
+		<tr>
+			<td><a href='$link17?id=$id_ped' target='_blank'><strong>Reversão Curta Temporada</strong></a></td>
+			<td><a href='$link16?id=$id_ped' target='_blank'><strong>Reversão Longa Temporada</strong></a></td>
 		</tr>
 		
 		<tr><td class='list_description'><br/></td></tr>

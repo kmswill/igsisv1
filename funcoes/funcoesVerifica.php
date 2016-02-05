@@ -133,11 +133,81 @@ function verificaPendencias($idEvento){
 }
 
 function autorizaBotao($idUsuario,$idInstituicao){
+	$x['botao'] = FALSE;
+	$x['mensagem'] = "Envio desabilitado até 15/02/2016 para balanço do sistema. Qualquer urgência, enviar e-mail para sistema.igsis@gmail.com mencionando usuário de sistema.";
 
-	$x['botao'] = TRUE;
-	$x['mensagem'] = "Envio desabilitado até 05/02/2016 para balanço do sistema. Qualquer urgência, enviar e-mail para sistema.igsis@gmail.com mencionando usuário de sistema.";
+	$con = bancoMysqli();
+	$sql = "SELECT idUsuario FROM igsis_lista_usuarios WHERE idUsuario = '$idUsuario'";
+	$query = mysqli_query($con,$sql);
+	$num = mysqli_num_rows($query);	
+	if($num == 1){
+		$x['botao'] == TRUE;	
+	}
+		
+
 	return $x;
 	
+}
+
+function retornaDataInicio($idEvento){ //retorna o período
+	$con = bancoMysqli();
+	$sql_anterior = "SELECT * FROM ig_ocorrencia WHERE idEvento = '$idEvento' AND publicado = '1' ORDER BY dataInicio ASC LIMIT 0,1"; //a data inicial mais antecedente
+	$query_anterior = mysqli_query($con,$sql_anterior);
+	$data = mysqli_fetch_array($query_anterior);
+	$data_inicio = $data['dataInicio'];
+	
+	$sql_posterior01 = "SELECT * FROM ig_ocorrencia WHERE idEvento = '$idEvento' AND publicado = '1' ORDER BY dataFinal DESC LIMIT 0,1"; //quando existe data final
+	$sql_posterior02 = "SELECT * FROM ig_ocorrencia WHERE idEvento = '$idEvento' AND publicado = '1' ORDER BY dataInicio DESC LIMIT 0,1"; //quando há muitas datas únicas
+	
+	$query_anterior01 = mysqli_query($con,$sql_posterior01);
+	$data = mysqli_fetch_array($query_anterior01);
+	$num = mysqli_num_rows($query_anterior01);
+	
+	if(($data['dataFinal'] != '0000-00-00') OR ($data['dataFinal'] != NULL)){  //se existe uma data final e que é diferente de NULO
+		$dataFinal01 = $data['dataFinal'];	
+	}
+
+	$query_anterior02 = mysqli_query($con,$sql_posterior02); //recupera a data única mais tarde
+	$data = mysqli_fetch_array($query_anterior02);
+	$dataFinal02 = $data['dataInicio'];
+	
+		
+	if(isset($dataFinal01)){ //se existe uma temporada, compara com a última data única
+		if($dataFinal01 > $dataFinal02){
+			$dataFinal = $dataFinal01;
+		}else{
+			$dataFinal = $dataFinal02;
+		}
+	}else{
+		$dataFinal = $dataFinal02;		
+	}
+	
+	if($data_inicio == $dataFinal){ 
+		return $data_inicio;
+	}else{
+		return $data_inicio;
+	}
+	
+}
+
+function prazoContratosDias($idEvento){ //deixar mais redondo.
+	$data = retornaDatas($idEvento);
+	$evento = recuperaDados("ig_evento",$idEvento,"idEvento");
+	//$opcoes = recuperaDados("igsis_opcoes","dataContrato","opcao");
+	
+		//$y = explode('.',$opcoes['codigo']); // separa a tabela do campo
+		$data_inicio = $data['dataInicio'];
+		$data_final = somarDatas($data_inicio,-45);
+		$hoje = $evento['dataEnvio'];
+		if($data_final >= $hoje){
+			$prazo = substr(-45, 1);
+			return true;
+		}else{
+			$prazo = substr(-45, 1);
+			return false;
+		}
+	
+
 }
 
 ?>

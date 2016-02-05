@@ -140,12 +140,12 @@ if($id == "" AND $evento == "" AND $fiscal == 0 AND $tipo == 0 AND $instituicao 
 <?php
 }else{
 $con = bancoMysqli();
-	$sql_existe = "SELECT idPedidoContratacao,idEvento,estado FROM igsis_pedido_contratacao WHERE idEvento = '$evento' AND publicado = '1'";
+	$sql_existe = "SELECT idPedidoContratacao,idEvento,estado FROM igsis_pedido_contratacao WHERE idEvento = '$evento' AND publicado = '1' AND estado IS NOT NULL ORDER BY idPedidoContratacao DESC";
 	$query_existe = mysqli_query($con, $sql_existe);
 	$num_registro = mysqli_num_rows($query_existe);
 if($id != "" AND $num_registro > 0){ // Foi inserido o número do pedido
-
 		$pedido = recuperaDados("igsis_pedido_contratacao",$id,"idPedidoContratacao");
+		if($pedido['estado'] != NULL){
 		$evento = recuperaDados("ig_evento",$pedido['idEvento'],"idEvento"); //$tabela,$idEvento,$campo
 		$usuario = recuperaDados("ig_usuario",$evento['idUsuario'],"idUsuario");
 		$instituicao = recuperaDados("ig_instituicao",$evento['idInstituicao'],"idInstituicao");
@@ -184,7 +184,10 @@ if($id != "" AND $num_registro > 0){ // Foi inserido o número do pedido
 	$x[0]['status'] = $pedido['estado'];
 	$x[0]['operador'] = $operador['nomeCompleto'];	
 	$x['num'] = 1;
-	
+	}else{
+			$x['num'] = 0;
+		
+	}
 }else{ //Não foi inserido o número do pedido
 		if($evento != ''){
 			$filtro_evento = " AND nomeEvento LIKE '%$evento%' OR autor LIKE '%autor%' ";
@@ -235,7 +238,7 @@ if($id != "" AND $num_registro > 0){ // Foi inserido o número do pedido
 		}
 		
 				
-		$sql_evento = "SELECT DISTINCT nomeEvento,ig_evento.idEvento FROM ig_evento,igsis_pedido_contratacao WHERE ig_evento.publicado = '1' AND igsis_pedido_contratacao.publicado = '1' AND ig_evento.idEvento = igsis_pedido_contratacao.idEvento $filtro_evento $filtro_fiscal $filtro_tipo $filtro_instituicao $filtro_operador $filtro_juridico";
+		$sql_evento = "SELECT DISTINCT nomeEvento,ig_evento.idEvento FROM ig_evento,igsis_pedido_contratacao WHERE ig_evento.publicado = '1' AND igsis_pedido_contratacao.publicado = '1' AND ig_evento.idEvento = igsis_pedido_contratacao.idEvento $filtro_evento $filtro_fiscal $filtro_tipo $filtro_instituicao $filtro_operador $filtro_juridico  AND estado IS NOT NULL ORDER BY idPedidoContratacao DESC";
 		$query_evento = mysqli_query($con,$sql_evento);
 		$i = 0;
 		while($evento = mysqli_fetch_array($query_evento)){
@@ -301,6 +304,9 @@ $mensagem = "Foram encontradas ".$x['num']." pedido(s) de contratação.";
              <h5>Foram encontrados <?php echo $x['num']; ?> pedidos de contratação.</h5>
              <h5><a href="?perfil=contratos&p=frm_busca">Fazer outra busca</a></h5>
 			<div class="table-responsive list_info">
+			<?php if($x['num'] == 0){ ?>
+			
+			<?php }else{ ?>
 				<table class="table table-condensed">
 					<thead>
 						<tr class="list_menu">
@@ -343,7 +349,9 @@ for($h = 0; $h < $x['num']; $h++)
 					
 					</tbody>
 				</table>
-			</div>
+			<?php } ?>		
+		</div>
+			
 		</div>
 	</section>
 
@@ -601,26 +609,35 @@ case 'periodo': //
 		$inicio = exibirDataMysql($_POST['inicio']);
 		$final = exibirDataMysql($_POST['final']);	
 		$con = bancoMysqli();
-		$sql_evento = "SELECT DISTINCT idEvento FROM ig_ocorrencia WHERE dataInicio >= '$inicio' AND dataInicio <= '$final' ORDER BY dataInicio ASC ";
+		$sql_evento = "SELECT DISTINCT idEvento FROM ig_ocorrencia WHERE dataInicio >= '$inicio' AND dataInicio <= '$final' AND publicado = '1' ORDER BY dataInicio ASC ";
 		$query_evento = mysqli_query($con,$sql_evento);
 		$i = 0;
 		while($evento = mysqli_fetch_array($query_evento)){
-			$idEvento = $evento['idEvento'];	
+			
+			$idEvento = $evento['idEvento'];
+			$evento = recuperaDados("ig_evento",$evento['idEvento'],"idEvento");
+			if($evento['dataEnvio'] != NULL){	
 			$sql_existe = "SELECT idPedidoContratacao,idEvento,estado FROM igsis_pedido_contratacao WHERE idEvento = '$idEvento' AND publicado = '1'";
 			$query_existe = mysqli_query($con, $sql_existe);
 			if(mysqli_num_rows($query_existe) > 0)
 			{
-			$pedido = recuperaDados("igsis_pedido_contratacao",$idEvento,"idEvento");
-			$evento = recuperaDados("ig_evento",$pedido['idEvento'],"idEvento"); //$tabela,$idEvento,$campo
+//$tabela,$idEvento,$campo
 			$usuario = recuperaDados("ig_usuario",$evento['idUsuario'],"idUsuario");
 			$instituicao = recuperaDados("ig_instituicao",$evento['idInstituicao'],"idInstituicao");
+			$fiscal = recuperaUsuario($evento['idResponsavel']);
+			$suplente = recuperaUsuario($evento['suplente']);
+			$protocolo = ""; //recuperaDados("sis_protocolo",$pedido['idEvento'],"idEvento");
+
+			$sql_pedido = "SELECT * FROM igsis_pedido_contratacao WHERE publicado = '1' AND idEvento = '$idEvento'";
+			$query_pedido = mysqli_query($con,$sql_pedido);
+			while($ped = mysqli_fetch_array($query_pedido)){
+				
+			$pedido = recuperaDados("igsis_pedido_contratacao",$ped['idPedidoContratacao'],"idEvento");
+			if($pedido['estado'] != NULL){
 			$local = listaLocais($pedido['idEvento']);
 			$periodo = retornaPeriodo($pedido['idEvento']);
 			$duracao = retornaDuracao($pedido['idEvento']);
 			$pessoa = recuperaPessoa($pedido['idPessoa'],$pedido['tipoPessoa']);
-			$fiscal = recuperaUsuario($evento['idResponsavel']);
-			$suplente = recuperaUsuario($evento['suplente']);
-			$protocolo = ""; //recuperaDados("sis_protocolo",$pedido['idEvento'],"idEvento");
 			$operador = recuperaUsuario($pedido['idContratos']);
 			if($pedido['parcelas'] > 1){
 				$valorTotal = somaParcela($pedido['idPedidoContratacao'],$pedido['parcelas']);
@@ -629,7 +646,7 @@ case 'periodo': //
 				$valorTotal = $pedido['valor'];
 				$formaPagamento = $pedido['formaPagamento'];
 			}
-		
+
 			$x[$i]['id']= $pedido['idPedidoContratacao'];
 			$x[$i]['objeto'] = retornaTipo($evento['ig_tipo_evento_idTipoEvento'])." - ".$evento['nomeEvento'];
 			if($pedido['tipoPessoa'] == 1){
@@ -649,6 +666,9 @@ case 'periodo': //
 			$x[$i]['operador'] = $operador['nomeCompleto'];		
 			$i++;
 			}
+			}
+			}
+		}
 		}
 		$x['num'] = $i;
 		

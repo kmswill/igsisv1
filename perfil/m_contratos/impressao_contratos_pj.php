@@ -31,7 +31,7 @@ $link19 = $http."rlt_declaracao_exclusividade_1rep_pj.php";
 $link20 = $http."rlt_declaracao_exclusividade_2rep_pj.php";
 $link21 = $http."rlt_proposta_doacao_pj.php";
 $link22 = $http."rlt_ordemservico_pj.php";
-
+$link23 = $http."rlt_ordemservico_pj_word.php";
 
 
 
@@ -108,6 +108,11 @@ $link22 = $http."rlt_ordemservico_pj.php";
 			<td><a href='$link8?id=$id_ped' target='_blank'><strong>Parecer da Comissão</strong></a></td>
 			<td><a href='$link22?id=$id_ped' target='_blank'><strong>Ordem de Serviço</strong></a></td>
 		</tr>
+
+		<tr>
+			<td><a href='$link23?id=$id_ped' target='_blank'><strong>Ordem de Serviço em WORD</strong></a></td>
+		</tr>		
+		
 		
 		<tr><td class='list_description'><br/></td></tr>
 		

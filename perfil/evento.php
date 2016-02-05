@@ -2489,7 +2489,7 @@ if($verifica == 0){
         <div class="form-group">
             <div class="col-md-offset-2 col-md-8">
 			<?php 
-			$mensagem_verifica = autorizaBotao($idUsuario,$idInstituicao);
+			$mensagem_verifica = autorizaBotao($_SESSION['idUsuario'],$_SESSION['idInstituicao']);
 			if($mensagem_verifica['botao'] == TRUE){
 			?>
 	            

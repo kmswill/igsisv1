@@ -218,6 +218,28 @@ if(isset($_POST['reabertura'])){
 	
 }
 
+						if(isset($_GET['order'])){
+							switch($_GET['order']){
+						
+							case "dataEnvio":
+								$order = " ORDER BY dataEnvio DESC";
+								$mensagem .= "<br /> Ordenados pelas últimas datas de envio.<br />(Reaberturas de IGs geram novas datas de envio mas não Números de Evento.)";	
+							break;
+						
+							case "idEvento":
+								$order = " ORDER BY idEvento DESC";	
+								$mensagem .= "<br /> Ordenados pelo número de Evento";	
+					
+							
+								
+							}	
+						}else{
+							$order = " ORDER BY idEvento DESC ";	
+							$mensagem .= "<br /> Ordenados pelo últimos números de Evento";	
+
+						}
+
+
 ?>
 <section id="list_items" class="home-section bg-white">
 		 <div class="form-group">
@@ -237,12 +259,14 @@ if(isset($_POST['reabertura'])){
 				  
 			<div class="table-responsive list_info">
 <?php 
+
 						$idInsituicao = $_SESSION['idInstituicao'];
-						$sql_lista = "SELECT * FROM ig_evento WHERE publicado = '1' AND dataEnvio IS NOT NULL ORDER BY idEvento DESC";
+						$sql_lista = "SELECT * FROM ig_evento WHERE publicado = '1' AND dataEnvio IS NOT NULL $order";
 						$query_lista = mysqli_query($con,$sql_lista);
 						$num = mysqli_num_rows($query_lista);
 ?>
 			<h5><?php echo $num ?> eventos enviados.</h5>
+            <p><a href="?perfil=admin&p=reabertura">Ordenar pelos últimos Números de Evento</a> | <a href="?perfil=admin&p=reabertura&order=dataEnvio">Ordenar pelas últimas datas de envio</a></p>
             <table class='table table-condensed'>
 					<thead>					
 					<tr class='list_menu'> 
@@ -324,7 +348,11 @@ if(isset($_GET['status'])){
 	while($pedido = mysqli_fetch_array($query_pedido)){
 		$idPedido = $pedido['idPedidoContratacao'];
 
-		$texto .= $pedido['estado']."<br />";		
+		$texto .= $pedido['estado']."<br />";	
+
+		if($pedido['aprovacaoFinanca'] == NULL){
+			
+		}else{
 		if(trim($pedido['NumeroProcesso']) != "" OR $pedido['NumeroProcesso'] != NULL){ // Se há número de processo
 			if(trim($pedido['NumeroNotaEmpenho']) != "" OR $pedido['NumeroProcesso'] != NULL){ // Se há número de Nota de Empenho
 				$idStatus = "10";
@@ -369,11 +397,12 @@ if(isset($_GET['status'])){
 			$texto .= "Erro<br />";	
 		}
 	}
-	
+	}
 	
 	$texto .= "<br /> $i pedidos atualizados.<br />";
 
 }
+
 
 if(isset($_GET['inst_agenda'])){
 	$con = bancoMysqli();	

@@ -61,8 +61,8 @@ case "inicio":
 				<a href="?perfil=administrador&p=espacos" class="btn btn-theme btn-lg btn-block">Listar Espaços</a>
 				<a href="?perfil=administrador&p=eventos" class="btn btn-theme btn-lg btn-block">Listar Eventos</a>
 				<a href="?perfil=administrador&p=listaprojetoespecial" class="btn btn-theme btn-lg btn-block">Listar Projeto especial</a>
-			<!--	<a href="?perfil=administrador&p=logsLocais" class="btn btn-theme btn-lg btn-block">Logs Locais</a> !-->
-	<a href="?perfil=administrador&p=reabertura" class="btn btn-theme btn-lg btn-block">Reabrir pedidos enviados</a>
+			<!--	<a href="?perfil=administrador&p=logsLocais" class="btn btn-theme btn-lg btn-block">Logs Locais</a> 
+	<a href="?perfil=administrador&p=reabertura" class="btn btn-theme btn-lg btn-block">Reabrir pedidos enviados</a> !-->
 				<a href="?perfil=administrador&p=alteracoes" class="btn btn-theme btn-lg btn-block">Alterações</a>
    				<a href="?perfil=administrador&atualizar=agenda" class="btn btn-theme btn-lg btn-block">Atualizar agenda</a>
   	        </div>
@@ -387,7 +387,7 @@ if(isset($_POST['cadastrar'])){
 			$mensagem = "<p>O campo espaco, está em branco e é obrigatório. Tente novamente.</a></p>"; 
 							}
 			else{
-				$sqlverificar = "SELECT sala FROM ig_local WHERE idInstituicao = $instituicao AND espaco LIKE '$espaco'";
+				$sqlverificar = "SELECT sala FROM ig_local WHERE idInstituicao = $instituicao AND sala LIKE '$espaco'";
 				$queryverificar = mysqli_query($con,$sqlverificar);
 				$existe = mysqli_num_rows ($queryverificar);
 				
@@ -703,52 +703,56 @@ if(isset ($_POST ['atualizar'])) {
 <section id="chamado" class="home-section bg-white">
     <div class="container">
         <div class="row">
-            <div class="col-md-offset-1 col-md-10">
+            <div class="col-md-offset-4 col-md-6">
                 <div class="text-hide">
-                    <h3>CHAMADOS</h3>
+                    <h3>CHAMADO</h3>
 					<h3><?php if(isset($mensagem)){echo $mensagem;} ?></h3>
                 </div>
             </div>
     	</div>
-  <div class="row">
-        <div class="col-md-offset-2 col-md-8">
+					<div class="row">
+        <div class="col-md-offset-0 col-md-12">
 	<form method="POST" action="?perfil=administrador&p=formularioalteracoes" class="form-horizontal" role="form">
-      
-					<!-- // numero do chamado !-->
-			<div class="col-md-offset-1 col-md-10">  
-			    <div class="form-group">
-				<div class="col-md-offset-2 col-md-8">
-                		<label>ID Chamado:</label>				
-                		<input type="text" readonly name="idChamado" class="form-control"id="idChamado" value="<?php echo $recuperaChamado['idChamado'] ?>" />  </div> 
-                	<div  class="col-md-offset-2 col-md-8">
-                		<label>Titulo chamado:</label>
-						<input readonly name="tipoChamado" class="form-control" value="<?php echo $recuperaChamado['titulo']?>"/>
+			<div class=form-group">
+				<div class="col-md-offset-2 col-md-4">
+                		<label>ID Chamado:</label>		<!-- // numero do chamado !-->		
+                		<input type="text" readonly name="idChamado" class="form-control"id="idChamado" value="<?php echo $recuperaChamado['idChamado'] ?>" /> 
+				</div> 
+					<div class=" col-md-6">	
+                		<label>ID Evento:</label>
+   		<input type="text" readonly name="idEvento" class="form-control"id="idEvento" value="<?php echo $recuperaChamado['idEvento'] ?>" />
+					</div>  	<div class="col-md-offset-2 col-md-8">
+						<label>Nome do Evento:</label>
+                			<input readonly name="nomeEvento" class="form-control" id="nomeEvento" value="<?php echo $recuperaEvento['nomeEvento'] ?>"/>  </div>
+			</div> 	
+        <div class="form-group">
+			<div  class="col-md-offset-2 col-md-4">					
+           		<label>Titulo chamado:</label> 
+				<input readonly name="tipoChamado" class="form-control" value="<?php echo $recuperaChamado['titulo']?>"/>
+			</div>  
+			<div class="col-md-offset- col-md-4">	
+           		<label>Data do chamado:</label>
+        	<input type="text" readonly name="data" onblur="validate()" class="form-control"id="data" value="<?php echo $recuperaChamado['data'] ?>" />
+			</div>	
+				<div  class="col-md-offset-2 col-md-8">
 						<label>Tipo chamado:</label>
                 		<select disabled name="listaTitulo" class="form-control">
 						<?php geraTituloChamado("igsis_tipo_chamado",$recuperaChamado ['titulo'],""); ?>	</select>	
-                	</div>  
-					<div class="col-md-offset-2 col-md-8">	
-                		<label>Criado por:</label>
-                		<input readonly name="nomeCompleto" class="form-control" id="nomeCompleto" value="<?php echo $recuperaUser['nomeCompleto'] ?>"/>
+                	</div>   
+		</div>	
+			<div class="form-group">
+				<div class="col-md-offset-2 col-md-4">	
+                	<label>Criado por:</label>
+					<input readonly name="nomeCompleto" class="form-control" id="nomeCompleto" value="<?php echo $recuperaUser['nomeCompleto'] ?>"/>
                 </div> 
-				<div class="col-md-offset-2 col-md-8">
-                		<label>Email:</label>
-                			<input readonly name="email" class="form-control" id="email" value="<?php echo $recuperaUser['email'] ?>"/>
-							
-                </div>	
-				<div class="col-md-offset-2 col-md-8">	
-                		<label>ID Evento:</label>
-   		<input type="text" readonly name="idEvento" class="form-control"id="idEvento" value="<?php echo $recuperaChamado['idEvento'] ?>" />
-						<label>Nome do Evento:</label>
-                			<input readonly name="nomeEvento" class="form-control" id="nomeEvento" value="<?php echo $recuperaEvento['nomeEvento'] ?>"/>
-                </div> 
+				<div class="col-md-offset-0 col-md-6">
+					<label>Email:</label>
+                	<input readonly name="email" class="form-control" id="email" value="<?php echo $recuperaUser['email'] ?>"/>
+				</div>	
+			</div>
 				
 				<!-- Usuário que preencheou o chamado !--> 
-					<div class="col-md-offset-2 col-md-8">	
-                		<label>Data do chamado:</label>
-                		<input type="text" readonly name="data" onblur="validate()" class="form-control"id="data" value="<?php echo $recuperaChamado['data'] ?>" />
-						</div><!--  // data !-->
-					 <div class="form-group">
+				<div class="form-group">
             	<div class="col-md-offset-2 col-md-8">
             		<label>Descrição:</label>
             		<textarea readonly name="descricao" class="form-control" rows="10"> <?php echo $recuperaChamado['descricao'] ?></textarea>
@@ -767,18 +771,21 @@ if(isset ($_POST ['atualizar'])) {
             		<textarea name="nota" class="form-control" rows="10"> <?php echo $recuperaChamado['nota'] ?></textarea>
             	</div> <!-- Fim de Preenchemento !-->  
             </div>
-			</div>	
-				<div class="col-md-offset-2 col-md-8">
+		<div class=form-group">
+			<div class="col-md-offset-4 col-md-4">
                     	<input type="hidden" name="carregaChamado" value="<?php echo $_POST['carregaChamado'] ?>"  />
 						<input type="hidden" name="atualizar" value="1" />
                 		<input type="submit" class="btn btn-theme btn-lg btn-block" value="	concluir"  />
 					</div>
+						</div> 
 		</form>				
-			</div>
+		
+		
 			<form method="POST" action="?perfil=administrador&p=alteracoes" class="form-horizontal"  role="form">
-				<div class="col-md-offset-2 col-md-8">
+				<div class="col-md-offset-4 col-md-4">
 					<input type="submit" class="btn btn-theme btn-lg btn-blcok" value="Lista de chamados" />
 					</div>
+
 				</form>
 			</div> 
 			</div>
@@ -797,6 +804,7 @@ case "alteracoes": // INICIO DE ALTERAÇÕES
 				  <div class="col-md-offset-2 col-md-8">
 					<div class="section-heading">
 					 <h2>Chamados</h2>
+					 <a href="?perfil=administrador&p=alteracoesfinalizadas" class="btn btn-theme btn-lg btn-block">Chamados Fechados</a>
 					<h4>Selecione o chamado para visualizar.</h4>
                     <h5><?php if(isset($mensagem)){echo $mensagem;} ?></h5>
 					</div>
@@ -809,6 +817,31 @@ case "alteracoes": // INICIO DE ALTERAÇÕES
 		</div>
 	</section> <!--/#list_items-->
 <?php 
+break;
+case "alteracoesfinalizadas": // INICIO DE ALTERAÇÕES FINALIZADAS
+?>
+	  <section id="list_items" class="home-section bg-white">
+		<div class="container">
+      			  <div class="row">
+				  <div class="col-md-offset-2 col-md-8">
+					<div class="section-heading">
+					 <h2>Chamados</h2>
+					 <a href="?perfil=administrador&p=alteracoes" class="btn btn-theme btn-lg btn-block">Chamados Abertos</a>
+					<h4>Selecione o chamado para visualizar.</h4>
+                    <h5><?php if(isset($mensagem)){echo $mensagem;} ?></h5>
+					</div>
+				  </div>
+			  </div>  
+
+			<div class="table-responsive list_info">
+                         <?php listaAlteracoesFinalizado($_SESSION['idInstituicao']); ?>
+			</div>
+		</div>
+	</section> <!--/#list_items-->
+
+
+
+<?php
 break;
 } //fim da switch ?>
 <?php // var_dump ($_POST)
