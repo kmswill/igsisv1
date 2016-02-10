@@ -92,50 +92,7 @@ if($id == "" AND $evento == "" AND $fiscal == 0 AND $tipo == 0 AND $instituicao 
                     </form>
         	    	</div>
         	    </div>
-                
-			  <div class="row">
-				  <div class="col-md-offset-2 col-md-8">
-					<div class="section-heading">
-					 <h2>Busca por periodo</h2>
-                                        <p>O sistema varre os pedidos de contratação e informa quais terão início no período da busca.<br />
-                    É preciso definir o início e o fim do período a se fazer a busca. <br /> Não funciona combinado com a busca acima.</p>
 
-
-					</div>
-				  </div>
-			  </div>
-			  
-	        <div class="row">
-            <div class="form-group">
-            	<div class="col-md-offset-2 col-md-8">
-            <h5><?php if(isset($mensagem)){ echo $mensagem; } ?>
-            <form method="POST" action="?perfil=contratos&p=frm_busca&b=periodo" class="form-horizontal" role="form">
-                <div class="form-group">
-                	<div class="col-md-offset-2 col-md-6">
-               			 <label>Data início *</label>
-                		<input type="text" name="inicio" class="form-control" id="datepicker01" placeholder="">
-               		 </div>
-                	<div class=" col-md-6">
-                		<label>Data encerramento *</label>
-                		<input type="text" name="final" class="form-control" id="datepicker02"  placeholder="">
-               		</div>
-                </div>
-                            
-
-            	</div>
-             </div>
-				<br />             
-	            <div class="form-group">
-		            <div class="col-md-offset-2 col-md-8">
-                	<input type="hidden" name="periodo" value="1" />
-                    
-    		        <input type="submit" class="btn btn-theme btn-lg btn-block" value="Pesquisar">
-                    </form>
-        	    	</div>
-        	    </div>
-
-
-            </div>
 	</section>
 <?php
 }else{
@@ -433,50 +390,8 @@ for($h = 0; $h < $x['num']; $h++)
         	    </div>
              </div>
 	</section>               
-	 <section id="services" class="home-section bg-white">
-		<div class="container">
-			  <div class="row">
-				  <div class="col-md-offset-2 col-md-8">
-					<div class="section-heading">
-					 <h2>Busca por periodo</h2>
-                                                           <p>O sistema varre os pedidos de contratação e informa quais terão início no período da busca.<br />
-                    É preciso definir o início e o fim do período a se fazer a busca. <br /> Não funciona combinado com a busca acima.</p>
-
-					</div>
-				  </div>
-			  </div>
-			  
-	        <div class="row">
-            <div class="form-group">
-            	<div class="col-md-offset-2 col-md-8">
-            <h5><?php if(isset($mensagem)){ echo $mensagem; } ?>
-            <form method="POST" action="?perfil=contratos&p=frm_busca&b=periodo" class="form-horizontal" role="form">
-                <div class="form-group">
-                	<div class="col-md-offset-2 col-md-6">
-               			 <label>Início </label>
-                		<input type="text" name="inicio" class="form-control" id="datepicker01" placeholder="">
-               		 </div>
-                	<div class=" col-md-6">
-                		<label>Fim </label>
-                		<input type="text" name="final" class="form-control" id="datepicker02"  placeholder="">
-               		</div>
-                </div>
-                            
-
-            	</div>
-             </div>
-				<br />             
-	            <div class="form-group">
-		            <div class="col-md-offset-2 col-md-8">
-                	<input type="hidden" name="periodo" value="1" />
-    		        <input type="submit" class="btn btn-theme btn-lg btn-block" value="Pesquisar">
-                    </form>
-        	    	</div>
-        	    </div>
 
 
-            </div>
-	</section>
 <?php } ?>
 
 <?php

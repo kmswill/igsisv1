@@ -19,10 +19,11 @@ require "../funcoes/funcoesSiscontrat.php"; //chamar funcoes do administrador
 						<button class="dl-trigger">Open Menu</button>
 						<ul class="dl-menu">
 							<li>
-								<a href="?secao=inicio">Visão Geral</a>
+								<a href="?perfil=admin&p=visaogeral">Visão Geral</a>
 							</li>
    							<li><a href="?perfil=admin&p=reabertura"> Reabrir eventos enviados</a></li>
    							<li><a href="?perfil=admin&p=scripts"> Scripts</a></li>
+   							<li><a href="?perfil=admin&p=contratos">Contratos</a></li>
 							<li><a href="?secao=perfil">Carregar módulo</a></li>
 							<li><a href="?secao=ajuda">Ajuda</a></li>
                             <li><a href="../include/logoff.php">Sair</a></li>
@@ -324,8 +325,150 @@ if(isset($_POST['reabertura'])){
 			</div>
 		</div>
 </section>
+<?php 
+break;
+case "contratos":
+
+if(!isset($_POST['id_ped'])){
+?>
+
+	 <!-- Contact -->
+	  <section id="contact" class="home-section bg-white">
+	  	<div class="container">
+			  <div class="form-group">
+					<div class="sub-title"><h2>Digite o Número do Pedido</h2></div>
+			  </div>
+
+	  		<div class="row">
+	  			<div class="col-md-offset-1 col-md-10">
+
+				<form class="form-horizontal" role="form" action="?perfil=admin&p=contratos" method="post">
+				 <div class="form-group">
+					<div class="col-md-offset-2 col-md-8"><br/>
+					  <input type="text" class="form-control" id="id_ped" name="id_ped">
+					</div>
+				  </div>
+					
+				  <div class="form-group">
+					<div class="col-md-offset-2 col-md-8">
+					 <input type="submit" value="GRAVAR" class="btn btn-theme btn-lg btn-block">
+					</div>
+				  </div>
+                  
+				</form>
+	
+	  			</div>
+			
+				
+	  		</div>
+			
+
+	  	</div>
+	  </section>  
+
+<?php 	
+}else{
+	$id_ped = $_POST['id_ped'];	
+	if(isset($_POST['atualizar'])){
+		$processo = $_POST['NumeroProcesso'];
+		$nota = $_POST['NumeroNotaEmpenho'];
+		$data_emissao = $_POST['DataEmissaoNotaEmpenho'];
+		$data_entrega = $_POST['DataEntregaNotaEmpenho'];
+		$con = bancoMysqli();
+		$sql_atualiza = "UPDATE igsis_pedido_contratacao SET
+		NumeroProcesso = '$processo',
+		NumeroNotaEmpenho = '$nota',
+		DataEmissaoNotaEmpenho = '$data_emissao',
+		DataEntregaNotaEmpenho = '$data_entrega'
+		WHERE idPedidoContratacao = '$id_ped'";
+	$query_atualiza = mysqli_query($con,$sql_atualiza);
+		if($query_atualiza){
+			gravarLog($sql_atualiza);
+			$mensagem = "Pedido atualizado";
+			
+		}else{
+			$mensagem = "Erro ao atualizar";
+		}
+
+	echo $mensagem = "Erro(2)";
+	}
+
+	
+	
+
+$pedido = recuperaDados("igsis_pedido_contratacao",$id_ped,"idPedidoContratacao");
+$ped = siscontrat($id_ped);
+?>
+	 <!-- Contact -->
+	  <section id="contact" class="home-section bg-white">
+	  	<div class="container">
+			  <div class="form-group">
+					<div class="sub-title"><h2><?php echo $ped['Objeto']; ?></h2>
+                    <h3><?php if(isset($mensagem)){ echo $mensagem;} ?></h3>
+                    <h3><?php if(isset($sql_atualizsa)){echo $sql_atualiza;} ?></h3>
+                    </div>
+                    
+			  </div>
+
+	  		<div class="row">
+	  			<div class="col-md-offset-1 col-md-10">
+
+				<form class="form-horizontal" role="form" action="?perfil=admin&p=contratos" method="post">
+				 <div class="form-group">
+					<div class="col-md-offset-2 col-md-8"><strong>Código do Pedido de Contratação:</strong><br/>
+					  <input type="text" readonly class="form-control" id="IdPedidoContratacaoPJ" name="IdPedidoContratacaoPJ" value="<?php echo $pedido['idPedidoContratacao']; ?>" >
+					</div>
+				  </div>
+				  
+                  <div class="form-group">
+					<div class="col-md-offset-2 col-md-8"><strong>Processo SEI:</strong>
+					  <input type="text" class="form-control" id="NumeroProcesso" name="NumeroProcesso" placeholder="Número do Processo"  value="<?php echo $pedido['NumeroProcesso']; ?>" /> 
+					</div>
+				  </div>
+				 
+                  <div class="form-group">
+					<div class="col-md-offset-2 col-md-8"><strong>Número da Nota de Empenho:</strong>
+					  <input type="text" class="form-control" id="NumeroNotaEmpenho" name="NumeroNotaEmpenho" placeholder="Número da Nota de Empenho" value="<?php echo $pedido['NumeroNotaEmpenho']; ?>">
+					</div>
+				  </div>
+                  
+                   <div class="form-group">
+					<div class="col-md-offset-2 col-md-8"><strong>Data de Emissão da Nota de Empenho:</strong>
+					  <input type="date" class="form-control" id="DataEmissaoNotaEmpenho" name="DataEmissaoNotaEmpenho" placeholder="Data de Emissao da Nota de Empenho" value="<?php echo $pedido['DataEmissaoNotaEmpenho']; ?>">
+					</div>
+				  </div>
+                  
+                  <div class="form-group">
+					<div class="col-md-offset-2 col-md-8"><strong>Data de Entrega da Nota de Empenho:</strong>
+					  <input type="date" class="form-control" id="DataEntregaNotaEmpenho" name="DataEntregaNotaEmpenho" placeholder="Data de Entrega da Nota de Empenho" value="<?php echo $pedido['DataEntregaNotaEmpenho']; ?>">
+					</div>
+				  </div>
+					
+				  <div class="form-group">
+					<div class="col-md-offset-2 col-md-8">
+                    <input type="hidden" name="id_ped" value="<?php echo $id_ped; ?>" /> 
+                    <input type="hidden" name="atualizar" value="1" /> 
+					 <input type="submit" value="Atualizar" class="btn btn-theme btn-lg btn-block">
+				</form>
+
+					</div>
+
+				  </div>
+				<a href="?perfil=admin&p=contratos" class="btn btn-theme btn-lg btn-block" >Outro pedido</a>                  
+	
+	  			</div>
+			
+				
+	  		</div>
+			
+
+	  	</div>
+	  </section>  
+
+
 
 <?php 
+}
 break;
 case "scripts":
 

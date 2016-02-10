@@ -15,7 +15,7 @@ $usuario = recuperaDados("ig_usuario",$_SESSION['idUsuario'],"idUsuario");
 				<li><a href="<?php echo $pasta ?>frm_lista_pj">Pessoa Jurídica</a></li>
 			</ul>
         </li>
-		<li><a href="<?php echo $pasta ?>frm_chamados">Listar chamados</a></li>        <!--
+        <!--
 		<li><a href="#">Contratos Pessoa Física</a>
 			<ul class="dl-submenu">
 				<li><a href="<?php echo $pasta ?>frm_lista_pedidocontratacaopf">Pedido de Contratação</a></li>
@@ -33,6 +33,7 @@ $usuario = recuperaDados("ig_usuario",$_SESSION['idUsuario'],"idUsuario");
         -->
         
 		<li><a href="<?php echo $pasta ?>frm_busca">Contratos</a></li>
+  		<li><a href="<?php echo $pasta ?>frm_busca_periodo">Contratos por período</a></li>
         <?php if($usuario['contratos'] == 2){ ?>
 					<li><a href="<?php echo $pasta ?>frm_reabertura">Reabertura de Eventos/Pedidos</a></li>
         <?php } ?>
