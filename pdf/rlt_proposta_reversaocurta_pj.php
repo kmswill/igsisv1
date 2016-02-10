@@ -48,9 +48,9 @@ function ChapterBody($file)
     // Read text file
     $txt = file_get_contents($file);
     // Arial 10
-    $this->SetFont('Arial','',10);
+    $this->SetFont('Arial','',7);
     // Output justified text
-    $this->MultiCell(0,5,$txt);
+    $this->MultiCell(0,4,$txt);
     // Line break
     $this->Ln();
 }
@@ -327,8 +327,8 @@ $l=7; //DEFINE A ALTURA DA LINHA
    
    $pdf->SetX($x);
    $pdf->SetFont('Arial','', 10);
-   $pdf->Cell(85,$l,$rep01RG,0,0,'L');
-   $pdf->Cell(85,$l,$rep02RG,0,0,'L');
+   $pdf->Cell(85,$l,"RG: ".$rep01RG,0,0,'L');
+   $pdf->Cell(85,$l,"RG: ".$rep02RG,0,0,'L');
    
 
 //	QUEBRA DE PÁGINA
@@ -348,15 +348,15 @@ $pdf->SetX($x);
    
    $pdf->SetX($x);
    $pdf->SetFont('Arial','I', 8);
-   $pdf->Cell(10,10,utf8_decode('(empresário exclusivo SE FOR O CASO)'),0,0,'L');
+   $pdf->Cell(10,5,utf8_decode('(empresário exclusivo SE FOR O CASO)'),0,0,'L');
    
    $pdf->Ln();
    
    $pdf->SetX($x);
    $pdf->SetFont('Arial','B', 9);
-   $pdf->Cell(33,$l,'Nome da empresa:',0,0,'L');
+   $pdf->Cell(30,$l,'Nome da empresa:',0,0,'L');
    $pdf->SetFont('Arial','', 9);
-   $pdf->MultiCell(155,$l,utf8_decode($pjRazaoSocial));
+   $pdf->MultiCell(150,$l,utf8_decode($pjRazaoSocial));
    
    $pdf->SetX($x);
    $pdf->SetFont('Arial','B', 9);
@@ -370,7 +370,7 @@ $pdf->SetX($x);
    
    $pdf->SetX($x);
    $pdf->SetFont('Arial','B', 9);
-   $pdf->Cell(20,$l,utf8_decode('Endereço:'),0,0,'L');
+   $pdf->Cell(18,$l,utf8_decode('Endereço:'),0,0,'L');
    $pdf->SetFont('Arial','', 9);
    $pdf->MultiCell(160,$l,utf8_decode($pjEndereco));
    
@@ -389,17 +389,17 @@ $pdf->SetX($x);
    
    $pdf->SetX($x);
    $pdf->SetFont('Arial','B', 9);
-   $pdf->Cell(28,$l,'Representante:',0,0,'L');
+   $pdf->Cell(25,$l,'Representante:',0,0,'L');
    $pdf->SetFont('Arial','', 9);
-   $pdf->MultiCell(155,$l,utf8_decode($rep01Nome));
+   $pdf->Cell(180,$l,utf8_decode($rep01Nome),0,1,'L');
    
    $pdf->SetX($x);
    $pdf->SetFont('Arial','B', 9);
-   $pdf->Cell(23,$l,utf8_decode('Estado Civil:'),0,0,'L');
+   $pdf->Cell(20,$l,utf8_decode('Estado Civil:'),0,0,'L');
    $pdf->SetFont('Arial','', 9);
    $pdf->Cell(67,$l,utf8_decode($rep01EstadoCivil),0,0,'L');
    $pdf->SetFont('Arial','B', 9);
-   $pdf->Cell(27,$l,utf8_decode('Nacionalidade:'),0,0,'L');
+   $pdf->Cell(25,$l,utf8_decode('Nacionalidade:'),0,0,'L');
    $pdf->SetFont('Arial','', 9);
    $pdf->Cell(16,$l,utf8_decode($rep01Nacionalidade),0,1,'L');
    
@@ -417,17 +417,17 @@ $pdf->SetX($x);
    
    $pdf->SetX($x);
    $pdf->SetFont('Arial','B', 9);
-   $pdf->Cell(28,7,'Representante:',0,0,'L');
+   $pdf->Cell(25,$l,'Representante:',0,0,'L');
    $pdf->SetFont('Arial','', 9);
-   $pdf->MultiCell(155,7,utf8_decode($rep02Nome));
+   $pdf->Cell(180,$l,utf8_decode($rep02Nome),0,1,'L');
    
    $pdf->SetX($x);
    $pdf->SetFont('Arial','B', 9);
-   $pdf->Cell(23,$l,utf8_decode('Estado Civil:'),0,0,'L');
+   $pdf->Cell(20,$l,utf8_decode('Estado Civil:'),0,0,'L');
    $pdf->SetFont('Arial','', 9);
    $pdf->Cell(67,$l,utf8_decode($rep02EstadoCivil),0,0,'L');
    $pdf->SetFont('Arial','B', 9);
-   $pdf->Cell(27,$l,utf8_decode('Nacionalidade:'),0,0,'L');
+   $pdf->Cell(25,$l,utf8_decode('Nacionalidade:'),0,0,'L');
    $pdf->SetFont('Arial','', 9);
    $pdf->Cell(16,$l,utf8_decode($rep02Nacionalidade),0,1,'L');
    
@@ -443,50 +443,36 @@ $pdf->SetX($x);
    
    
    $pdf->SetX($x);
-   $pdf->Cell(180,5,'','B',1,'C');
+   $pdf->Cell(180,2,'','B',1,'C');
    
    //$pdf->Ln();
 
 $l=3.5; //DEFINE A ALTURA DA LINHA
 
 $pdf->SetX($x);
+   $pdf->SetFont('Arial','', 8);
+   $pdf->Cell(10,$l,'(D)',0,0,'L');
+   $pdf->SetFont('Arial','B', 8);
+   $pdf->Cell(170,5,utf8_decode('OBSERVAÇÃO'),0,1,'C');
+   
+$pdf->SetX($x);
+$pdf->PrintChapter('txt/proposta_reversaocurta_observacao.txt');
+    
+
+$pdf->SetX($x);
+   $pdf->SetFont('Arial','', 8);
+   $pdf->Cell(10,$l,'',0,0,'L');
+   $pdf->SetFont('Arial','B', 8);
+   $pdf->Cell(170,5,utf8_decode('DECLARAÇÕES'),0,1,'C');
+   
+$pdf->SetX($x);
+$pdf->SetFont('Arial','B', 10);
+$pdf->PrintChapter('txt/proposta_reversaocurta_declaracao.txt');
+    
+   $pdf->Ln();
+
+   $pdf->SetX($x);
    $pdf->SetFont('Arial','', 9);
-   $pdf->Cell(10,5,'(D)',0,0,'L');
-   $pdf->SetFont('Arial','B', 10);
-   $pdf->Cell(170,5,utf8_decode('OBSERVAÇÕES E DECLARAÇÕES'),0,1,'C');
-   
-   $pdf->SetX($x);
-   $pdf->SetFont('Arial','', 8);
-   $pdf->MultiCell(180,$l,utf8_decode("Ciente da obrigatoriedade de fazer menção dos créditos PREFEITURA DA CIDADE DE SÃO PAULO, SECRETARIA MUNICIPAL DE CULTURA, em toda divulgação, escrita ou falada, realizada sobre o espetáculo programado, sob pena de cancelamento sumário do mesmo se não cumpridas estas determinações. 
-No caso de reversão de bilheteria, fica sujeito ao atendimento no disposto nas Leis municipais no 10.973/91, regulamentada pelo Decreto Municipal n° 30.730/91; 11.113/91; 11.357/93 e 12.975/2000 e portaria nº 66/SMC/2007; Leis Estaduais nº 7.844/92, regulamentada pelo Decreto Estadual nº 35.606/92; 10.858/2001, alterada pela Lei Estadual 14.729/2012 e Medida Provisória Federal 12.933/2013 e Lei Federal nº 10.741/2003 (Estatuto do Idoso).
-Nos casos de lançamento de CD ou outro produto artístico-cultural, assumo inteira responsabilidade fiscal e tributária quanto a sua comercialização, isentando a Municipalidade de quaisquer ônus ou encargos , nos termos da O.I. n o 01/2002 – SMC-G.
-No caso de espetáculo musical, declaro assumir quaisquer ônus decorrentes da fiscalização e autuação da Ordem dos Músicos do Brasil - OMB."));
-
-   
-   $pdf->SetX($x);
-   $pdf->SetFont('Arial','', 8);
-   $pdf->MultiCell(180,$l,utf8_decode("Declaramos que não temos débitos perante as Fazendas Públicas, Federal, Estadual e, em especial perante a Prefeitura do Município de São Paulo.
-Declaramos que assumimos inteira responsabilidade, conforme o caso:
--	pelo recolhimento de direitos autorais perante à SBAT;
--	pela adoção de providências junto à OMB; 
--	pela adoção das providências administrativas para liberação da autorização do ECAD, sendo que eventuais pagamentos serão efetuados pela SMC.
-Declaramos que estamos  cientes da penalidade de multa de 10% (dez por cento) para casos de infração de cláusula contratual e/ou inexecução parcial do ajuste, e de 30%  (trinta por cento)  para casos de inexecução total do ajuste. O valor da multa será calculado sobre o valor do contrato ou sobre o valor integral da venda de todos os ingressos disponíveis.
-Declaramos que estamos  cientes de que haverá multa de 10% sobre o valor do contrato ou sobre o valor integral da venda de todos os ingressos disponíveis por atraso de até 30 minutos no evento.  Ultrapassado esse tempo, e independentemente da aplicação da penalidade, fica a critério da Diretoria autorizar a realização do evento, visando evitar prejuízos à grade de programação.  Não sendo autorizada a realização do evento, será considerada inexecução total do contrato, com aplicação da multa prevista por inexecução total.
-Declaramos que estamos  cientes de que haverá multa de 10% sobre o valor do contrato ou sobre o valor integral da venda de todos os ingressos disponíveis, em função da falta de regularidade fiscal da contratada, bem como, pela verificação de que a contratada possui pendências junto ao Cadastro Informativo Municipal-CADIN Municipal.
-As penalidades serão aplicadas sem prejuízo das demais sanções previstas na legislação que rege a matéria.
-Declaramos que estamos cientes de que do valor do serviço serão descontados os impostos cabíveis.
-Declaramos que estamos cientes de que é vedada a colocação de anúncios (lambe-lambe e similares) com base na legislação municipal existente que disciplina a matéria.
-Declaramos que no caso de apresentação de espetáculo (s) de dança, estamos cientes de que é de nossa responsabilidade providenciar operador (es) de som e luz.
-Todas as informações precedentes são formadas sob as penas da Lei.
-"));
-
-
-   $pdf->Ln();
-   $pdf->Ln();
-
-
-   $pdf->SetX($x);
-   $pdf->SetFont('Arial','', 10);
    $pdf->Cell(180,$l,"Data: _________ / _________ / "."$ano".".",0,0,'L');
    
    $pdf->Ln();
@@ -504,8 +490,8 @@ Todas as informações precedentes são formadas sob as penas da Lei.
    
    $pdf->SetX($x);
    $pdf->SetFont('Arial','', 10);
-   $pdf->Cell(85,$l,$rep01RG,0,0,'L');
-   $pdf->Cell(85,$l,$rep02RG,0,0,'L');
+   $pdf->Cell(85,$l,"RG: ".$rep01RG,0,0,'L');
+   $pdf->Cell(85,$l,"RG: ".$rep02RG,0,0,'L');
    
    
    
@@ -571,8 +557,8 @@ $l=5; //DEFINE A ALTURA DA LINHA
    
    $pdf->SetX($x);
    $pdf->SetFont('Arial','', 10);
-   $pdf->Cell(85,$l,$rep01RG,0,0,'L');
-   $pdf->Cell(85,$l,$rep02RG,0,0,'L');
+   $pdf->Cell(85,$l,"RG: ".$rep01RG,0,0,'L');
+   $pdf->Cell(85,$l,"RG: ".$rep02RG,0,0,'L');
    
 
 //for($i=1;$i<=20;$i++)
