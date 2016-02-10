@@ -40,8 +40,8 @@ $ano=date('Y');
 $pedido = siscontrat($id_ped);
 $pj = siscontratDocs($pedido['IdProponente'],2);
 $ex = siscontratDocs($pedido['IdExecutante'],1);
-$rep01 = siscontratDocs($pedido['idRepresentante01'],3);
-$rep02 = siscontratDocs($pedido['idRepresentante02'],3);
+$rep01 = siscontratDocs($pj['Representante01'],3);
+$rep02 = siscontratDocs($pj['Representante02'],3);
 
 $codPed = $id_ped;
 $objeto = $pedido["Objeto"];
@@ -105,15 +105,37 @@ $exINSS = $ex["INSS"];
 // Representante01
 
 $rep01Nome = $rep01["Nome"];
+$rep01NomeArtistico = $rep01["NomeArtistico"];
+$rep01EstadoCivil = $rep01["EstadoCivil"];
+$rep01Nacionalidade = $rep01["Nacionalidade"];
 $rep01RG = $rep01["RG"];
 $rep01CPF = $rep01["CPF"];
+$rep01CCM = $rep01["CCM"];
+$rep01OMB = $rep01["OMB"];
+$rep01DRT = $rep01["DRT"];
+$rep01Funcao = $rep01["Funcao"];
+$rep01Endereco = $rep01["Endereco"];
+$rep01Telefones = $rep01["Telefones"];
+$rep01Email = $rep01["Email"];
+$rep01INSS = $rep01["INSS"];
 
 
 // Representante02
 
 $rep02Nome = $rep02["Nome"];
+$rep02NomeArtistico = $rep02["NomeArtistico"];
+$rep02EstadoCivil = $rep02["EstadoCivil"];
+$rep02Nacionalidade = $rep02["Nacionalidade"];
 $rep02RG = $rep02["RG"];
 $rep02CPF = $rep02["CPF"];
+$rep02CCM = $rep02["CCM"];
+$rep02OMB = $rep02["OMB"];
+$rep02DRT = $rep02["DRT"];
+$rep02Funcao = $rep02["Funcao"];
+$rep02Endereco = $rep02["Endereco"];
+$rep02Telefones = $rep02["Telefones"];
+$rep02Email = $rep02["Email"];
+$rep02INSS = $rep02["INSS"];
 
 
 $setor = $pedido["Setor"];
