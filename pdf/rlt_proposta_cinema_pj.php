@@ -8,6 +8,8 @@
    require_once("../funcoes/funcoesConecta.php");
    require_once("../funcoes/funcoesGerais.php");
    require_once("../funcoes/funcoesSiscontrat.php");
+   
+   
 
    //CONEXÃO COM BANCO DE DADOS 
    $conexao = bancoMysqli(); 
@@ -48,9 +50,9 @@ function ChapterBody($file)
     // Read text file
     $txt = file_get_contents($file);
     // Arial 10
-    $this->SetFont('Arial','',7);
+    $this->SetFont('Arial','',10);
     // Output justified text
-    $this->MultiCell(0,4,$txt);
+    $this->MultiCell(0,5,$txt);
     // Line break
     $this->Ln();
 }
@@ -291,7 +293,13 @@ $l=7; //DEFINE A ALTURA DA LINHA
    $pdf->Cell(82,$l,utf8_decode('Tempo Aproximado de Duração do Espetáculo:'),0,0,'L');
    $pdf->SetFont('Arial','', 10);
    $pdf->MultiCell(98,$l,utf8_decode("$Duracao"."utos"));
-      
+   
+   $pdf->SetX($x);
+   $pdf->SetFont('Arial','B', 10);
+   $pdf->Cell(27,$l,utf8_decode('Carga Horária:'),0,0,'L');
+   $pdf->SetFont('Arial','', 10);
+   $pdf->MultiCell(180,$l,$CargaHoraria);
+   
    $pdf->SetX($x);
    $pdf->SetFont('Arial','B', 10);
    $pdf->Cell(15,$l,'Local:',0,0,'L');
@@ -306,9 +314,7 @@ $l=7; //DEFINE A ALTURA DA LINHA
    
    $pdf->SetX($x);
    $pdf->SetFont('Arial','B', 10);
-   $pdf->Cell(40,$l,utf8_decode('Valor da Prestação do Serviço:'),0,1,'L');
-   
-   $pdf->SetX($x);
+   $pdf->Cell(40,$l,'Forma de Pagamento:',0,0,'L');
    $pdf->SetFont('Arial','', 10);
    $pdf->MultiCell(140,$l,utf8_decode($FormaPagamento));
    
@@ -327,152 +333,146 @@ $l=7; //DEFINE A ALTURA DA LINHA
    
    $pdf->SetX($x);
    $pdf->SetFont('Arial','', 10);
-   $pdf->Cell(85,$l,"RG: ".$rep01RG,0,0,'L');
-   $pdf->Cell(85,$l,"RG: ".$rep02RG,0,0,'L');
+   $pdf->Cell(85,$l,$rep01RG,0,0,'L');
+   $pdf->Cell(85,$l,$rep02RG,0,0,'L');
    
 
 //	QUEBRA DE PÁGINA
 $pdf->AddPage('','');
 
-$pdf->SetXY( $x , 33 );// SetXY - DEFINE O X (largura) E O Y (altura) NA PÁGINA
+$pdf->SetXY( $x , 35 );// SetXY - DEFINE O X (largura) E O Y (altura) NA PÁGINA
 
-$l=4; //DEFINE A ALTURA DA LINHA  
+$l=5; //DEFINE A ALTURA DA LINHA  
 
 	//Pessoa Jurídica
 
 $pdf->SetX($x);
    $pdf->SetFont('Arial','', 10);
    $pdf->Cell(10,5,'(C)',0,0,'L');
-   $pdf->SetFont('Arial','B', 10);
+   $pdf->SetFont('Arial','B', 12);
    $pdf->Cell(170,5,utf8_decode('PESSOA JURÍDICA'),0,1,'C');
    
    $pdf->SetX($x);
-   $pdf->SetFont('Arial','I', 8);
-   $pdf->Cell(10,5,utf8_decode('(empresário exclusivo SE FOR O CASO)'),0,0,'L');
+   $pdf->SetFont('Arial','I', 9);
+   $pdf->Cell(10,10,utf8_decode('(empresário exclusivo SE FOR O CASO)'),0,0,'L');
    
    $pdf->Ln();
    
    $pdf->SetX($x);
-   $pdf->SetFont('Arial','B', 9);
-   $pdf->Cell(30,$l,'Nome da empresa:',0,0,'L');
-   $pdf->SetFont('Arial','', 9);
-   $pdf->MultiCell(150,$l,utf8_decode($pjRazaoSocial));
+   $pdf->SetFont('Arial','B', 10);
+   $pdf->Cell(33,$l,'Nome da empresa:',0,0,'L');
+   $pdf->SetFont('Arial','', 10);
+   $pdf->MultiCell(155,$l,utf8_decode($pjRazaoSocial));
    
    $pdf->SetX($x);
-   $pdf->SetFont('Arial','B', 9);
+   $pdf->SetFont('Arial','B', 10);
    $pdf->Cell(10,$l,utf8_decode('CCM:'),0,0,'L');
-   $pdf->SetFont('Arial','', 9);
+   $pdf->SetFont('Arial','', 10);
    $pdf->Cell(65,$l,utf8_decode($pjCCM),0,0,'L');
-   $pdf->SetFont('Arial','B', 9);
+   $pdf->SetFont('Arial','B', 10);
    $pdf->Cell(12,$l,utf8_decode('CNPJ:'),0,0,'L');
-   $pdf->SetFont('Arial','', 9);
+   $pdf->SetFont('Arial','', 10);
    $pdf->Cell(65,$l,utf8_decode($pjCNPJ),0,1,'L');
    
    $pdf->SetX($x);
-   $pdf->SetFont('Arial','B', 9);
-   $pdf->Cell(18,$l,utf8_decode('Endereço:'),0,0,'L');
-   $pdf->SetFont('Arial','', 9);
+   $pdf->SetFont('Arial','B', 10);
+   $pdf->Cell(20,$l,utf8_decode('Endereço:'),0,0,'L');
+   $pdf->SetFont('Arial','', 10);
    $pdf->MultiCell(160,$l,utf8_decode($pjEndereco));
    
    $pdf->SetX($x);
-   $pdf->SetFont('Arial','B', 9);
+   $pdf->SetFont('Arial','B', 10);
    $pdf->Cell(17,$l,utf8_decode('Telefone:'),0,0,'L');
-   $pdf->SetFont('Arial','', 9);
+   $pdf->SetFont('Arial','', 10);
    $pdf->Cell(75,$l,utf8_decode($pjTelefones),0,0,'L');
-   $pdf->SetFont('Arial','B', 9);
+   $pdf->SetFont('Arial','B', 10);
    $pdf->Cell(13,$l,utf8_decode('E-mail:'),0,0,'L');
-   $pdf->SetFont('Arial','', 9);
+   $pdf->SetFont('Arial','', 10);
    $pdf->Cell(65,$l,utf8_decode($pjEmail),0,1,'L');
    
-   
+   $pdf->Ln();
+
 	//Representante01
    
    $pdf->SetX($x);
-   $pdf->SetFont('Arial','B', 9);
-   $pdf->Cell(25,$l,'Representante:',0,0,'L');
-   $pdf->SetFont('Arial','', 9);
-   $pdf->Cell(180,$l,utf8_decode($rep01Nome),0,1,'L');
+   $pdf->SetFont('Arial','B', 10);
+   $pdf->Cell(28,$l,'Representante:',0,0,'L');
+   $pdf->SetFont('Arial','', 10);
+   $pdf->MultiCell(155,$l,utf8_decode($rep01Nome));
    
    $pdf->SetX($x);
-   $pdf->SetFont('Arial','B', 9);
-   $pdf->Cell(20,$l,utf8_decode('Estado Civil:'),0,0,'L');
-   $pdf->SetFont('Arial','', 9);
+   $pdf->SetFont('Arial','B', 10);
+   $pdf->Cell(23,$l,utf8_decode('Estado Civil:'),0,0,'L');
+   $pdf->SetFont('Arial','', 10);
    $pdf->Cell(67,$l,utf8_decode($rep01EstadoCivil),0,0,'L');
-   $pdf->SetFont('Arial','B', 9);
-   $pdf->Cell(25,$l,utf8_decode('Nacionalidade:'),0,0,'L');
-   $pdf->SetFont('Arial','', 9);
+   $pdf->SetFont('Arial','B', 10);
+   $pdf->Cell(27,$l,utf8_decode('Nacionalidade:'),0,0,'L');
+   $pdf->SetFont('Arial','', 10);
    $pdf->Cell(16,$l,utf8_decode($rep01Nacionalidade),0,1,'L');
    
    $pdf->SetX($x);
-   $pdf->SetFont('Arial','B', 9);
+   $pdf->SetFont('Arial','B', 10);
    $pdf->Cell(8,$l,utf8_decode('RG:'),0,0,'L');
-   $pdf->SetFont('Arial','', 9);
+   $pdf->SetFont('Arial','', 10);
    $pdf->Cell(82,$l,utf8_decode($rep01RG),0,0,'L');
-   $pdf->SetFont('Arial','B', 9);
+   $pdf->SetFont('Arial','B', 10);
    $pdf->Cell(10,$l,utf8_decode('CPF:'),0,0,'L');
-   $pdf->SetFont('Arial','', 9);
+   $pdf->SetFont('Arial','', 10);
    $pdf->Cell(48,$l,utf8_decode($rep01CPF),0,1,'L');
    
-   	// Representante02
+   //$pdf->Ln();
+
+	// Representante02
    
    $pdf->SetX($x);
-   $pdf->SetFont('Arial','B', 9);
-   $pdf->Cell(25,$l,'Representante:',0,0,'L');
-   $pdf->SetFont('Arial','', 9);
-   $pdf->Cell(180,$l,utf8_decode($rep02Nome),0,1,'L');
+   $pdf->SetFont('Arial','B', 10);
+   $pdf->Cell(28,7,'Representante:',0,0,'L');
+   $pdf->SetFont('Arial','', 10);
+   $pdf->MultiCell(155,7,utf8_decode($rep02Nome));
    
    $pdf->SetX($x);
-   $pdf->SetFont('Arial','B', 9);
-   $pdf->Cell(20,$l,utf8_decode('Estado Civil:'),0,0,'L');
-   $pdf->SetFont('Arial','', 9);
+   $pdf->SetFont('Arial','B', 10);
+   $pdf->Cell(23,$l,utf8_decode('Estado Civil:'),0,0,'L');
+   $pdf->SetFont('Arial','', 10);
    $pdf->Cell(67,$l,utf8_decode($rep02EstadoCivil),0,0,'L');
-   $pdf->SetFont('Arial','B', 9);
-   $pdf->Cell(25,$l,utf8_decode('Nacionalidade:'),0,0,'L');
-   $pdf->SetFont('Arial','', 9);
+   $pdf->SetFont('Arial','B', 10);
+   $pdf->Cell(27,$l,utf8_decode('Nacionalidade:'),0,0,'L');
+   $pdf->SetFont('Arial','', 10);
    $pdf->Cell(16,$l,utf8_decode($rep02Nacionalidade),0,1,'L');
    
    $pdf->SetX($x);
-   $pdf->SetFont('Arial','B', 9);
+   $pdf->SetFont('Arial','B', 10);
    $pdf->Cell(8,$l,utf8_decode('RG:'),0,0,'L');
-   $pdf->SetFont('Arial','', 9);
+   $pdf->SetFont('Arial','', 10);
    $pdf->Cell(82,$l,utf8_decode($rep02RG),0,0,'L');
-   $pdf->SetFont('Arial','B', 9);
+   $pdf->SetFont('Arial','B', 10);
    $pdf->Cell(10,$l,utf8_decode('CPF:'),0,0,'L');
-   $pdf->SetFont('Arial','', 9);
+   $pdf->SetFont('Arial','', 10);
    $pdf->Cell(48,$l,utf8_decode($rep02CPF),0,1,'L');
    
    
    $pdf->SetX($x);
-   $pdf->Cell(180,2,'','B',1,'C');
+   $pdf->Cell(180,5,'','B',1,'C');
    
-   //$pdf->Ln();
+   $pdf->Ln();
 
-$l=3.5; //DEFINE A ALTURA DA LINHA
-
-$pdf->SetX($x);
-   $pdf->SetFont('Arial','', 8);
-   $pdf->Cell(10,$l,'(D)',0,0,'L');
-   $pdf->SetFont('Arial','B', 8);
-   $pdf->Cell(170,5,utf8_decode('OBSERVAÇÃO'),0,1,'C');
-   
-$pdf->SetX($x);
-$pdf->PrintChapter('txt/proposta_reversaolonga_observacao.txt');
-    
 
 $pdf->SetX($x);
-   $pdf->SetFont('Arial','', 8);
-   $pdf->Cell(10,$l,'',0,0,'L');
-   $pdf->SetFont('Arial','B', 8);
+   $pdf->SetFont('Arial','', 10);
+   $pdf->Cell(10,5,'(D)',0,0,'L');
+   $pdf->SetFont('Arial','B', 12);
    $pdf->Cell(170,5,utf8_decode('DECLARAÇÕES'),0,1,'C');
    
+   $pdf->Ln();
+
 $pdf->SetX($x);
-$pdf->SetFont('Arial','B', 10);
-$pdf->PrintChapter('txt/proposta_reversaolonga_declaracao.txt');
-    
-   //$pdf->Ln();
+$pdf->PrintChapter('txt/proposta_cinema.txt');
+
+   $pdf->Ln();
+
 
    $pdf->SetX($x);
-   $pdf->SetFont('Arial','', 9);
+   $pdf->SetFont('Arial','', 10);
    $pdf->Cell(180,$l,"Data: _________ / _________ / "."$ano".".",0,0,'L');
    
    $pdf->Ln();
@@ -483,15 +483,15 @@ $pdf->PrintChapter('txt/proposta_reversaolonga_declaracao.txt');
    
    
 //RODAPÉ PERSONALIZADO
-   $pdf->SetXY($x,269);
+   $pdf->SetXY($x,262);
    $pdf->SetFont('Arial','', 10);
    $pdf->Cell(85,$l,utf8_decode($rep01Nome),'T',0,'L');
    $pdf->Cell(85,$l,utf8_decode($rep02Nome),'T',1,'L');
    
    $pdf->SetX($x);
    $pdf->SetFont('Arial','', 10);
-   $pdf->Cell(85,$l,"RG: ".$rep01RG,0,0,'L');
-   $pdf->Cell(85,$l,"RG: ".$rep02RG,0,0,'L');
+   $pdf->Cell(85,$l,$rep01RG,0,0,'L');
+   $pdf->Cell(85,$l,$rep02RG,0,0,'L');
    
    
    
@@ -557,8 +557,8 @@ $l=5; //DEFINE A ALTURA DA LINHA
    
    $pdf->SetX($x);
    $pdf->SetFont('Arial','', 10);
-   $pdf->Cell(85,$l,"RG: ".$rep01RG,0,0,'L');
-   $pdf->Cell(85,$l,"RG: ".$rep02RG,0,0,'L');
+   $pdf->Cell(85,$l,$rep01RG,0,0,'L');
+   $pdf->Cell(85,$l,$rep02RG,0,0,'L');
    
 
 //for($i=1;$i<=20;$i++)

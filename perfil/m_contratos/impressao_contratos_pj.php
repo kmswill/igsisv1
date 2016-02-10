@@ -32,7 +32,8 @@ $link20 = $http."rlt_declaracao_exclusividade_2rep_pj.php";
 $link21 = $http."rlt_proposta_doacao_pj.php";
 $link22 = $http."rlt_ordemservico_pj.php";
 $link23 = $http."rlt_ordemservico_pj_word.php";
-
+$link24 = $http."rlt_proposta_cinema_pj.php";
+$link25 = $http."rlt_proposta_exposicao_pj.php";
 
 
 	 $last_id = mysqli_insert_id($conexao);
@@ -58,7 +59,7 @@ $link23 = $http."rlt_ordemservico_pj_word.php";
 		<tr><td class='list_description'><br/></td></tr>
 		
 		<tr class='list_menu'><td colspan='2'><strong>PROPOSTA</strong></td></tr>
-		
+		<!--
 		<tr>
 			<td><a href='$link1?id=$id_ped' target='_blank'><strong>Padrão</strong></a></td>
 			<td><a href='$link2?id=$id_ped' target='_blank'><strong>Artístico</strong></a></td>
@@ -68,14 +69,20 @@ $link23 = $http."rlt_ordemservico_pj_word.php";
 			<td><a href='$link3?id=$id_ped' target='_blank'><strong>Comunicado</strong></a></td>
 			<td><a href='$link4?id=$id_ped' target='_blank'><strong>Evento Externo</strong></a></td>
 		</tr>
+		-->
+		
+		<tr>
+			<td><a href='$link24?id=$id_ped' target='_blank'><strong>Cinema</strong></a></td>
+			<td><a href='$link21?id=$id_ped' target='_blank'><strong>Doação de Serviços</strong></a></td>
+		</tr>
 		
 		<tr>
 			<td><a href='$link15?id=$id_ped' target='_blank'><strong>Reversão Longa Temporada</strong></a></td>
 			<td><a href='$link16?id=$id_ped' target='_blank'><strong>Reversão Curta Temporada</strong></a></td>
 		</tr>
+		
 		<tr>
-			<td><a href='$link21?id=$id_ped' target='_blank'><strong>Doação de Serviços</strong></a></td>
-			<td></td>
+			<td><a href='$link25?id=$id_ped' target='_blank'><strong>Exposição | Outros</strong></a></td>
 		</tr>
 		
 		<tr><td class='list_description'><br/></td></tr>
