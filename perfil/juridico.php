@@ -6,7 +6,7 @@ if(isset($_GET['p'])){
 }else{
 	$p = "index";
 	}
-	
+include "../funcoes/funcoesSiscontrat.php";		
 include "m_juridico/".$p.".php";
 
 ?>
