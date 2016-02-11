@@ -22,6 +22,7 @@ $periodo = $linha_tabelas["Periodo"];
 $duracao = $linha_tabelas["Duracao"];
 $dataAtual = date("d/m/Y");
 $NumeroProcesso = $linha_tabelas["NumeroProcesso"];
+$FormaPagamento = $linha_tabelas["FormaPagamento"];
 $assinatura = $linha_tabelas["Assinatura"];
 $cargo = $linha_tabelas["Cargo"];
 $amparo = $linha_tabelas["AmparoLegal"];
@@ -73,7 +74,8 @@ $sei =
   "<p><strong>Objeto:</strong> "."$objeto"."</p>".
   "<p><strong>Data / Período:</strong> "."$periodo"." - conforme cronograma</p>".
   "<p><strong>Local:</strong> "."$local"."</p>".
-  "<p><strong> Valor:</strong> "."R$ $ValorGlobal"."  "."($ValorPorExtenso )"."</p>".
+  "<p><strong>Valor:</strong> "."R$ $ValorGlobal"."  "."($ValorPorExtenso )"."</p>".
+  "<p><strong>Forma de Pagamento:</strong> "."$FormaPagamento"."</p>".
   "<p><strong>Dotação Orçamentária:</strong> "."dotação".", $complementoDotacao"."</p>".
   "<p>&nbsp;</p>".
   "<p align='justify'>"."$final"."</p>".
