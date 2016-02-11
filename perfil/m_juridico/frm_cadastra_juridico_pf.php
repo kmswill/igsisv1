@@ -11,10 +11,10 @@ $suplente=$linha_tabelas["Suplente"];
 $ano=date('Y');
 
 
-$amparo="I – À vista dos elementos constantes do presente, em especial o parecer da comissão à fl. , diante da competência a mim delegada pela Portaria nº 19/2006-SMC/G, AUTORIZO, com fundamento no artigo 25, inciso III, da Lei Federal nº 8.666/93, a contratação nas condições abaixo estipuladas, observada a legislação vigente e demais cautelas legais:";
+$amparo="I – À vista dos elementos constantes do presente, em especial o Parecer da Comissão de Atividades Artísticas e Culturais n° , diante da competência a mim delegada pela Portaria nº 19/2006-SMC/G, AUTORIZO, com fundamento no artigo 25, inciso III, da Lei Federal nº 8.666/93, a contratação nas condições abaixo estipuladas, observada a legislação vigente e demais cautelas legais:";
 
 $final="II - Nos termos do art. 6º do Decreto nº 54.873/2014, designo o(a) servidor(a) ".$fiscal." como fiscal do contrato e o(a) ".$suplente." como seu substituto.
-III -  Autorizo a emissão da competente nota de empenho de acordo com o Decreto Municipal nº 55.839/2015 e demais normas de execução orçamentárias vigentes.
+III -  Autorizo a emissão da competente nota de empenho de acordo com o Decreto Municipal nº 56.779/2016 e demais normas de execução orçamentárias vigentes.
 IV - Publique-se e encaminhe-se ao setor competente para as providências cabíveis." ; 
 				
 

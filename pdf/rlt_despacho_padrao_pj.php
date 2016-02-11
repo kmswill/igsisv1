@@ -13,6 +13,10 @@ $id_ped=$_GET['id'];
 $linha_tabelas = siscontrat($id_ped);
 $pj = siscontratDocs($linha_tabelas['IdProponente'],2);
 
+$setor = $linha_tabelas["Setor"];
+
+$ano=date('Y');
+
 $codPed = $id_ped;
 $objeto = $linha_tabelas["Objeto"];
 $local = $linha_tabelas["Local"];
@@ -29,12 +33,46 @@ $amparo = $linha_tabelas["AmparoLegal"];
 $final = $linha_tabelas["Finalizacao"];
 $complementoDotacao = $linha_tabelas["ComplementoDotacao"];
 
+//PessoaJuridica
+
 $pjRazaoSocial = $pj["Nome"];
-$pjCNPJ = $pj["CNPJ"];
+$pjEndereco = $pj["Endereco"];
+$pjTelefones = $pj["Telefones"];
+$pjEmail = $pj["Email"];
+$pjINSS = $pj["INSS"];
+$pjCNPJ = $pj['CNPJ'];
 
-$setor = $linha_tabelas["Setor"];
 
-$ano=date('Y');
+// Executante
+$exNome = $ex["Nome"];
+$exNomeArtistico = $ex["NomeArtistico"];
+$exEstadoCivil = $ex["EstadoCivil"];
+$exNacionalidade = $ex["Nacionalidade"];
+$exRG = $ex["RG"];
+$exCPF = $ex["CPF"];
+$exCCM = $ex["CCM"];
+$exOMB = $ex["OMB"];
+$exDRT = $ex["DRT"];
+$exFuncao = $ex["Funcao"];
+$exEndereco = $ex["Endereco"];
+$exTelefones = $ex["Telefones"];
+$exEmail = $ex["Email"];
+$exINSS = $ex["INSS"];
+
+// Representante01
+$rep01Nome = $rep01["Nome"];
+$rep01EstadoCivil = $rep01["EstadoCivil"];
+$rep01Nacionalidade = $rep01["Nacionalidade"];
+$rep01RG = $rep01["RG"];
+$rep01CPF = $rep01["CPF"];
+
+
+// Representante02
+$rep02Nome = $rep02["Nome"];
+$rep02EstadoCivil = $rep02["EstadoCivil"];
+$rep02Nacionalidade = $rep02["Nacionalidade"];
+$rep02RG = $rep02["RG"];
+$rep02CPF = $rep02["CPF"];
 
  ?>
  
@@ -70,7 +108,7 @@ $sei =
   "<p><strong>DESPACHO</strong></p>".
   "<p align='justify'>"."$amparo"."</p>".
   "<p>&nbsp;</p>".
-  "<p><strong>Contratado:</strong> "."$pjRazaoSocial".", "."$pjCNPJ"."</p>".
+  "<p><strong>Contratado:</strong> ".$exNome." (CPF ".$exCPF."), nome artístico ".$exNomeArtistico."".$pjRazaoSocial.", "."$pjCNPJ"."</p>".
   "<p><strong>Objeto:</strong> "."$objeto"."</p>".
   "<p><strong>Data / Período:</strong> "."$periodo"." - conforme cronograma</p>".
   "<p><strong>Local:</strong> "."$local"."</p>".
