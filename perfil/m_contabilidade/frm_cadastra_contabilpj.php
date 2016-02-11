@@ -17,9 +17,12 @@ $res02 = siscontratDocs($ped['idRepresentante02'],3);
 ?>
 
 <!-- MENU -->	
-<?php include 'includes/menu.php';?>
-		
-	  
+<?php include 'includes/menu.php';
+
+$server = "http://".$_SERVER['SERVER_NAME']."/igsis/";
+$http = $server."/pdf/";
+$link0=$http."rlt_anexo_nota_empenhopj.php";
+?>
 	 <!-- Contact -->
 <section id="contact" class="home-section bg-white">
 	<div class="container">
@@ -47,10 +50,13 @@ $res02 = siscontratDocs($ped['idRepresentante02'],3);
                 
 			</div>
             </div>
+			
+			
             <div class="form-group">
-                <form class="form-horizontal" role="form" action="?perfil=contabilidade&p=rlt_proposta_padrao_pj&id_ped=<?php echo $_SESSION['idPedido']; ?>" method="post">
+			
+                <form class="form-horizontal" role="form" action="?perfil=contabilidade&p=insercao_proposta_pj&id_ped=<?php echo $_SESSION['idPedido']; ?>" method="post">
 					<div class="col-md-offset-2 col-md-8">
-					 <input type="submit" class="btn btn-theme btn-lg btn-block" value="Gerar Word">
+					 <input type="submit" class="btn btn-theme btn-lg btn-block" value="Confirmar">
 					</div>
                 </form>   
 				</div>
