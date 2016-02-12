@@ -15,7 +15,7 @@ $amparo="I – À vista dos elementos constantes do presente, em especial o Pare
 
 $final="II - Nos termos do art. 6º do Decreto nº 54.873/2014, designo o(a) servidor(a) ".$fiscal." como fiscal do contrato e o(a) ".$suplente." como seu substituto.
 III -  Autorizo a emissão da competente nota de empenho de acordo com o Decreto Municipal nº 56.779/2016 e demais normas de execução orçamentárias vigentes.
-IV - Publique-se e encaminhe-se ao setor competente para as providências cabíveis." ; 
+IV - Publique-se e encaminhe-se à CAF/Contabilidade para as providências cabíveis." ; 
 				
 
 ?>

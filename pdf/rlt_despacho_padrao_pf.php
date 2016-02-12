@@ -62,15 +62,10 @@ $ano=date('Y');
 <?php
 
 $sei = 
-  "<p><strong>Do processo nº:</strong> "."$NumeroProcesso"."</p>".
   "<p>&nbsp;</p>".
-  "<p><strong>INTERESSADO:</strong> "."$nome"."  </span></p>".
-  "<p><strong>ASSUNTO:</strong> "."$objeto"."  </p>".
-  "<p>&nbsp;</p>".
-  "<p><strong>DESPACHO</strong></p>".
   "<p align='justify'>"."$amparo"."</p>".
   "<p>&nbsp;</p>".
-  "<p><strong>Contratado:</strong> "."$nome".", "."$cpf"."</p>".
+  "<p><strong>Contratado:</strong> "."$nome".", CPF ("."$cpf".")</p>".
   "<p><strong>Objeto:</strong> "."$objeto"."</p>".
   "<p><strong>Data / Período:</strong> "."$periodo"."</p>".
   "<p><strong>Local:</strong> "."$local"."</p>".

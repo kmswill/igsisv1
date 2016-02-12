@@ -12,6 +12,9 @@
 $id_ped=$_GET['id'];
 $linha_tabelas = siscontrat($id_ped);
 $pj = siscontratDocs($linha_tabelas['IdProponente'],2);
+$ex = siscontratDocs($linha_tabelas['IdExecutante'],1);
+$rep01 = siscontratDocs($pj['Representante01'],3);
+$rep02 = siscontratDocs($pj['Representante02'],3);
 
 $setor = $linha_tabelas["Setor"];
 
@@ -100,21 +103,16 @@ $rep02CPF = $rep02["CPF"];
 <?php
 
 $sei = 
-  "<p><strong>Do processo nº:</strong> "."$NumeroProcesso"."</p>".
   "<p>&nbsp;</p>".
-  "<p><strong>INTERESSADO:</strong> "."$pjRazaoSocial"."  </span></p>".
-  "<p><strong>ASSUNTO:</strong> "."$objeto"."  </p>".
-  "<p>&nbsp;</p>".
-  "<p><strong>DESPACHO</strong></p>".
   "<p align='justify'>"."$amparo"."</p>".
   "<p>&nbsp;</p>".
-  "<p><strong>Contratado:</strong> ".$exNome." (CPF ".$exCPF."), nome artístico ".$exNomeArtistico."".$pjRazaoSocial.", "."$pjCNPJ"."</p>".
+  "<p><strong>Contratado:</strong> ".$exNome." (CPF ".$exCPF."), nome artístico ´´".$exNomeArtistico."´´ e demais integrantes relacionados na declaração de exclusividade , por intermédio de ".$pjRazaoSocial.", CNPJ ("."$pjCNPJ"."), legalmente representada por ".$rep01Nome." CPF (".$rep01CPF.").</p>".
   "<p><strong>Objeto:</strong> "."$objeto"."</p>".
   "<p><strong>Data / Período:</strong> "."$periodo"." - conforme cronograma</p>".
   "<p><strong>Local:</strong> "."$local"."</p>".
   "<p><strong>Valor:</strong> "."R$ $ValorGlobal"."  "."($ValorPorExtenso )"."</p>".
   "<p><strong>Forma de Pagamento:</strong> "."$FormaPagamento"."</p>".
-  "<p><strong>Dotação Orçamentária:</strong> "."dotação".", $complementoDotacao"."</p>".
+  "<p><strong>Dotação Orçamentária:</strong> "."$complementoDotacao"."</p>".
   "<p>&nbsp;</p>".
   "<p align='justify'>"."$final"."</p>".
   "<p>&nbsp;</p>".
