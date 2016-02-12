@@ -174,7 +174,9 @@ function siscontrat($idPedido){
 			"parcelas" => $pedido['parcelas'],
 			"RfFiscal" => $fiscal['rf'],
 			"RfSuplente" => $suplente['rf'],
-
+			"AmparoLegal" => $pedido['AmparoLegal'],
+			"Finalizacao" => $pedido['Finalizacao'],
+			"ComplementoDotacao" => $pedido['ComplementoDotacao'],
 			"Status" => $pedido['estado']	
 			);
 		
