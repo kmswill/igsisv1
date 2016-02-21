@@ -19,7 +19,7 @@ Esta é a página para as funções gerais do sistema.
 
 // Conecta-se ao banco de dados MySQL
 function verificaMysql($sql_inserir){ 	//Verifica erro na string/query
-	$mysqli = new mysqli("localhost", "root", "lic54eca","igsis");
+	$mysqli = new mysqli("localhost", "root", "","igsis");
 	if (!$mysqli->query($sql_inserir)) {
     printf("Errormessage: %s\n", $mysqli->error);
 	}

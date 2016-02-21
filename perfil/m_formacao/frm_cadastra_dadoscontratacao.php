@@ -1,18 +1,16 @@
 <?php
 $con = bancoMysqli();
 
+$id_pf = $_GET['id_pf'];
+
 if(isset($_POST['novo'])){
-	$id_pf = $_POST['novo'];
-	$sql_novo = "INSERT INTO `sis_formacao` (`IdPessoaFisica`, `publicado` ) VALUES ('$id_pf','1')";
+	$sql_novo = "INSERT INTO `sis_formacao` (`IdPessoaFisica`, `publicado` ) VALUES ('$id_pf','0')";
 	$query_novo = mysqli_query($con,$sql_novo);
 	if($query_novo){
-
-		$sql_ulimo = "SELECT Id_Formacao FROM sis_formacao ORDER BY Id_Formacao DESC LIMIT 0,1";
-		$query_ultimo = mysqli_query($con,$sql_ulimo);
-		$rec = mysqli_fetch_array($query_ultimo);
-		$ultimo = $rec['Id_Formacao']; 
+		$ultimo = mysqli_insert_id($con);
+		$mensagem = "Gerado novo registro"; 
 	}else{
-
+		$mensagem = "Erro ao gerar novo registro";
 	}
 }
 
@@ -25,21 +23,21 @@ if(isset($_GET['id'])){
 if(isset($_POST['atualizar'])){
 	if(isset($_POST['equipamento1'])){
 		$e1  = $_POST['equipamento1'];
-		$equipamento1 = "`IdEquipamento1` = '$e1',";
+		$equipamento1 = " `IdEquipamento01` = '$e1', ";
 	}else{
 		$equipamento1 = "";			
 	}
 
 	if(isset($_POST['equipamento2'])){
 	$e2  = $_POST['equipamento2'];
-	$equipamento2 = "`IdEquipamento2` = '$e2',";
+	$equipamento2 = " `IdEquipamento02` = '$e2', ";
 	}else{
 		$equipamento2 = "";			
 	}
 
 	if(isset($_POST['equipamento3'])){
 	$e3  = $_POST['equipamento3'];
-	$equipamento3 = "`IdEquipamento3` = '$e3',";
+	$equipamento3 = " `IdEquipamento03` = '$e3', ";
 	}else{
 		$equipamento3 = "";			
 	}
@@ -58,9 +56,10 @@ if(isset($_POST['atualizar'])){
 	$linguagem  = $_POST['linguagem'];
 	$projeto  = $_POST['projeto'];
 	$cargo  = $_POST['cargo'];
-		$obs = $_POST['obs'];
+		$obs = addslashes($_POST['obs']);
 	$chamado = $_POST['chamados'];
 	$status = $_POST['status'];
+	$vigencia = $_POST['vigencia'];
 	$sql_atualiza_formacao = "UPDATE sis_formacao SET
 	`Ano` = '$ano',
 	$equipamento1  
@@ -73,10 +72,17 @@ if(isset($_POST['atualizar'])){
 	`IdLinguagem` = '$linguagem', 
 	`IdProjeto` = '$projeto', 
 	`Status` = '$status', 
+	`publicado` = '1',
+	`subprefeitura` = '$subprefeitura',
+
+	`IdVigencia` = '$vigencia',
 
 	`Observacao` = '$obs'
 	WHERE Id_Formacao = '$id'";
 	$query_atualiza_formacao = mysqli_query($con,$sql_atualiza_formacao);
+	
+	verificaMysql($sql_atualiza_formacao);
+	
 	if($query_atualiza_formacao){
 		$mensagem = "Atualizado com sucesso!";	
 	}else{
@@ -188,8 +194,8 @@ $(function(){
 				  <div class="form-group">
 					<div class="col-md-offset-2 col-md-6"><strong>Ano:</strong>
 					  <select class="form-control" name="ano" id="Status">
-                	<option value='1'<?php if($formacao['Ano'] == 2016){echo " selected ";} ?>>2016</option>
-					<option value='0'<?php if($formacao['Ano'] == 2017){echo " selected ";} ?>>2017</option>
+                	<option value='2016'<?php if($formacao['Ano'] == 2016){echo " selected ";} ?>>2016</option>
+					<option value='2017'<?php if($formacao['Ano'] == 2017){echo " selected ";} ?>>2017</option>
 					 </select><br/>
 					</div>
 					<div class="col-md-6"><strong>Status:</strong><br/>
@@ -225,7 +231,7 @@ $(function(){
                   <div class="form-group">
 					<div class="col-md-offset-2 col-md-6"><strong>Subprefeitura:</strong>
 					   <select class="form-control" name="subprefeitura" id="Verba">
-                        <?php geraOpcao("sis_subprefeitura","","") ?>
+                        <?php geraOpcao("sis_subprefeitura",$formacao['subprefeitura'],"") ?>
                       </select>
 					</div>
 					<div class="col-md-6"><strong>Programa *:</strong><br/>
@@ -294,10 +300,10 @@ $(function(){
                   
                   	</div>
 					<div class="form-group">
-                    <div class="col-md-offset-2 col-md-8"><h5>Equipamentos selecionados:</h5><br/>
- 					<p>Equipamento #1: <strong><?php echo retornaLocal($formacao['IdEquipamento1']) ?></strong><p>
- 					<p>Equipamento #2: <strong><?php echo retornaLocal($formacao['IdEquipamento2']) ?></strong><p>
- 					<p>Equipamento #3: <strong><?php echo retornaLocal($formacao['IdEquipamento3']) ?></strong><p>
+                   <div class="col-md-offset-2 col-md-8"><h5>Equipamentos selecionados:</h5><br/>
+ 					<p>Equipamento #1: <strong><?php echo retornaLocal($formacao['IdEquipamento01']) ?></strong><p>
+ 					<p>Equipamento #2: <strong><?php echo retornaLocal($formacao['IdEquipamento02']) ?></strong><p>
+ 					<p>Equipamento #3: <strong><?php echo retornaLocal($formacao['IdEquipamento03']) ?></strong><p>
                     <br />
                     <br  />
 
@@ -305,19 +311,26 @@ $(function(){
 				  </div>
                   
                  <div class="form-group"> 
-					<div class="col-md-offset-2 col-md-8"><strong>Período:</strong><br/>
-					  <input type='text'  class='form-control' name='periodo' id='nome'>                    	
+					<div class="col-md-offset-2 col-md-8"><strong>Vigência:</strong><br/>
+					 <select class="form-control" name="vigencia" id="local3" >
+                     <?php  
+					 $sql_vigencia = "SELECT * FROM sis_formacao_vigencia WHERE publicado = '1'";
+					 $query_vigencia = mysqli_query($con,$sql_vigencia);
+					 while($vigencia = mysqli_fetch_array($query_vigencia)){
+					 	if($vigencia['Id_Vigencia'] == $formacao['IdVigencia']){
+					 ?>
+                     	<option value="<?php echo $vigencia['Id_Vigencia']; ?>" selected><?php echo $vigencia['descricao'] ?></option>
+                     <?php }else{?>
+                     	<option value="<?php echo $vigencia['Id_Vigencia']; ?>" ><?php echo $vigencia['descricao'] ?></option>
+                     
+                     <?php 
+					 	}
+					 } ?>
+>
+                     </select><br/>
                     </div>
                   </div>  
-                  <div class="form-group">
-					<!--<div class="col-md-offset-2 col-md-8">
-					  <form class="form-horizontal" role="form" action="#" method="post">
-                      <input type="hidden" name="idPedido"  />                     
-					 <input type="submit" class="btn btn-theme btn-med btn-block" value="Abrir vigência">
-                     </form><br/>
-					</div>
-				  </div>
-                  -->
+
                   
                   <div class="form-group">
 					<div class="col-md-offset-2 col-md-8"><strong>Observação:</strong><br/>
@@ -336,7 +349,22 @@ $(function(){
 					</div>
 				  </div>
 				</form>
-	
+                                <div class="form-group">
+					<div class="col-md-offset-2 col-md-8"><br/></div>
+                </div>
+                <?php 
+				if($formacao['idPedidoContratacao'] == NULL){
+				?>
+	            <div class="form-group">
+					<div class="col-md-offset-2 col-md-8">
+					  <form class="form-horizontal" role="form" action="?perfil=formacao&p=frm_cadastra_pedidocontratacao_pf" method="post">
+                      <input type="hidden" name="action" value="novo"  />
+                      <input type="hidden" name="idFormacao" value="<?php echo $formacao['Id_Formacao']; ?>"  />
+					 <input type="submit" class="btn btn-theme btn-med btn-block" value="Criar pedido de contratação">
+                     </form>
+					</div>
+				  </div>
+				<?php } ?>
 	  			</div>
 			
 	  		</div>

@@ -1,4 +1,139 @@
 <?php
+
+
+
+$con = bancoMysqli();
+
+if(isset($_POST['action'])){
+
+	switch($_POST['action']){
+
+	case "novo": //caso seja um novo pedido
+	$formacao = recuperaDados("sis_formacao",$_POST['idFormacao'],"Id_Formacao");
+	$proponente = recuperaDados("sis_pessoa_fisica",$formacao['IdPessoaFisica'],"Id_PessoaFisica");
+	$proponenteFormacao = recuperaDados("sis_pessoa_fisica_formacao",$formacao['IdPessoaFisica'],"IdPessoaFisica");
+	$vigencia = $formacao['IdVigencia'];
+	$idPrograma = $formacao['IdPrograma'];
+	$idPessoa = $formacao['IdPessoaFisica'];
+	$idVerba;
+	$instituicao = $_SESSION['idInstituicao'];
+	$justificativa = "Texto do Edital";
+	$parecer = $proponenteFormacao['Curriculo'];
+	$mensagem = "";
+	
+	// insere um novo pedido pf com pessoa = 4
+	$sql_pedido = "INSERT INTO `igsis_pedido_contratacao` (`idEvento`, `tipoPessoa`, `idPessoa`, `idVerba`,`instituicao`, `justificativa`, `parecerArtistico`) VALUES ('$idPrograma', '4', '$idPessoa', '$idVerba', $instituicao, '$justificativa', '$parecer')";
+	$query_pedido = mysqli_query($con,$sql_pedido);
+	if($query_pedido){
+		$idPedidoContratacao = mysqli_insert_id($con);
+
+		$mensagem = "Pedido Criado.";
+
+		// atualiza o sis_formacao com o idPedidoContratacao
+		$sql_atualiza_formacao = "UPDATE sis_formacao SET idPedidoContratacao = '$idPedidoContratacao' WHERE IdVigencia = '$vigencia'";
+		$query_atualiza_formacao = mysqli_query($con,$sql_atualiza_formacao);
+		if($query_atualiza_formacao){
+			$mensagem = $mensagem."<br /> Tabela formação atualizado com o número de Pedido de Contratacao";	
+		}else{
+			$mensagem = $mensagem."<br /> Erro ao atualizar tabela formação com o número de Pedido de Contratacao";	
+		
+		}
+
+		//cria as parcela e atualiza a tabela pedido com os valores
+		$sql_cria_parcelas = "SELECT * FROM sis_formacao_parcelas WHERE Id_Vigencia = '$vigencia' ORDER BY N_Parcela ASC";
+		$query_cria_parcelas = mysqli_query($con,$sql_cria_parcelas);
+		$i = 1;
+		while($parcela = mysqli_fetch_array($query_cria_parcelas)){
+			 //idPedido, numero, valor, vencimento, vigencia_inicio, vigencia_final, horas
+			 $numero = $parcela['N_Parcela'];
+			 $valor = $parcela['Valor'];
+			 $pagamento = $parcela['pagamento'];
+			 $vigencia_inicio = $parcela['dataInicio'];
+			 $vigencia_final = $parcela['dataFinal'];
+			 $horas = $parcela['horas'];
+			 $sql_insere_parcelas = "INSERT INTO `igsis_parcelas` (`idParcela`, `idPedido`, `numero`, `valor`, `vencimento`, `publicado`, `descricao`, `vigencia_inicio`, `vigencia_final`, `horas`) VALUES (NULL, '$idPedidoContratacao', '$numero', '$valor', '$pagamento', NULL, NULL, '$vigencia_inicio', '$vigencia_final', '$horas')";
+			 if($valor != 0){
+				$i++;	 
+			 }		
+			$query_insere_parcelas = mysqli_query($con,$sql_insere_parcelas);
+			if($query_insere_parcelas){
+				$mensagem = $mensagem."<br /> Parcela $numero inserida.";
+
+					
+			}else{
+				$mensagem = $mensagem."<br /> Erro.";	
+			}
+				
+		}
+				$valor_total = somaParcela($idPedidoContratacao,$i);
+				//atualizamos a tabela prinicpal com os valores e o número de parcelas
+				$sql_atualiza_parcela = "UPDATE igsis_pedido_contratacao SET parcelas = '$i',
+				valor = '$valor_total' WHERE idPedidoContratacao = '$idPedidoContratacao'";
+				$query_atualiza_parcela = mysqli_query($con,$sql_atualiza_parcela);
+				if($query_atualiza_parcela){
+					$mensagem .= "<br />Valor e parcelas atualizados";	
+				}else{
+					$mensagem .= "<br />Erro ao atualizar parcelas e valor";	
+				}
+		
+		
+			
+	}else{
+		$mensagem = "Erro ao criar pedido";	
+	}
+	
+	break;
+	
+	case "atualizar":
+	
+	$idPedidoContratacao = $_POST['idPedido'];
+	
+	$Observacao = addslashes($_POST['Observacao']);
+	$Suplente  = $_POST['Suplente']; 
+	$Fiscal  = $_POST['Fiscal'];
+	$Parecer  = addslashes($_POST['Parecer']);
+	$Justificativa  = addslashes($_POST['Justificativa']);
+	
+	$sql_atualiza_pedido = "UPDATE igsis_pedido_contratacao SET
+	observacao = '$Observacao',
+	parecerArtistico = '$Parecer',
+	justificativa = '$Justificativa'
+	WHERE idPedidoContratacao = '$idPedidoContratacao'";
+	
+	$query_atualiza_pedido = mysqli_query($con,$sql_atualiza_pedido);
+	
+	//verificaMysql($sql_atualiza_pedido);
+	
+	if($query_atualiza_pedido){
+		$sql_atualiza_formacao = "UPDATE sis_formacao SET
+		fiscal = '$Fiscal',
+		suplente = '$Suplente'
+		WHERE idPedidoContratacao = '$idPedidoContratacao'";
+		$query_atualiza_formacao = mysqli_query($con,$sql_atualiza_formacao);
+		if($query_atualiza_formacao){
+			$mensagem = "Pedido Atualizado";
+		}else{
+			$mensagem = "Erro ao atualizar pedido (I)";	
+		}
+
+	}else{
+		$mensagem = "Erro ao atualizar pedido(II)";	
+	}
+
+	//suplente Suplente 
+	//fiscal Fiscal
+	
+	
+	
+	break;
+	
+	
+	}	
+
+}
+
+
+
 /*
 $_SESSION['idPedido'] = $_GET['id_ped'];
 $id_ped = $_GET['id_ped'];
@@ -122,17 +257,27 @@ if($_POST['atualizar'] > '1'){
 }
 
 }
-$ano=date('Y');
-$id_ped = $_GET['id_ped'];	
-$linha_tabelas = siscontrat($id_ped);
-$fisico = siscontratDocs($linha_tabelas['IdProponente'],1);		
-$evento = recuperaDados("ig_evento",$linha_tabelas['idEvento'],"idEvento");
-$pedido = recuperaDados("igsis_pedido_contratacao",$_GET['id_ped'],"idPedidoContratacao");
-
 */
+
+$ano=date('Y');
+$id_ped = $idPedidoContratacao;
+$pedido = recuperaDados("igsis_pedido_contratacao",$id_ped,"idPedidoContratacao");
+$proponente = recuperaDados("sis_pessoa_fisica",$pedido['idPessoa'],"Id_PessoaFisica");
+$formacao = recuperaDados("sis_formacao",$pedido['idPedidoContratacao'],"idPedidoContratacao");
+$cargo = recuperaDados("sis_formacao_cargo",$formacao['IdCargo'],"Id_Cargo");
+$programa = recuperaDados("sis_formacao_programa",$formacao['IdPrograma'],"Id_Programa");
+
+$verba = recuperaDados("sis_verba",$programa['verba'],"Id_Verba");
+$objeto = "CONTRATAÇÃO COMO ".$cargo['Cargo']." DO ".$programa['Programa']." NOS TERMOS DO EDITAL xxx – PROGRAMAS DA DIVISÃO DE FORMAÇÃO.";
+$local = retornaLocal($formacao['IdEquipamento01'])."\n".retornaLocal($formacao['IdEquipamento02'])."\n".retornaLocal($formacao['IdEquipamento03']);
+$carga = retornaCargaHoraria($pedido['idPedidoContratacao'],$pedido['parcelas']);
+$periodo = retornaPeriodoFormacao($pedido['idPedidoContratacao'],$pedido['parcelas']);
+
 ?>
 
+
 <!-- MENU -->	
+
 <?php include 'includes/menu.php';?>
 		
 	  
@@ -151,48 +296,47 @@ $pedido = recuperaDados("igsis_pedido_contratacao",$_GET['id_ped'],"idPedidoCont
 				
 				  <div class="form-group">
 					<div class="col-md-offset-2 col-md-8"><strong>Código de Dados para Contratação:</strong><br/>
-					  <input  name="Id_PedidoContratacaoPF"  type="text" class="form-control" id="Id_PedidoContratacaoPF"  >
+					  <input  readonly name="Id_PedidoContratacaoPF"  type="text" class="form-control" id="Id_PedidoContratacaoPF" value="
+                      <?php
+					  	
+					   
+					  ?>
+                      ">
 					</div>
                   </div>
                     
-                  <div class="form-group">
-					<div class="col-md-offset-2 col-md-8">
-					  <form class="form-horizontal" role="form" action="#" method="post">
-					 <input type="submit" class="btn btn-theme btn-med btn-block" value="Abrir dados para contratação">
-                     </form>
-				  	</div>
-				  </div>
+
                   
 				  <div class="form-group">                    
                     <div class=" col-md-offset-2 col-md-6"><strong>Setor:</strong> 
-					  <input type="text"  class="form-control" >
+					  <input type="text"  class="form-control" value="">
                     </div>
                     <div class="col-md-6"><strong>Categoria da Contratação:</strong> 
-                    	<input type="text"  class="form-control">
+                    	<input type="text"  class="form-control" value="">
                     </div>
                   </div>
                   
                   <div class="form-group"> 
 					<div class="col-md-offset-2 col-md-8"><strong>Proponente:</strong><br/>
-					  <input type='text'  class='form-control' name='nome' id='nome'>                    	
+					  <input type='text' readonly class='form-control' name='nome' id='nome' value="<?php echo $proponente['Nome']." (".$proponente['CPF'].")"; ?>">                    	
                     </div>
                   </div>
                   
                   <div class="form-group">
 					<div class="col-md-offset-2 col-md-8"><strong>Objeto:</strong><br/>
-					  <input type="text"  name="Objeto" class="form-control">
+					  <textarea readonly="readonly"  class="form-control" rows="5"><?php echo $objeto; ?> </textarea>
 					</div>
 				  </div>
                   
                   <div class="form-group">
 					<div class="col-md-offset-2 col-md-8"><strong>Local:</strong><br/>
-					 <input type='text' readonly name="LocalEspetaculo" class='form-control'>
+					 <textarea readonly="readonly"  class="form-control" rows="5"><?php echo $local; ?> </textarea>
 					</div>
 				  </div>
              
                   <div class="form-group">
 					<div class="col-md-offset-2 col-md-8"><strong>Período:</strong><br/>
-					   <input type='text' readonly name="Periodo" class='form-control'>
+					   <input type='text' readonly name="Periodo" class='form-control' value="<?php echo $periodo ?>">
 					</div>
 				  </div>
                   
@@ -201,66 +345,77 @@ $pedido = recuperaDados("igsis_pedido_contratacao",$_GET['id_ped'],"idPedidoCont
 					   <input type='text'  name="Duracao" class='form-control'>
 					</div>
 					<div class="col-md-6"><strong>Carga Horária:</strong><br/>
-					   <input type='text' readonly name="CargaHoraria" class='form-control'>
+					   <input type='text' readonly name="CargaHoraria" class='form-control' value="<?php echo $carga ?>">
 					</div>
 				  </div>
                   <form class="form-horizontal" role="form" action="#" method="post">
                                 
                   <div class="form-group">
 					<div class="col-md-offset-2 col-md-8"><strong>Valor:</strong><br/>
-					  <input type='text' disabled name="valor_parcela" id='valor' class='form-control' value="<?php //echo dinheiroParaBr($pedido['valor']) ?>" >
+					  <input type='text' disabled name="valor_parcela" id='valor' class='form-control' value="<?php echo dinheiroParaBr($pedido['valor']) ?>" >
 					</div>	
 				  </div>
 				  		
                   <div class="form-group">
 					<div class="col-md-offset-2 col-md-8"><strong>Forma de Pagamento:</strong><br/>
-                      <textarea  disabled name="FormaPagamento" class="form-control" cols="40" rows="5"><?php // echo txtParcelas($_SESSION['idPedido'],$pedido['parcelas']); ?> 
+                      <textarea  disabled name="FormaPagamento" class="form-control" cols="40" rows="5"><?php echo txtParcelas($pedido['idPedidoContratacao'],$pedido['parcelas']); ?> 
                       </textarea>
 					</div>
 				  </div>
 				
                   <div class="form-group">
 					<div class="col-md-offset-2 col-md-8"><strong>Verba:</strong><br/>
-					   <select class="form-control" name="Verba" id="Verba">
-                       <?php geraOpcao("sis_verba",$linha_tabelas['Verba'],"") ?>
-                      </select>
-					</div>
+                    <input type='text' disabled name="valor_parcela" id='valor' class='form-control' value="<?php echo $verba['Verba'] ?>" >
+					  </div>
 				  </div>
-                  
+                 <form class="form-horizontal" role="form" action="?perfil=formacao&p=frm_cadastra_pedidocontratacao_pf" method="post">
                   <div class="form-group">
 					<div class="col-md-offset-2 col-md-8"><strong>Justificativa:</strong><br/>
-                      <textarea name="Justificativa" cols="40" rows="5"></textarea>
+                      <textarea name="Justificativa" cols="40" rows="5"><?php echo $pedido['justificativa'] ?></textarea>
+					</div>
+				  </div>
+
+                  <div class="form-group">
+					<div class="col-md-offset-2 col-md-8"><strong>Parecer artístico:</strong><br/>
+                      <textarea name="Parecer" cols="40" rows="5"><?php echo $pedido['parecerArtistico'] ?></textarea>
 					</div>
 				  </div>
                   
                   <div class="form-group">
 					<div class="col-md-offset-2 col-md-6"><strong>Fiscal:</strong>
                        <select class="form-control" name="Fiscal" id="Fiscal">
-							<?php opcaoUsuario($_SESSION['idInstituicao'],$evento['idResponsavel']); ?>
+							<?php opcaoUsuario($_SESSION['idInstituicao'],$formacao['fiscal']); ?>
 					   </select>
 					</div>
 					<div class="col-md-6"><strong>Suplente:</strong>
                        <select class="form-control" name="Suplente" id="Fiscal">
-							<?php opcaoUsuario($_SESSION['idInstituicao'],$evento['suplente']); ?>
+							<?php opcaoUsuario($_SESSION['idInstituicao'],$formacao['suplente']); ?>
 					   </select>
 					</div>
 				  </div>
                   
                   <div class="form-group">
 					<div class="col-md-offset-2 col-md-8"><strong>Observação:</strong><br/>
-					   <input type='text' name="Observacao" class='form-control'>
+					  <textarea name="Observacao" cols="40" rows="5"><?php echo $pedido['observacao'] ?></textarea>
 					</div>
 				  </div>
                   
 				  <div class="form-group">
 					<div class="col-md-offset-2 col-md-8">
-                    <input type="hidden" name="atualizar"  />
+                    <input type="hidden" name="action" value="atualizar"  />
+                    <input type="hidden" name="idPedido" value="<?php echo $pedido['idPedidoContratacao']; ?>"  />
 					 <input type="submit" class="btn btn-theme btn-lg btn-block" value="Gravar">
 					</div>
 				  </div>
                   
 				</form>
-                  
+                                <form class="form-horizontal" role="form" action="?perfil=formacao&p=frm_cadastra_pedidocontratacao_pf" method="post">
+                  				  <div class="form-group">
+					<div class="col-md-offset-2 col-md-8">
+                    <input type="hidden" name="atualizar"  />
+					 <input type="submit" class="btn btn-theme btn-lg btn-block" value="Enviar pedido para contratos">
+					</div>
+				  </div>
 	  		</div>
 		</div>
 			

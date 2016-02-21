@@ -684,6 +684,146 @@ while($subprefeitura = mysqli_fetch_array($query)){
 		</div>
 	</section>
 <?php /* =========== FIM SUBPREFEITURA ===========*/ break; ?> 
- 
+
+
+
+<?php 
+/* =========== INÍCIO EDITAL ===========*/
+case 'add_edital':
+?> 
+
+<section id="contact" class="home-section bg-white">
+	<div class="container">
+		<div class="form-group">
+			<div class="sub-title">
+            	<h2>CADASTRO INFORMAÇÕES DO EDITAL</h2>
+                <h5><?php if(isset($mensagem)){echo $mensagem;} ?></h5>
+			</div>
+		</div>
+	<div class="row">
+		<div class="col-md-offset-1 col-md-10">
+			<form class="form-horizontal" role="form" action="#" method="post">
+				<div class="form-group">
+					<div class="col-md-offset-2 col-md-6"><strong>Itens do Edital: *</strong>
+						<input type="text" class="form-control" id="itensEdital" name="itensEdital"> 
+					</div>
+					<div class="col-md-6"><strong>Edital nº: *</strong>
+						<input type="text" class="form-control" id="itensEdital" name="itensEdital"> 
+					</div>
+				</div>
+                
+                <div class="form-group">
+					<div class="col-md-offset-2 col-md-6"><strong>Itens do Credenciamento: *</strong>
+						<input type="text" class="form-control" id="itensCredenciamento" name="itensCredenciamento"> 
+					</div>
+					<div class="col-md-6"><strong>Data do resultado no D.O.: *</strong>
+						<input type="text" class="form-control" id="dataDO" name="dataDO"> 
+					</div>
+				</div>
+                
+                <div class="form-group">
+					<div class="col-md-offset-2 col-md-6"><strong>Período (meses): *</strong>
+						<input type="text" class="form-control" id="meses" name="meses"> 
+					</div>
+					<div class="col-md-6"><strong>Data do resultado no D.O.: *</strong>
+						<input type="text" class="form-control" id="dataDO" name="dataDO"> 
+					</div>
+				</div>
+                
+                 <div class="form-group">
+					<div class="col-md-offset-2 col-md-6"><strong>Período (meses): *</strong>
+						<input type="text" class="form-control" id="meses" name="meses"> 
+					</div>
+					<div class="col-md-6"><strong>Folha de Pesquisa: *</strong>
+						<input type="text" class="form-control" id="dataDO" name="dataDO"> 
+					</div>
+				</div>
+                
+                 <div class="form-group">
+					<div class="col-md-offset-2 col-md-6"><strong>Proceso de pesquisa: *</strong>
+						<input type="text" class="form-control" id="meses" name="meses"> 
+					</div>
+				</div>
+					
+				<div class="form-group">
+					<div class="col-md-offset-2 col-md-8">
+						<input type="submit" class="btn btn-theme btn-lg btn-block" value="Gravar">
+					</div>
+				</div>
+			</form>
+		</div>		
+	</div>
+</div>
+</section> 
+
+<?php 
+break;
+case 'list_edital':
+/*
+   if(isset($_POST['atualizar'])){
+		$idCargo = $_POST['Id_Cargo'];		   
+		$cargo = $_POST['Cargo'];		   
+		$sql_atualiza_cargoo = "UPDATE sis_cargo SET
+		Cargo = '$cargo'
+		WHERE Id_Cargo = '$idCargo'";
+		$con = bancoMysqli();
+		$query_atualiza_cargo = mysqli_query($con,$sql_atualiza_cargo);
+		if($query_atualiza_cargo){
+			$mensagem = "Atualizado com sucesso!";
+		}else{
+			$mensagem = "Erro ao atualizar.";	
+		}		   
+   }*/
+?> 
+
+	<section id="list_items">
+		<div class="container">
+             <div class="col-md-offset-2 col-md-8">
+                <br />
+                <h2>EDITAL</h2>
+                    <p><?php if(isset($mensagem)){ echo $mensagem; } ?></p>
+    				<br/>
+                </div>
+			<div class="table-responsive list_info">
+				<table class="table table-condensed">
+					<thead>
+						<tr class="list_menu">
+							<td>Id</td>
+							<td>Edital</td>
+                            <td>Data D.O.</td>
+                            <td>Processo de Pesquisa</td>
+  							<td></td>
+						</tr>
+					</thead>
+					<tbody>
+<?php
+$sql = "SELECT * FROM sis_formacao_edital" ;
+$query = mysqli_query($con,$sql);
+while($edital = mysqli_fetch_array($query)){
+?>
+
+<tr>
+<form action="?perfil=formacao&p=administrativo&pag=list_edital" method="post">
+<td><?php echo $edital['idFormacaoEdital']; ?></td>
+<td><input type="text" name="Edital" class="form-control" value="<?php echo $edital['edital']; ?>"/></td>
+<td>
+<input type="hidden" name="atualizar" value="<?php echo $edital['idFormacaoEdital']; ?>" />
+<input type ='submit' class='btn btn-theme  btn-block' value='atualizar'></td>
+</form>
+
+</tr>
+	
+    <?php } ?>
+					
+					</tbody>
+				</table>
+
+			</div>
+
+            </div>            
+		</div>
+	</section>
+
+<?php /* =========== FIM EDITAL ===========*/ break; ?> 
 
 <?php } //fim da switch ?>

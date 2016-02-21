@@ -122,23 +122,23 @@ function siscontrat($idPedido){
 	if($idPedido != ""){ //retorna 1 array do pedido ['nomedocampo'];
 		
 		$pedido = recuperaDados("igsis_pedido_contratacao",$idPedido,"idPedidoContratacao");
-		$evento = recuperaDados("ig_evento",$pedido['idEvento'],"idEvento"); //$tabela,$idEvento,$campo
-		$usuario = recuperaDados("ig_usuario",$evento['idUsuario'],"idUsuario");
-		$instituicao = recuperaDados("ig_instituicao",$usuario['idInstituicao'],"idInstituicao");
-		$local = listaLocais($pedido['idEvento']);
-		$periodo = retornaPeriodo($pedido['idEvento']);
-		$duracao = retornaDuracao($pedido['idEvento']);
-		$proponente = recuperaPessoa($pedido['idPessoa'],$pedido['tipoPessoa']);
-		$fiscal = recuperaUsuario($evento['idResponsavel']);
-		$suplente = recuperaUsuario($evento['suplente']);
-		$assinatura = recuperaDados("sis_assinatura",$pedido['instituicao'],"idInstituicao");
-		$penalidades = recuperaPenalidades($pedido['idPenalidade']);
-		if($pedido['parcelas'] > 1){
-			$pagamento = txtParcelas($idPedido,$pedido['parcelas']);	
-		}else{
-			$pagamento = $pedido['formaPagamento'];	
-		}
-		
+				
+			$evento = recuperaDados("ig_evento",$pedido['idEvento'],"idEvento"); //$tabela,$idEvento,$campo
+			$usuario = recuperaDados("ig_usuario",$evento['idUsuario'],"idUsuario");
+			$instituicao = recuperaDados("ig_instituicao",$usuario['idInstituicao'],"idInstituicao");
+			$local = listaLocais($pedido['idEvento']);
+			$periodo = retornaPeriodo($pedido['idEvento']);
+			$duracao = retornaDuracao($pedido['idEvento']);
+			$proponente = recuperaPessoa($pedido['idPessoa'],$pedido['tipoPessoa']);
+			$fiscal = recuperaUsuario($evento['idResponsavel']);
+			$suplente = recuperaUsuario($evento['suplente']);
+			$assinatura = recuperaDados("sis_assinatura",$pedido['instituicao'],"idInstituicao");
+			$penalidades = recuperaPenalidades($pedido['idPenalidade']);
+			if($pedido['parcelas'] > 1){
+				$pagamento = txtParcelas($idPedido,$pedido['parcelas']);	
+			}else{
+				$pagamento = $pedido['formaPagamento'];	
+			}
 		$x = array(
 			"idEvento" => $pedido['idEvento'], 
 			"idSetor" => $usuario['idInstituicao'],
@@ -189,6 +189,81 @@ function siscontrat($idPedido){
 		return "Erro";
 	}
 }
+
+function siscontratFormacao($idPedido){ 
+	$con = bancoMysqli();
+	if($idPedido != ""){ //retorna 1 array do pedido ['nomedocampo'];
+		
+		$pedido = recuperaDados("igsis_pedido_contratacao",$idPedido,"idPedidoContratacao");
+		$formacao = recuperaDados("sis_formacao_evento",$pedido['idPedidoContratacao'],"idPedidoContratacao"); //$tabela,$idEvento,$campo
+		$usuario = recuperaDados("ig_usuario",$evento['idUsuario'],"idUsuario");
+		$instituicao = recuperaDados("ig_instituicao",$usuario['idInstituicao'],"idInstituicao");
+		$local = listaLocais($pedido['idEvento']);
+		$periodo = retornaPeriodo($pedido['idEvento']);
+		$duracao = retornaDuracao($pedido['idEvento']);
+		$proponente = recuperaPessoa($pedido['idPessoa'],$pedido['tipoPessoa']);
+		$fiscal = recuperaUsuario($evento['idResponsavel']);
+		$suplente = recuperaUsuario($evento['suplente']);
+		$assinatura = recuperaDados("sis_assinatura",$pedido['instituicao'],"idInstituicao");
+		$penalidades = recuperaPenalidades($pedido['idPenalidade']);
+		if($pedido['parcelas'] > 1){
+			$pagamento = txtParcelas($idPedido,$pedido['parcelas']);	
+		}else{
+			$pagamento = $pedido['formaPagamento'];	
+		}
+		$x = array(
+			"idEvento" => $pedido['idEvento'], 
+			"idSetor" => $usuario['idInstituicao'],
+			"Setor" => $instituicao['instituicao']  ,
+			"TipoPessoa" => $pedido['tipoPessoa'],
+			"CategoriaContratacao" => $evento['ig_modalidade_IdModalidade'] , //precisa ver se retorna o id
+			"Objeto" => retornaTipo($evento['ig_tipo_evento_idTipoEvento'])." - ".$evento['nomeEvento'] ,
+			"Local" => substr($local,1) , //retira a virgula no começo da string
+			"ValorGlobal" => $pedido['valor'],
+			"ValorIndividual" => $pedido['valorIndividual'],
+			"FormaPagamento" => $pagamento,
+			"Periodo" => $periodo, 
+			"Duracao" => $duracao." min", 
+			"Verba" => $pedido['idVerba'] ,
+			"Justificativa" => $pedido['justificativa'],
+			"ParecerTecnico" => $pedido['parecerArtistico'],
+			"DataCadastro" => $evento['dataEnvio'],
+			"Fiscal" => $fiscal['nomeCompleto'] ,
+			"Suplente" => $suplente['nomeCompleto'],
+			"Observacao"=> $pedido['observacao'], //verificar
+			"NotaEmpenho" => "",
+			"Horario" => "", //SPCultura
+			"IdProponente" => $pedido['idPessoa'],
+			"idRepresentante01" => $pedido['idRepresentante01'],
+			"idRepresentante02" => $pedido['idRepresentante02'],
+			"IdExecutante" => $pedido['IdExecutante'],
+			"CargaHoraria" => "",
+			"NumeroProcesso" => $pedido['NumeroProcesso'],
+			"NotaEmpenho" => $pedido['NumeroNotaEmpenho'],
+			"EmissaoNE" => $pedido['DataEmissaoNotaEmpenho'],
+			"EntregaNE" => $pedido['DataEntregaNotaEmpenho'],
+			"Assinatura" => $assinatura['Assinatura'],
+			"Cargo" => $assinatura['Cargo'],
+			"parcelas" => $pedido['parcelas'],
+			"RfFiscal" => $fiscal['rf'],
+			"RfSuplente" => $suplente['rf'],
+			"AmparoLegal" => $pedido['AmparoLegal'],
+			"Finalizacao" => $pedido['Finalizacao'],
+			"ComplementoDotacao" => $pedido['ComplementoDotacao'],
+			"Status" => $pedido['estado'],
+			"Penalidade" => $penalidades['txt']	
+			);
+		
+		
+		
+	return $x;	
+	}else{
+		return "Erro";
+	}
+}
+
+
+
 
 function siscontratDocs($idPessoa,$tipo){
 	if($idPessoa == NULL){

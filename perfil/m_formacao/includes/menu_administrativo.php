@@ -25,6 +25,12 @@ $pasta = "?perfil=formacao&p=administrativo&pag=";
 						<li><a href="<?php echo $pasta ?>list_equipamento">Listar</a></li>
                     </ul>
                 </li>
+                <li><a href="#">Edital</a>
+                	<ul class="dl-submenu">
+                    	<li><a href="<?php echo $pasta ?>add_edital">Cadastrar</a></li>
+						<li><a href="<?php echo $pasta ?>list_edital">Listar</a></li>
+                    </ul>
+                </li>
                 <li><a href="#">Linguagem</a>
                 	<ul class="dl-submenu">
                     	<li><a href="<?php echo $pasta ?>add_linguagem">Cadastrar</a></li>

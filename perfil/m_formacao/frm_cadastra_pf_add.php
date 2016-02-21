@@ -14,12 +14,14 @@ $ultimo = $_GET['id_pf']; //recupera o id da pessoa
 		$cv = addslashes($_POST['cv']);
 		$spcultura = $_POST['spcultura'];
 		$sql_atualizar_pessoa = "UPDATE `sis_pessoa_fisica_formacao` SET
-		`IdEtnia` = '$etnia', 
+		`IdEtinia` = '$etnia', 
 		`IdRegiao` = '$regiao', 
 		`IdGrauInstrucao` = '$instrucao', 
 		`Grupo` = '$grupo', 
 		`Curriculo` = '$cv', 
 		`Id_Agente_Spcultura` = '$spcultura' WHERE IdPessoaFisica = '$idPessoaFisica'";
+		
+		verificaMysql($sql_atualizar_pessoa);
 		
 		if(mysqli_query($con,$sql_atualizar_pessoa)){
 			$mensagem = "Atualizado com sucesso!";	
@@ -64,9 +66,8 @@ if($fisica == NULL){
 				  <div class="form-group">
 					<div class="col-md-offset-2 col-md-2"><strong>Etnia:</strong><br/>
 					  <select class="form-control" id="tipoDocumento" name="etnia" >
-					  <option value="0">Não informado</option>
 					   <?php
-						geraOpcao("sis_etnia",$fisica['IdEtnia'],"");
+						geraOpcao("sis_etnia",$fisica['IdEtinia'],"");
 						?>  
 					  </select>
 					</div>				  
