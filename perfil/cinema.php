@@ -149,16 +149,16 @@ if(isset($_POST['idCinema'])){ // Carrega dados sobre o filme a editar
 if(isset($_POST['inserirFilme'])){ //Insere um filme
 	$pais1 = $_POST['pais1'];
 	$idEvento = $_SESSION['idEvento'];
-	$titulo = $_POST['titulo'];
-	$tituloOriginal = $_POST['tituloOriginal'];
+	$titulo = addslashes($_POST['titulo']);
+	$tituloOriginal = addslashes($_POST['tituloOriginal']);
 	$anoProducao = $_POST['ano'];
 	$genero = $_POST['genero'];
 	$bitola = $_POST['bitola'];
-	$direcao = $_POST['direcao'];
-	$sinopse = $_POST['sinopse'];
+	$direcao = addslashes($_POST['direcao']);
+	$sinopse = addslashes($_POST['sinopse']);
 	$minutagem = $_POST['minutagem'];
 	$linkTrailer = $_POST['link'];
-	$elenco = $_POST['elenco'];
+	$elenco = addslashes($_POST['elenco']);
 	$pais2 = $_POST['pais2'];
 	$classificao = $_POST['classificacao'];
 
@@ -186,7 +186,7 @@ if(isset($_POST['editarFilme'])){ //Atualiza um filme
 	$anoProducao = $_POST['ano'];
 	$genero = $_POST['genero'];
 	$bitola = $_POST['bitola'];
-	$direcao = $_POST['direcao'];
+	$direcao = addslashes($_POST['direcao']);
 	$sinopse = addslashes($_POST['sinopse']);
 	$minutagem = $_POST['minutagem'];
 	$linkTrailer = $_POST['link'];

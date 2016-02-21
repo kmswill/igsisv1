@@ -65,7 +65,16 @@ $i = 0;
 		
 		$event = recuperaDados("ig_evento",$idEvento,"idEvento");
 		if($event['dataEnvio'] != NULL AND $event['publicado']){ // se o evento estiver publicado e tiver sido enviado 
-			$sql_pedido = "SELECT * FROM igsis_pedido_contratacao WHERE idEvento = '$idEvento' AND publicado ='1' ORDER BY idPedidoContratacao DESC";
+			$sql_pedido = "SELECT * FROM igsis_pedido_contratacao WHERE idEvento = '$idEvento' AND publicado ='1' 
+			AND (estado = '1' OR
+			estado = '2' OR
+			estado = '3' OR
+			estado = '4' OR
+			estado = '5' OR
+			estado = '6' )
+			
+			
+			ORDER BY idPedidoContratacao DESC";
 			$query_pedido = mysqli_query($con,$sql_pedido);
 			while($pedido = mysqli_fetch_array($query_pedido)){
 				$usuario = recuperaDados("ig_usuario",$event['idUsuario'],"idUsuario");

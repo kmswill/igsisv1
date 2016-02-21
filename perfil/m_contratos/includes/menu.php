@@ -37,6 +37,7 @@ $usuario = recuperaDados("ig_usuario",$_SESSION['idUsuario'],"idUsuario");
         <?php if($usuario['contratos'] == 2){ ?>
 					<li><a href="<?php echo $pasta ?>frm_reabertura">Reabertura de Eventos/Pedidos</a></li>
         <?php } ?>
+          		<li><a href="<?php echo $pasta ?>frm_chamados">Chamados</a></li>
   		<li style="color:white;">-------------------------</li>
         <li><a href="index.php?secao=perfil">Carregar módulos</a></li>
 		<li><a href="<?php echo $pasta ?>ajuda">Ajuda</a></li>

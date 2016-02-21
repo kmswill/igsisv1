@@ -1,6 +1,6 @@
 <?php
 
-$linha_tabela_lista = siscontratLista(2,"",1000,1,"DESC","todos"); //esse gera uma array com os pedidos
+$linha_tabela_lista = siscontratLista(2,"",1000,1,"DESC",8); //esse gera uma array com os pedidos
 //$tipoPessoa,$instituicao,$num_registro,$pagina,$ordem,$estado
 
 $link="index.php?perfil=contabilidade&p=frm_cadastra_contabilpj&id_ped=";

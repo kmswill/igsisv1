@@ -195,7 +195,7 @@ if($id != "" AND $num_registro > 0){ // Foi inserido o número do pedido
 		}
 		
 				
-		$sql_evento = "SELECT DISTINCT nomeEvento,ig_evento.idEvento FROM ig_evento,igsis_pedido_contratacao WHERE ig_evento.publicado = '1' AND igsis_pedido_contratacao.publicado = '1' AND ig_evento.idEvento = igsis_pedido_contratacao.idEvento $filtro_evento $filtro_fiscal $filtro_tipo $filtro_instituicao $filtro_operador $filtro_juridico  AND estado IS NOT NULL ORDER BY idPedidoContratacao DESC";
+		$sql_evento = "SELECT * FROM ig_evento,igsis_pedido_contratacao WHERE ig_evento.publicado = '1' AND igsis_pedido_contratacao.publicado = '1' AND ig_evento.idEvento = igsis_pedido_contratacao.idEvento $filtro_evento $filtro_fiscal $filtro_tipo $filtro_instituicao $filtro_operador $filtro_juridico  AND estado IS NOT NULL ORDER BY idPedidoContratacao DESC";
 		$query_evento = mysqli_query($con,$sql_evento);
 		$i = 0;
 		while($evento = mysqli_fetch_array($query_evento)){
@@ -204,7 +204,8 @@ if($id != "" AND $num_registro > 0){ // Foi inserido o número do pedido
 			$query_existe = mysqli_query($con, $sql_existe);
 			if(mysqli_num_rows($query_existe) > 0)
 			{
-			$pedido = recuperaDados("igsis_pedido_contratacao",$idEvento,"idEvento");
+			while($ped = mysqli_fetch_array($query_existe)){	
+			$pedido = recuperaDados("igsis_pedido_contratacao",$ped['idPedidoContratacao'],"idPedidoContratacao");
 			$evento = recuperaDados("ig_evento",$pedido['idEvento'],"idEvento"); //$tabela,$idEvento,$campo
 			$usuario = recuperaDados("ig_usuario",$evento['idUsuario'],"idUsuario");
 			$instituicao = recuperaDados("ig_instituicao",$evento['idInstituicao'],"idInstituicao");
@@ -223,7 +224,7 @@ if($id != "" AND $num_registro > 0){ // Foi inserido o número do pedido
 				$valorTotal = $pedido['valor'];
 				$formaPagamento = $pedido['formaPagamento'];
 			}
-		
+			if($pedido['publicado'] == 1){		
 			$x[$i]['id']= $pedido['idPedidoContratacao'];
 			$x[$i]['objeto'] = retornaTipo($evento['ig_tipo_evento_idTipoEvento'])." - ".$evento['nomeEvento'];
 			if($pedido['tipoPessoa'] == 1){
@@ -242,6 +243,8 @@ if($id != "" AND $num_registro > 0){ // Foi inserido o número do pedido
 			$x[$i]['status'] = $pedido['estado'];	
 			$x[$i]['operador'] = $operador['nomeCompleto'];		
 			$i++;
+			}
+			}
 			}
 		}
 		$x['num'] = $i;

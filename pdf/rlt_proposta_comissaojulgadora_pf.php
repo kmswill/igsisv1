@@ -57,7 +57,11 @@ function PrintChapter($file)
 
 //CONSULTA 
 $id_ped=$_GET['id'];
+$idPenalidade = $_GET['penal'];
 dataProposta($id_ped);
+gravaPenalidade($id_ped,$idPenalidade);
+$penal = recuperaDados("sis_penalidades",$idPenalidade,"idPenalidades");
+$txtPenalidade = $penal['txt'];
 $ano=date('Y');
 
 $pedido = siscontrat($id_ped);
@@ -285,9 +289,10 @@ $pdf->SetX($x);
    
    $pdf->Ln();
 
-$pdf->SetX($x);
-$pdf->PrintChapter('txt/proposta_comissaojulgadora_pf.txt');
-    
+   $pdf->SetX($x);
+   $pdf->SetFont('Arial','', 10);
+   $pdf->MultiCell(0,$l,utf8_decode($txtPenalidade),0,'J');
+
    $pdf->Ln();
 
    $pdf->SetX($x);

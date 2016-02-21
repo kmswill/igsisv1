@@ -132,6 +132,7 @@ function siscontrat($idPedido){
 		$fiscal = recuperaUsuario($evento['idResponsavel']);
 		$suplente = recuperaUsuario($evento['suplente']);
 		$assinatura = recuperaDados("sis_assinatura",$pedido['instituicao'],"idInstituicao");
+		$penalidades = recuperaPenalidades($pedido['idPenalidade']);
 		if($pedido['parcelas'] > 1){
 			$pagamento = txtParcelas($idPedido,$pedido['parcelas']);	
 		}else{
@@ -177,7 +178,8 @@ function siscontrat($idPedido){
 			"AmparoLegal" => $pedido['AmparoLegal'],
 			"Finalizacao" => $pedido['Finalizacao'],
 			"ComplementoDotacao" => $pedido['ComplementoDotacao'],
-			"Status" => $pedido['estado']	
+			"Status" => $pedido['estado'],
+			"Penalidade" => $penalidades['txt']	
 			);
 		
 		
@@ -704,6 +706,16 @@ function dataReserva($idPedido){
 	}
 }
 
-
+function gravaPenalidade($idPedido,$idPenalidade){
+	$con = bancoMysqli();
+	$sql = "UPDATE igsis_pedido_contratacao SET idPenalidade = '$idPenalidade' WHERE idPedidoContratacao = '$idPedido'";
+	$query = mysqli_query($con,$sql);
+	if($query){
+		return TRUE;	
+	}else{
+		return FALSE;
+	}
+	
+}
 
 ?>

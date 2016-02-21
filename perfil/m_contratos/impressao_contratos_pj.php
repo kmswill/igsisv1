@@ -23,17 +23,17 @@ $link11 = $http."rlt_pedido_reserva_fepac_pj.php";
 $link12 = $http."rlt_pedido_reserva_atividadecultural_pj.php";
 $link13 = $http."rlt_pedido_reserva_atividadecultural_cooperativa_pj.php";
 $link14 = $http."rlt_pedido_reserva_vocacional_pj.php";
-$link15 = $http."rlt_proposta_reversaolonga_pj.php";
-$link16 = $http."rlt_proposta_reversaocurta_pj.php";
+$link15 = $http."rlt_proposta_reversaolonga_pj.php"."?id=".$id_ped."&penal=18";
+$link16 = $http."rlt_proposta_reversaocurta_pj.php"."?id=".$id_ped."&penal=16";
 $link17 = $http."rlt_declaracao_iss_1rep_pj.php";
 $link18 = $http."rlt_declaracao_iss_2rep_pj.php";
 $link19 = $http."rlt_declaracao_exclusividade_1rep_pj.php";
 $link20 = $http."rlt_declaracao_exclusividade_2rep_pj.php";
-$link21 = $http."rlt_proposta_doacao_pj.php";
+$link21 = $http."rlt_proposta_doacao_pj.php"."?id=".$id_ped."&penal=6";
 $link22 = $http."rlt_ordemservico_pj.php";
 $link23 = $http."rlt_ordemservico_pj_word.php";
-$link24 = $http."rlt_proposta_cinema_pj.php";
-$link25 = $http."rlt_proposta_exposicao_pj.php";
+$link24 = $http."rlt_proposta_cinema_pj.php"."?id=".$id_ped."&penal=3";
+$link25 = $http."rlt_proposta_exposicao_pj.php"."?id=".$id_ped."&penal=10";
 
 
 	 $last_id = mysqli_insert_id($conexao);
@@ -72,17 +72,17 @@ $link25 = $http."rlt_proposta_exposicao_pj.php";
 		-->
 		
 		<tr>
-			<td><a href='$link24?id=$id_ped' target='_blank'><strong>Cinema</strong></a></td>
-			<td><a href='$link21?id=$id_ped' target='_blank'><strong>Doação de Serviços</strong></a></td>
+			<td><a href='$link24' target='_blank'><strong>Cinema</strong></a></td>
+			<td><a href='$link21' target='_blank'><strong>Doação de Serviços</strong></a></td>
 		</tr>
 		
 		<tr>
-			<td><a href='$link15?id=$id_ped' target='_blank'><strong>Reversão Longa Temporada</strong></a></td>
-			<td><a href='$link16?id=$id_ped' target='_blank'><strong>Reversão Curta Temporada</strong></a></td>
+			<td><a href='$link15' target='_blank'><strong>Reversão Longa Temporada</strong></a></td>
+			<td><a href='$link16' target='_blank'><strong>Reversão Curta Temporada</strong></a></td>
 		</tr>
 		
 		<tr>
-			<td><a href='$link25?id=$id_ped' target='_blank'><strong>Exposição | Outros</strong></a></td>
+			<td><a href='$link25' target='_blank'><strong>Exposição | Outros</strong></a></td>
 		</tr>
 		
 		<tr><td class='list_description'><br/></td></tr>

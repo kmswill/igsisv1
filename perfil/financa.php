@@ -75,20 +75,13 @@ if(isset($_POST['aprova'])){
 	$status = 1;
 	}
 	
-	if($status == 1){	
-		$sql_aprova = "UPDATE igsis_pedido_contratacao SET aprovacaoFinanca = '$status', estado = '2' WHERE idPedidoContratacao = '$idPedido'";
-	}else{
-		$sql_aprova = "UPDATE igsis_pedido_contratacao SET aprovacaoFinanca = '$status', estado = '1' WHERE idPedidoContratacao = '$idPedido'";
-		
-	}
+	$sql_aprova = "UPDATE igsis_pedido_contratacao SET aprovacaoFinanca = '$status' WHERE idPedidoContratacao = '$idPedido'";
 	$query_aprova = mysqli_query($con,$sql_aprova);
 	if($query_aprova){
-		gravarLog($sql_aprova);
 		if($status == 0){
 			$mensagem = "Pedido $idPedido NÃO APROVADO";	
 		}else{
 			$mensagem = "Pedido $idPedido APROVADO";
-			
 		}	
 	}
 }
@@ -135,7 +128,7 @@ while($linha_tabela_pedido_contratacao = mysqli_fetch_array($query))
  {
 	$pedido = siscontrat($linha_tabela_pedido_contratacao['idPedidoContratacao']);
 	$pessoa = siscontratDocs($linha_tabela_pedido_contratacao['idPessoa'],$linha_tabela_pedido_contratacao['tipoPessoa']);
-	echo "<tr><td class='lista'> <a href=''>".$linha_tabela_pedido_contratacao['idPedidoContratacao']."</a></td>";
+	echo "<tr><td class='lista'> <a href='?perfil=financa&p=detalhe&pedido=".$linha_tabela_pedido_contratacao['idPedidoContratacao']."' target='_blank'>".$linha_tabela_pedido_contratacao['idPedidoContratacao']."</a></td>";
 	echo '<td class="list_description">'.retornaPessoa($pedido['TipoPessoa']).					'</td> ';
 	echo '<td class="list_description">'.$pessoa['Nome'].						'</td> ';
 	echo '<td class="list_description">'.$pedido['Objeto'].				'</td> ';
@@ -414,7 +407,50 @@ while($verba = mysqli_fetch_array($query)){
 		</div>
 	</section>
 
+<?php 
+break;
+case "detalhe":
+$pedido = siscontrat($_GET['pedido']);
+		$pessoa = recuperaPessoa($pedido['IdProponente'],$pedido['TipoPessoa']);
+?>
+	 <section id="services" class="home-section bg-white">
+		<div class="container">
+			  <div class="row">
+				  <div class="col-md-offset-2 col-md-8">
+					<div class="section-heading">
+					                     
 
+					</div>
+				  </div>
+			  </div>
+			  
+	        <div class="row">
+			<div class="table-responsive list_info" >
+            <h4><?php echo $pedido['Objeto'] ?></h4>
+            <p align="left">
+			Número do pedido: <strong>2016-<?php echo $_GET['pedido'] ?></strong> <br />
+			Tipo de pessoa: <strong><?php echo $pessoa['tipo']; ?></strong> <br />
+ 			Nome / Razão Social: <strong><?php echo $pessoa['nome']; ?> (<?php echo $pessoa['numero']; ?>)</strong> <br />
+   			Relação Jurídica: <strong><?php echo recuperaModalidade($pedido['CategoriaContratacao']); ?> </strong> <br />
+   			Período: <strong><?php echo $pedido['Periodo']; ?> </strong> <br />
+   			Local: <strong><?php echo $pedido['Local']; ?> </strong> <br />
+   			Verba: <strong><?php echo retornaVerba($pedido['Verba']); ?> </strong> <br />
+   			Valor: <strong>R$ <?php echo dinheiroParaBr($pedido['ValorGlobal']); ?> </strong> <br />
+   			Forma de Pagamento: <strong><?php echo nl2br($pedido['FormaPagamento']); ?> </strong> <br />	
+ 			
+                  </p>      
+
+
+
+			  <div class="table-responsive list_info" >
+
+
+</div>
+</div>
+            </div>
+</section>
+	
+	
 <?php   
 break;
 case "planilha":

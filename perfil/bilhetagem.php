@@ -68,6 +68,7 @@ require "../funcoes/funcoesProducao.php";
 	
 	break;
 	case "all":
+	$con = bancoMysqli();
 	
 	if(isset($_GET['order'])){
 	$ordem = $_GET['order'];

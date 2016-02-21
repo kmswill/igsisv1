@@ -8,7 +8,7 @@ $id = $id_ped;
 
 $server = "http://".$_SERVER['SERVER_NAME']."/igsis/"; //mudar para pasta do igsis
 $http = $server."/pdf/";
-$link0 = $http."rlt_pedido_contratacao_pf.php"."?id=".$id_ped;
+$link0 = $http."rlt_pedido_contratacao_pf.php";
 $link1 = $http."rlt_proposta_padrao_pf.php";
 $link2 = $http."rlt_proposta_artistico_pf.php";
 $link3 = $http."rlt_proposta_eventoexterno_pf.php";
@@ -24,16 +24,11 @@ $link12 = $http."rlt_declaracao_naoservidor_pf.php";
 $link13 = $http."rlt_declaracao_iss_pf.php";
 $link14 = $http."rlt_parecer_pf.php";
 $link15 = $http."rlt_direitos_conexos.php";
-$link16 = $http."rlt_proposta_reversaolonga_pf.php"."?id=".$id_ped."&penal=18"; 
-$link17 = $http."rlt_proposta_reversaocurta_pf.php"."?id=".$id_ped."&penal=16";
-$link18 = $http."rlt_proposta_doacao_pf.php"."?id=".$id_ped."&penal=6";
+$link16 = $http."rlt_proposta_reversaolonga_pf.php"; 
+$link17 = $http."rlt_proposta_reversaocurta_pf.php";
+$link18 = $http."rlt_proposta_doacao_pf.php";
 $link19 = $http."rlt_ordemservico_pf.php";
 $link20 = $http."rlt_declaracao_exclusividade_pf.php";
-$link21 = $http."rlt_proposta_cinema_pf.php"."?id=".$id_ped."&penal=3";
-$link22 = $http."rlt_proposta_comissaojulgadora_pf.php"."?id=".$id_ped."&penal=5";
-$link23 = $http."rlt_proposta_exposicao_pf.php"."?id=".$id_ped."&penal=10";
-$link24 = $http."rlt_proposta_oficinassemedital_pf.php"."?id=".$id_ped."&penal=12";
-$link25 = $http."rlt_proposta_palestra_pf.php"."?id=".$id_ped."&penal=15";
  
  
 	 $last_id = mysqli_insert_id($conexao);
@@ -58,7 +53,7 @@ $link25 = $http."rlt_proposta_palestra_pf.php"."?id=".$id_ped."&penal=15";
 		<tr><td class='list_description'><br/></td></tr>
 		
 		<tr class='list_menu'><td colspan='2'><strong>PROPOSTA</strong></td></tr>
-		<!--
+		
 		<tr>
 			<td><a href='$link1?id=$id_ped' target='_blank'><strong>Padrão</strong></a></td>
 			<td><a href='$link2?id=$id_ped' target='_blank'><strong>Artístico</strong></a></td>
@@ -68,26 +63,14 @@ $link25 = $http."rlt_proposta_palestra_pf.php"."?id=".$id_ped."&penal=15";
 			<td><a href='$link3?id=$id_ped' target='_blank'><strong>Evento Externo</strong></a></td>
 			<td><a href='$link4?id=$id_ped' target='_blank'><strong>Oficinas</strong></a></td>
 		</tr>
-		-->
 		
 		<tr>
-			<td><a href='$link21' target='_blank'><strong>Cinema</strong></a></td>
-			<td><a href='$link22?id=$id_ped' target='_blank'><strong>Comissão Julgadora</strong></a></td>
+			<td><a href='$link16?id=$id_ped' target='_blank'><strong>Reversão Longa Temporada</strong></a></td>
+			<td><a href='$link17?id=$id_ped' target='_blank'><strong>Reversão Curta Temporada</strong></a></td>
 		</tr>
-		
 		<tr>
 			<td><a href='$link18?id=$id_ped' target='_blank'><strong>Doação de Serviços</strong></a></td>
-			<td><a href='$link23?id=$id_ped' target='_blank'><strong>Exposição | Outros</strong></a></td>
-		</tr>
-		
-		<tr>
-			<td><a href='$link24?id=$id_ped' target='_blank'><strong>Oficinas sem Edital</strong></a></td>
-			<td><a href='$link25?id=$id_ped' target='_blank'><strong>Palestra | Debate | Workshop</strong></a></td>
-		</tr>
-		
-		<tr>
-			<td><a href='$link17?id=$id_ped' target='_blank'><strong>Reversão Curta Temporada</strong></a></td>
-			<td><a href='$link16?id=$id_ped' target='_blank'><strong>Reversão Longa Temporada</strong></a></td>
+			<td></td>
 		</tr>
 		
 		<tr><td class='list_description'><br/></td></tr>

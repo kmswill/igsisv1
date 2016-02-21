@@ -32,8 +32,8 @@ $NumeroProcesso = $linha_tabelas["NumeroProcesso"];
 $FormaPagamento = $linha_tabelas["FormaPagamento"];
 $assinatura = $linha_tabelas["Assinatura"];
 $cargo = $linha_tabelas["Cargo"];
-$amparo = $linha_tabelas["AmparoLegal"];
-$final = $linha_tabelas["Finalizacao"];
+$amparo = nl2br($linha_tabelas["AmparoLegal"]);
+$final = nl2br($linha_tabelas["Finalizacao"]);
 $complementoDotacao = $linha_tabelas["ComplementoDotacao"];
 
 //PessoaJuridica

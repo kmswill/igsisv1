@@ -33,6 +33,10 @@ $rfFiscal = $pedido["RfFiscal"];
 $Suplente = $pedido["Suplente"];
 $rfSuplente = $pedido["RfSuplente"];
 $setor = $pedido["Setor"];
+$amparo = nl2br($pedido["AmparoLegal"]);
+$final = nl2br($pedido["Finalizacao"]);
+$penalidade = nl2br($pedido["Penalidade"]);
+
 
 //PessoaJuridica
 
@@ -114,27 +118,20 @@ echo "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=Windows-125
 echo "<body>";
 
 echo "<p><b>CONTRATANTE:</b> "."$setor"."</p>";
-echo "<p><b>CONTRATADO(S):</b> Contratação de <b>"."$exNome"."</b>, CPF "."$exCPF"." e os demais integrantes do "."$Objeto".", por intermédio da(o) "."$pjRazaoSocial".", inscrita no CNPJ sob o Nº. "."$pjCNPJ".", representada legalmente pelo próprio contratado.</p>";
-echo "<p><b>EVENTO/SERV:</b> Apresentação do "."$Objeto".", conforme segue:<br>
-"."$Local"." 
-TEMPO APROX. "."$Duracao"." cada apresentação</p>";
-echo "<p><b>VALOR TOTAL DA CONTRATAÇÃO:</b> "."R$ $ValorGlobal"."  "."($ValorPorExtenso)"."<br> Quaisquer despesas aqui não ressalvadas, bem como direitos autorais, serão de responsabilidade do(a) contratado(a).<br></p>";
-echo "<b>CONDIÇÕES DE PAGAMENTO: </b>"."$FormaPagamento"."<br>";
-echo "<b>FISCALIZAÇÃO DO CONTRATO NA SMC: </b>Servidor "."$Fiscal"." - RF "."$rfFiscal"." como fiscal do contrato e Sr(a)" ."$Suplente"." - RF "."$rfSuplente"." como substitut(o)a.<br> <b> De acordo com a Portaria nº 5/2012 de SF, haverá compensação financeira, se houver atraso no pagamento do valor devido, por culpa exclusiva do Contratante, dependendo de requerimento a ser formalizado pelo Contratado.</b> <br>";
-echo "<b>PENALIDADES: </b> O contratado incorrerá em multa de:<br>
-5% (cinco por cento) para casos de infração de cláusula contratual como desobedecer às determinações da fiscalização ou desrespeitar munícipes ou funcionários municipais.
-10% (dez por cento) para casos de inexecução parcial.
-20% (vinte por cento) para casos de inexecução total.
-Multa de 3% (três por cento) a cada 30 (trinta) minutos de atraso sobre o valor do ajuste, até o máximo de 9% (nove por cento), quando o contrato, a critério da administração, será considerado totalmente inexecutado e ao contratado será aplicada a multa prevista para a inexecução total.
-O valor da multa será calculado sobre o valor da proposta, do contrato ou nota de empenho, quando esta o substituir. 
-A multa será descontada do pagamento devido ou será inscrita como dívida ativa, sujeita à cobrança executiva;
-Suspensão temporária de contratar e licitar com a municipalidade;
-Os trabalhos deverão ser iniciados pontualmente no horário e data previamente estabelecidos, sob pena de inadimplemento parcial do contrato.
-";
-echo "<p><b>RESCISÃO CONTRATUAL: </b> Dar-se-á caso ocorra quaisquer dos atos cabíveis descritos na legislação vigente.
+echo "<p align='justify'><b>CONTRATADO(S):</b>".$exNome." (CPF ".$exCPF."), nome artístico ´´".$exNomeArtistico."´´ e demais integrantes relacionados na declaração de exclusividade , por intermédio de ".$pjRazaoSocial.", CNPJ ("."$pjCNPJ"."), legalmente representada por ".$rep01Nome." CPF (".$rep01CPF.").</p>";
+echo "<p align='justify'><b>EVENTO/SERV:</b> Apresentação do "."$Objeto".", conforme segue:<br>
+"."$Local"." <br>
+TEMPO APROX. "."$Duracao"."utos cada apresentação.</p>";
+echo "<p align='justify'><b>VALOR TOTAL DA CONTRATAÇÃO:</b> "."R$ $ValorGlobal"."  "."($ValorPorExtenso)"."<br> Quaisquer despesas aqui não ressalvadas, bem como direitos autorais, serão de responsabilidade do(a) contratado(a).</p>";
+echo "<p align='justify'><b>CONDIÇÕES DE PAGAMENTO: </b>"."$FormaPagamento".".</p>";
+echo "<p align='justify'><b>FISCALIZAÇÃO DO CONTRATO NA SMC: </b>Servidor "."$Fiscal"." - RF "."$rfFiscal"." como fiscal do contrato e Sr(a) " ."$Suplente"." - RF "."$rfSuplente"." como substitut(o)a.<br> 
+<b> De acordo com a Portaria nº 5/2012 de SF, haverá compensação financeira, se houver atraso no pagamento do valor devido, por culpa exclusiva do Contratante, dependendo de requerimento a ser formalizado pelo Contratado.</b> </p>";
+echo "<p align='justify'><b>PENALIDADES:</b> ".$penalidade.".</p>";
+echo "<p align='justify'><b>RESCISÃO CONTRATUAL: </b> DESPACHO - Dar-se-á caso ocorra quaisquer dos atos cabíveis descritos na legislação vigente.<br>
 * Contratação, por inexigibilidade da licitação, com fundamento no artigo 25, Inciso III, da Lei Federal nº. 8.666/93, e alterações posteriores, e artigo 1º da Lei Municipal nº. 13.278/02, nos termos dos artigos 16 e 17 do Decreto Municipal nº. 44.279/03.</p>
 <b> ** OBS.: ESTE EMPENHO SUBSTITUI O CONTRATO, CONFORME ARTIGO 62 DA LEI FEDERAL Nº. 8.666/93.</b>
 </p>";
+echo "<p align='justify'><b>DESPACHO</b><br>".$amparo."</p>";
 echo "</body>";
 echo "</html>";
 ?>
