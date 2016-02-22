@@ -2807,7 +2807,7 @@ function reloadAgenda(){
 			if($query){
 				//echo "Data importada na agenda.<br />";	
 			}else{
-				//echo "Erro.<br />";		
+				$mensagem - $mensagem."Erro.<br />";	
 			}		
 		}else{ // Evento de tempoarada
 			while(strtotime($dataInicio) <=  strtotime($dataFinal)){
@@ -2823,7 +2823,7 @@ function reloadAgenda(){
 					if($query){
 						//echo "Data importada na agenda.<br />";	
 					}else{
-						//echo "Erro.<br />";		
+						$mensagem - $mensagem."Erro.<br />";	
 					}		
 					
 				}
@@ -2838,7 +2838,7 @@ function reloadAgenda(){
 					if($query){
 						//echo "Data importada na agenda.<br />";	
 					}else{
-						//echo "Erro.<br />";		
+						$mensagem - $mensagem."Erro.<br />";	
 					}		
 					
 				}
@@ -2852,7 +2852,7 @@ function reloadAgenda(){
 					if($query){
 						//echo "Data importada na agenda.<br />";	
 					}else{
-						//echo "Erro.<br />";		
+						$mensagem - $mensagem."Erro.<br />";	
 					}		
 					
 				}
@@ -2866,7 +2866,7 @@ function reloadAgenda(){
 					if($query){
 						//echo "Data importada na agenda.<br />";	
 					}else{
-						//echo "Erro.<br />";		
+						$mensagem - $mensagem."Erro.<br />";	
 	
 	
 					}		
@@ -2882,7 +2882,7 @@ function reloadAgenda(){
 					if($query){
 						//echo "Data importada na agenda.<br />";	
 					}else{
-						//echo "Erro.<br />";		
+						$mensagem - $mensagem."Erro.<br />";	
 					}		
 					
 				}
@@ -2896,7 +2896,7 @@ function reloadAgenda(){
 					if($query){
 						//echo "Data importada na agenda.<br />";	
 					}else{
-						//echo "Erro.<br />";		
+						$mensagem - $mensagem."Erro.<br />";	
 					}		
 					
 				}
@@ -2911,7 +2911,7 @@ function reloadAgenda(){
 					if($query){
 						//echo "Data importada na agenda.<br />";	
 					}else{
-						//echo "Erro.<br />";		
+						$mensagem - $mensagem."Erro.<br />";	
 					}		
 					
 				}
@@ -2963,7 +2963,7 @@ while($evento = mysqli_fetch_array($query_pesquisar)){
 	$idOcorrencia = $evento['idOcorrencia'];
 	$idCinema = $evento['idCinema'];
 
-
+	$mensagem = "";
 	
 	if($dataFinal == '0000-00-00' OR $dataFinal == $dataInicio){ //Evento de data única
 
@@ -2971,9 +2971,9 @@ while($evento = mysqli_fetch_array($query_pesquisar)){
 	VALUES (NULL, '$idEvento', '$dataInicio', '$hora', '$local', '$idInstituicao', '$idTipo', '$idOcorrencia', '$idCinema');";
 		$query = mysqli_query($con,$sql);
 		if($query){
-			//echo "Data importada na agenda.<br />";	
+			$mensagem = $mensagem."Data importada na agenda.<br />";	
 		}else{
-			//echo "Erro.<br />";		
+			$mensagem - $mensagem."Erro.<br />";
 		}		
 	}else{ // Evento de tempoarada
 		while(strtotime($dataInicio) <=  strtotime($dataFinal)){
@@ -2987,9 +2987,9 @@ while($evento = mysqli_fetch_array($query_pesquisar)){
 
 				$query = mysqli_query($con,$sql);
 				if($query){
-					//echo "Data importada na agenda.<br />";	
+			$mensagem = $mensagem."Data importada na agenda.<br />";
 				}else{
-					//echo "Erro.<br />";		
+					$mensagem - $mensagem."Erro.<br />";	
 				}		
 				
 			}
@@ -3002,9 +3002,9 @@ while($evento = mysqli_fetch_array($query_pesquisar)){
 
 				$query = mysqli_query($con,$sql);
 				if($query){
-					//echo "Data importada na agenda.<br />";	
+			$mensagem = $mensagem."Data importada na agenda.<br />";;	
 				}else{
-					//echo "Erro.<br />";		
+					$mensagem - $mensagem."Erro.<br />";	
 				}		
 				
 			}
@@ -3016,9 +3016,9 @@ while($evento = mysqli_fetch_array($query_pesquisar)){
 
 				$query = mysqli_query($con,$sql);
 				if($query){
-					//echo "Data importada na agenda.<br />";	
+			$mensagem = $mensagem."Data importada na agenda.<br />";
 				}else{
-					//echo "Erro.<br />";		
+					$mensagem - $mensagem."Erro.<br />";	
 				}		
 				
 			}
@@ -3030,9 +3030,9 @@ while($evento = mysqli_fetch_array($query_pesquisar)){
 
 				$query = mysqli_query($con,$sql);
 				if($query){
-					//echo "Data importada na agenda.<br />";	
+			$mensagem = $mensagem."Data importada na agenda.<br />";
 				}else{
-					//echo "Erro.<br />";		
+					$mensagem - $mensagem."Erro.<br />";	
 
 
 				}		
@@ -3046,9 +3046,9 @@ while($evento = mysqli_fetch_array($query_pesquisar)){
 
 				$query = mysqli_query($con,$sql);
 				if($query){
-					//echo "Data importada na agenda.<br />";	
+			$mensagem = $mensagem."Data importada na agenda.<br />";	
 				}else{
-					//echo "Erro.<br />";		
+					$mensagem - $mensagem."Erro.<br />";	
 				}		
 				
 			}
@@ -3060,9 +3060,9 @@ while($evento = mysqli_fetch_array($query_pesquisar)){
 	VALUES (NULL, '$idEvento', '$dataInicio', '$hora', '$local', '$idInstituicao', '$idTipo', '$idOcorrencia', '$idCinema');";
 				$query = mysqli_query($con,$sql);
 				if($query){
-					//echo "Data importada na agenda.<br />";	
+			$mensagem = $mensagem."Data importada na agenda.<br />";
 				}else{
-					//echo "Erro.<br />";		
+					$mensagem - $mensagem."Erro.<br />";	
 				}		
 				
 			}
@@ -3075,9 +3075,9 @@ while($evento = mysqli_fetch_array($query_pesquisar)){
 	VALUES (NULL, '$idEvento', '$dataInicio', '$hora', '$local', '$idInstituicao', '$idTipo', '$idOcorrencia', '$idCinema');";
 				$query = mysqli_query($con,$sql);
 				if($query){
-					//echo "Data importada na agenda.<br />";	
+			$mensagem = $mensagem."Data importada na agenda.<br />";
 				}else{
-					//echo "Erro.<br />";		
+					$mensagem - $mensagem."Erro.<br />";	
 				}		
 				
 			}
