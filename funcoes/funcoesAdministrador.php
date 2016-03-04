@@ -479,4 +479,32 @@ function enviarEmailContratos($conteudo_email, $instituicao, $subject, $email, $
 
 }
 
+
+	function limpaCPF_CNPJ($valor){
+	 $valor = trim($valor);
+	 $valor = str_replace(".", "", $valor);
+	 $valor = str_replace(",", "", $valor);
+	 $valor = str_replace("-", "", $valor);
+	 $valor = str_replace("/", "", $valor);
+	 return $valor;
+	}
+	
+	function verificaCPF($cpf){ //verifica se existe na base sis_pessoa_fisica
+		$con = bancoMysqli();
+		$i = 1;
+		$x['cpf'] = 0;
+		$x['num'] = 0;
+		$sql = "SELECT CPF FROM sis_pessoa_fisica";
+		$query = mysqli_query($con,$sql);
+		while($certidao = mysqli_fetch_array($query)){
+			if($cpf == limpaCPF_CNPJ($certidao['CPF'])){
+				$x['cpf'] = 1;
+				$x['num'] = $i;
+				$i++;	
+			}	
+		}
+		return $x;
+		
+	}	
+
 ?>

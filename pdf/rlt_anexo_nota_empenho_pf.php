@@ -11,6 +11,7 @@
 //CONSULTA 
 $id_ped=$_GET['id'];
 $ano=date('Y');
+$dataAtual = date("d/m/Y");
 
 $pedido = siscontrat($id_ped);
 $pessoa = siscontratDocs($pedido['IdProponente'],1);
@@ -33,6 +34,7 @@ $rfSuplente = $pedido["RfSuplente"];
 $amparo = nl2br($pedido["AmparoLegal"]);
 $final = nl2br($pedido["Finalizacao"]);
 $penalidade = nl2br($pedido["Penalidade"]);
+$NumeroProcesso = $pedido["NumeroProcesso"];
 
 $Nome = $pessoa["Nome"];
 $NomeArtistico = $pessoa["NomeArtistico"];
@@ -54,7 +56,7 @@ $INSS = $pessoa["INSS"];
 
    
 header("Content-type: application/vnd.ms-word");
-header("Content-Disposition: attachment;Filename=pedido_reserva.doc");
+header("Content-Disposition: attachment;Filename=$NumeroProcesso em $dataAtual.doc");
 echo "<html>";
 echo "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=Windows-1252\">";
 echo "<body>";
@@ -66,6 +68,8 @@ echo "<p align='justify'><b>EVENTO/SERV:</b> Apresentação do "."$Objeto".", co
 TEMPO APROX. "."$Duracao"."utos cada apresentação.</p>";
 echo "<p align='justify'><b>VALOR TOTAL DA CONTRATAÇÃO:</b> "."R$ $ValorGlobal"."  "."($ValorPorExtenso)"."<br> Quaisquer despesas aqui não ressalvadas, bem como direitos autorais, serão de responsabilidade do(a) contratado(a).</p>";
 echo "<p align='justify'><b>CONDIÇÕES DE PAGAMENTO: </b>"."$FormaPagamento".".</p>";
+echo "<p align='justify'>O pagamento será efetuado por crédito em conta corrente no BANCO DO BRASIL, em  conformidade com o Decreto 51.197/2010, publicado no DOC de 23.01.2010.<br/>
+De acordo com a Portaria nº 5/2012 de SF, haverá compensação financeira, se houver atraso no pagamento do valor devido, por culpa exclusiva do Contratante, dependendo de requerimento a ser formalizado pelo Contratado.</p>";
 echo "<p align='justify'><b>FISCALIZAÇÃO DO CONTRATO NA SMC: </b>Servidor "."$Fiscal"." - RF "."$rfFiscal"." como fiscal do contrato e Sr(a) " ."$Suplente"." - RF "."$rfSuplente"." como substitut(o)a.<br> 
 <b> De acordo com a Portaria nº 5/2012 de SF, haverá compensação financeira, se houver atraso no pagamento do valor devido, por culpa exclusiva do Contratante, dependendo de requerimento a ser formalizado pelo Contratado.</b> </p>";
 echo "<p align='justify'><b>PENALIDADES:</b> ".$penalidade.".</p>";

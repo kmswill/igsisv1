@@ -34,6 +34,8 @@ $link22 = $http."rlt_ordemservico_pj.php";
 $link23 = $http."rlt_ordemservico_pj_word.php";
 $link24 = $http."rlt_proposta_cinema_pj.php"."?id=".$id_ped."&penal=3";
 $link25 = $http."rlt_proposta_exposicao_pj.php"."?id=".$id_ped."&penal=10";
+$link26 = $http."rlt_termo_doacao_pj.php";
+$link27 = $http."rlt_termo_parceria_pj.php";
 
 
 	 $last_id = mysqli_insert_id($conexao);
@@ -113,11 +115,12 @@ $link25 = $http."rlt_proposta_exposicao_pj.php"."?id=".$id_ped."&penal=10";
 		
 		<tr>
 			<td><a href='$link8?id=$id_ped' target='_blank'><strong>Parecer da Comissão</strong></a></td>
-			<td><a href='$link22?id=$id_ped' target='_blank'><strong>Ordem de Serviço</strong></a></td>
+			<td><a href='$link23?id=$id_ped' target='_blank'><strong>Ordem de Serviço</strong></a></td>
 		</tr>
 
 		<tr>
-			<td><a href='$link23?id=$id_ped' target='_blank'><strong>Ordem de Serviço em WORD</strong></a></td>
+			<td><a href='$link26?id=$id_ped' target='_blank'><strong>Termo de Doação</strong></a></td>
+			<td><a href='$link27?id=$id_ped' target='_blank'><strong>Termo de Parceria</strong></a></td>
 		</tr>		
 		
 		

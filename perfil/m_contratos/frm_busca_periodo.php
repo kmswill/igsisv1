@@ -192,7 +192,7 @@ echo "</pre>";
 			  <div class="row">
 				  <div class="col-md-offset-2 col-md-8">
 					<div class="section-heading">
-					 <h2>Busca por pedido</h2>
+					 <h2>Busca por período</h2>
                      <p><?php if(isset($mensagem)){ echo $num; }?></p>
                     <p>É preciso ao menos um critério de busca ou você pesquisou por um pedido inexistente. Tente novamente.</p>
 
@@ -242,9 +242,8 @@ echo "</pre>";
 			  <div class="row">
 				  <div class="col-md-offset-2 col-md-8">
 					<div class="section-heading">
-					 <h2>Busca por pedido</h2>
+					 <h2>Busca por período</h2>
                      <p><?php if(isset($mensagem)){ echo $num; }?></p>
-                    <p>É preciso ao menos um critério de busca ou você pesquisou por um pedido inexistente. Tente novamente.</p>
 
 					</div>
 				  </div>

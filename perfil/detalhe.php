@@ -46,6 +46,7 @@ $pedido = listaPedidoContratacao($_GET['evento']);
 			$pessoa = siscontratDocs($dados['IdProponente'],$dados['TipoPessoa']);
 			?>
             <p align="left">
+			Número do Pedido de contratação: <b><?php echo $pedido[$i]; ?></b><br />
 			Nome ou Razão Social: <b><?php echo $pessoa['Nome'] ?></b><br />
 			Tipo de pessoa: <b><?php echo retornaTipoPessoa($dados['TipoPessoa']);?></b><br />
 			Dotação: <b><?php echo retornaVerba($dados['Verba']);?></b><br />
@@ -102,7 +103,7 @@ $pedido = listaPedidoContratacao($_GET['evento']);
 			<div class="table-responsive list_info" >
             <h4><?php echo $pedido['Objeto'] ?></h4>
             <p align="left">
-			Protocolo do pedido: <strong>2016-<?php echo retornaProtoPedido($_GET['pedido']) ?></strong> <br />
+			Número do pedido: <strong>2016-<?php echo $_GET['pedido'] ?></strong> <br />
 			Tipo de pessoa: <strong><?php echo $pessoa['tipo']; ?></strong> <br />
  			Nome / Razão Social: <strong><?php echo $pessoa['nome']; ?> (<?php echo $pessoa['numero']; ?>)</strong> <br />
    			Relação Jurídica: <strong><?php echo recuperaModalidade($pedido['CategoriaContratacao']); ?> </strong> <br />

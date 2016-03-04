@@ -31,6 +31,20 @@ case 'inicial':
 <?php
 /* =========== INÍCIO CADASTRA CARGO ===========*/
 case 'add_cargo':
+
+   if(isset($_POST['add_cargo'])){
+		$idCargo = $_POST['add_cargo'];		   
+		$cargo = $_POST['Cargo'];		   
+		$sql_atualiza_cargo = "INSERT INTO sis_formacao_cargo 
+		(Cargo) VALUES ('$cargo')";
+		$con = bancoMysqli();
+		$query_atualiza_cargo = mysqli_query($con,$sql_atualiza_cargo);
+		if($query_atualiza_cargo){
+			$mensagem = "Cargo ".$cargo." cadastrado com sucesso!";
+		}else{
+			$mensagem = "Erro ao cadastrar.";	
+		}		   
+   }
 ?>    
 <section id="contact" class="home-section bg-white">
 	<div class="container">
@@ -51,6 +65,7 @@ case 'add_cargo':
 					
 				<div class="form-group">
 					<div class="col-md-offset-2 col-md-8">
+						<input type="hidden" name="add_cargo" value="1"/>
 						<input type="submit" class="btn btn-theme btn-lg btn-block" value="Gravar">
 					</div>
 				</div>
@@ -65,9 +80,9 @@ break;
 case 'list_cargo':
 
    if(isset($_POST['atualizar'])){
-		$idCargo = $_POST['Id_Cargo'];		   
-		$cargo = $_POST['Cargo'];		   
-		$sql_atualiza_cargoo = "UPDATE sis_cargo SET
+		$idCargo = $_POST['atualizar'];		   
+		$cargo = $_POST['cargo'];		   
+		$sql_atualiza_cargo = "UPDATE sis_formacao_cargo SET
 		Cargo = '$cargo'
 		WHERE Id_Cargo = '$idCargo'";
 		$con = bancoMysqli();
@@ -133,7 +148,22 @@ while($cargo = mysqli_fetch_array($query)){
 <?php 
 /* =========== INÍCIO COORDENADORIA ===========*/
 case 'add_coordenadoria': 
-?>
+
+   if(isset($_POST['add_coordenadoria'])){
+		$idCoordenadoria = $_POST['add_coordenadoria'];		   
+		$coordenadoria = $_POST['Coordenadoria'];		   
+		$sql_atualiza_coordenadoria = "INSERT INTO sis_formacao_coordenadoria 
+		(Coordenadoria) VALUES ('$coordenadoria')";
+		$con = bancoMysqli();
+		$query_atualiza_coordenadoria = mysqli_query($con,$sql_atualiza_coordenadoria);
+		if($query_atualiza_coordenadoria){
+			$mensagem = "Coordenadoria ".$coordenadoria." cadastrado com sucesso!";
+		}else{
+			$mensagem = "Erro ao cadastrar.";	
+		}		   
+   }
+?>  
+
 <section id="contact" class="home-section bg-white">
 	<div class="container">
 		<div class="form-group">
@@ -153,6 +183,7 @@ case 'add_coordenadoria':
 					
 				<div class="form-group">
 					<div class="col-md-offset-2 col-md-8">
+						<input type="hidden" name="add_coordenadoria" />
 						<input type="submit" class="btn btn-theme btn-lg btn-block" value="Gravar">
 					</div>
 				</div>
@@ -165,21 +196,21 @@ case 'add_coordenadoria':
 <?php 
 break;
 case 'list_coordenadoria':
-/*
+   
    if(isset($_POST['atualizar'])){
-		$idCargo = $_POST['Id_Cargo'];		   
-		$cargo = $_POST['Cargo'];		   
-		$sql_atualiza_cargoo = "UPDATE sis_cargo SET
-		Cargo = '$cargo'
-		WHERE Id_Cargo = '$idCargo'";
+		$idCoordenadoria = $_POST['atualizar'];		   
+		$coordenadoria = $_POST['coordenadoria'];		   
+		$sql_atualiza_coordenadoria = "UPDATE sis_formacao_coordenadoria SET
+		Coordenadoria = '$coordenadoria'
+		WHERE Id_Coordenadoria = '$idCoordenadoria'";
 		$con = bancoMysqli();
-		$query_atualiza_cargo = mysqli_query($con,$sql_atualiza_cargo);
-		if($query_atualiza_cargo){
+		$query_atualiza_coordenadoria = mysqli_query($con,$sql_atualiza_coordenadoria);
+		if($query_atualiza_coordenadoria){
 			$mensagem = "Atualizado com sucesso!";
 		}else{
 			$mensagem = "Erro ao atualizar.";	
 		}		   
-   }*/
+   }
 ?> 
 	<section id="list_items">
 		<div class="container">
@@ -202,15 +233,14 @@ case 'list_coordenadoria':
 <?php
 $sql = "SELECT * FROM sis_formacao_coordenadoria" ;
 $query = mysqli_query($con,$sql);
-while($projeto = mysqli_fetch_array($query)){
+while($coordenadoria = mysqli_fetch_array($query)){
 ?>
 
 <tr>
-<form action="" method="post">
+<form action="?perfil=formacao&p=administrativo&pag=list_coordenadoria" method="post">
 <td><?php echo $coordenadoria['Id_Coordenadoria']; ?></td>
-<td colspan="2"><input type="text" name="projeto" class="form-control" value="<?php echo $coordenadoria['Coordenadoria']; ?>"/></td>
+<td><input type="text" name="coordenadoria" class="form-control" value="<?php echo $coordenadoria['Coordenadoria']; ?>"/></td>
 <td>
-<input type="hidden" name="idCoordenadoria" value="<?php echo $coordenadoria['Id_Coordenadoria']; ?>" />
 <input type="hidden" name="atualizar" value="<?php echo $coordenadoria['Id_Coordenadoria']; ?>" />
 <input type ='submit' class='btn btn-theme  btn-block' value='atualizar'></td>
 </form>
@@ -383,6 +413,20 @@ case 'list_equipamento':
 <?php 
 /* =========== INÍCIO LINGUAGEM ===========*/
 case 'add_linguagem':
+
+if(isset($_POST['add_linguagem'])){
+		$idLinguagem = $_POST['add_linguagem'];		   
+		$linguagem = $_POST['Linguagem'];		   
+		$sql_atualiza_linguagem = "INSERT INTO sis_formacao_linguagem 
+		(Linguagem) VALUES ('$linguagem')";
+		$con = bancoMysqli();
+		$query_atualiza_linguagem = mysqli_query($con,$sql_atualiza_linguagem);
+		if($query_atualiza_linguagem){
+			$mensagem = "Linguagem ".$linguagem." cadastrado com sucesso!";
+		}else{
+			$mensagem = "Erro ao cadastrar.";	
+		}		   
+   }
 ?>
 <section id="contact" class="home-section bg-white">
 	<div class="container">
@@ -403,6 +447,7 @@ case 'add_linguagem':
 					
 				<div class="form-group">
 					<div class="col-md-offset-2 col-md-8">
+						<input type="hidden" name="add_linguagem" />
 						<input type="submit" class="btn btn-theme btn-lg btn-block" value="Gravar">
 					</div>
 				</div>
@@ -415,21 +460,21 @@ case 'add_linguagem':
 <?php 
 break;
 case 'list_linguagem':
-/*
-   if(isset($_POST['atualizar'])){
-		$idCargo = $_POST['Id_Cargo'];		   
-		$cargo = $_POST['Cargo'];		   
-		$sql_atualiza_cargoo = "UPDATE sis_cargo SET
-		Cargo = '$cargo'
-		WHERE Id_Cargo = '$idCargo'";
+
+	if(isset($_POST['atualizar'])){
+		$idLinguagem = $_POST['atualizar'];		   
+		$linguagem = $_POST['linguagem'];		   
+		$sql_atualiza_linguagem = "UPDATE sis_formacao_linguagem SET
+		Linguagem = '$linguagem'
+		WHERE Id_Linguagem = '$idLinguagem'";
 		$con = bancoMysqli();
-		$query_atualiza_cargo = mysqli_query($con,$sql_atualiza_cargo);
-		if($query_atualiza_cargo){
+		$query_atualiza_linguagem = mysqli_query($con,$sql_atualiza_linguagem);
+		if($query_atualiza_linguagem){
 			$mensagem = "Atualizado com sucesso!";
 		}else{
 			$mensagem = "Erro ao atualizar.";	
 		}		   
-   }*/
+   }
 ?> 
 
 	<section id="list_items">
@@ -457,11 +502,10 @@ while($linguagem = mysqli_fetch_array($query)){
 ?>
 
 <tr>
-<form action="" method="post">
+<form action="?perfil=formacao&p=administrativo&pag=list_linguagem" method="post">
 <td><?php echo $linguagem['Id_Linguagem']; ?></td>
-<td colspan="2"><input type="text" name="projeto" class="form-control" value="<?php echo $linguagem['Linguagem']; ?>"/></td>
+<td><input type="text" name="linguagem" class="form-control" value="<?php echo $linguagem['Linguagem']; ?>"/></td>
 <td>
-<input type="hidden" name="idLinguagem" value="<?php echo $linguagem['Id_Linguagem']; ?>" />
 <input type="hidden" name="atualizar" value="<?php echo $linguagem['Id_Linguagem']; ?>" />
 <input type ='submit' class='btn btn-theme  btn-block' value='atualizar'></td>
 </form>
@@ -486,8 +530,21 @@ while($linguagem = mysqli_fetch_array($query)){
 <?php 
 /* =========== INÍCIO PROJETO ===========*/
 case 'add_projeto':
-?>
 
+if(isset($_POST['add_projeto'])){
+		$idProjeto = $_POST['add_projeto'];		   
+		$projeto = $_POST['Projeto'];		   
+		$sql_atualiza_projeto = "INSERT INTO sis_formacao_projeto 
+		(Projeto) VALUES ('$projeto')";
+		$con = bancoMysqli();
+		$query_atualiza_projeto = mysqli_query($con,$sql_atualiza_projeto);
+		if($query_atualiza_projeto){
+			$mensagem = "Projeto ".$projeto." cadastrado com sucesso!";
+		}else{
+			$mensagem = "Erro ao cadastrar.";	
+		}		   
+   }
+?>
 <section id="contact" class="home-section bg-white">
 	<div class="container">
 		<div class="form-group">
@@ -507,6 +564,7 @@ case 'add_projeto':
 					
 				<div class="form-group">
 					<div class="col-md-offset-2 col-md-8">
+						<input type="hidden" name="add_projeto" />
 						<input type="submit" class="btn btn-theme btn-lg btn-block" value="Gravar">
 					</div>
 				</div>
@@ -520,10 +578,10 @@ case 'add_projeto':
 break;
 case 'list_projeto':
 
-   if(isset($_POST['atualizar'])){
-		$idProjeto = $_POST['Id_Projeto'];		   
-		$projeto = $_POST['Projeto'];		   
-		$sql_atualiza_projeto = "UPDATE sis_projeto SET
+	if(isset($_POST['atualizar'])){
+		$idProjeto = $_POST['atualizar'];		   
+		$projeto = $_POST['projeto'];		   
+		$sql_atualiza_projeto = "UPDATE sis_formacao_projeto SET
 		Projeto = '$projeto'
 		WHERE Id_Projeto = '$idProjeto'";
 		$con = bancoMysqli();
@@ -549,7 +607,7 @@ case 'list_projeto':
 					<thead>
 						<tr class="list_menu">
 							<td>Id</td>
-							<td>Projeto</td>
+							<td colspan="2">Projeto</td>
   							<td></td>
 						</tr>
 					</thead>
@@ -589,6 +647,20 @@ while($projeto = mysqli_fetch_array($query)){
 <?php 
 /* =========== INÍCIO SUBPREFEITURA ===========*/
 case 'add_subprefeitura':
+
+if(isset($_POST['add_subprefeitura'])){
+		$idSubprefeitura = $_POST['add_subprefeitura'];		   
+		$subprefeitura = $_POST['Subprefeitura'];		   
+		$sql_atualiza_subprefeitura = "INSERT INTO sis_formacao_subprefeitura 
+		(Subprefeitura) VALUES ('$subprefeitura')";
+		$con = bancoMysqli();
+		$query_atualiza_subprefeitura = mysqli_query($con,$sql_atualiza_subprefeitura);
+		if($query_atualiza_subprefeitura){
+			$mensagem = "Subprefeitura ".$subprefeitura." cadastrado com sucesso!";
+		}else{
+			$mensagem = "Erro ao cadastrar.";	
+		}		   
+   }
 ?>
 <section id="contact" class="home-section bg-white">
 	<div class="container">
@@ -609,6 +681,7 @@ case 'add_subprefeitura':
 					
 				<div class="form-group">
 					<div class="col-md-offset-2 col-md-8">
+						<input type="hidden" name="add_subprefeitura" />
 						<input type="submit" class="btn btn-theme btn-lg btn-block" value="Gravar">
 					</div>
 				</div>
@@ -621,28 +694,28 @@ case 'add_subprefeitura':
 <?php 
 break;
 case 'list_subprefeitura':
-/*
-   if(isset($_POST['atualizar'])){
-		$idCargo = $_POST['Id_Cargo'];		   
-		$cargo = $_POST['Cargo'];		   
-		$sql_atualiza_cargoo = "UPDATE sis_cargo SET
-		Cargo = '$cargo'
-		WHERE Id_Cargo = '$idCargo'";
+
+	if(isset($_POST['atualizar'])){
+		$idSubprefeitura = $_POST['atualizar'];		   
+		$subprefeitura = $_POST['subprefeitura'];		   
+		$sql_atualiza_subprefeitura = "UPDATE sis_formacao_subprefeitura SET
+		Subprefeitura = '$subprefeitura'
+		WHERE Id_Subprefeitura = '$idSubprefeitura'";
 		$con = bancoMysqli();
-		$query_atualiza_cargo = mysqli_query($con,$sql_atualiza_cargo);
-		if($query_atualiza_cargo){
+		$query_atualiza_subprefeitura = mysqli_query($con,$sql_atualiza_subprefeitura);
+		if($query_atualiza_subprefeitura){
 			$mensagem = "Atualizado com sucesso!";
 		}else{
 			$mensagem = "Erro ao atualizar.";	
 		}		   
-   }*/
+   }
 ?> 
 
 	<section id="list_items">
 		<div class="container">
              <div class="col-md-offset-2 col-md-8">
                 <br />
-                <h2>SUBPREFEITURA</h2>
+                <h2>SUBPREFEITURAO</h2>
                     <p><?php if(isset($mensagem)){ echo $mensagem; } ?></p>
     				<br/>
                 </div>
@@ -651,13 +724,13 @@ case 'list_subprefeitura':
 					<thead>
 						<tr class="list_menu">
 							<td>Id</td>
-							<td>Subprefeitura</td>
+							<td colspan="2">Subprefeitura</td>
   							<td></td>
 						</tr>
 					</thead>
 					<tbody>
 <?php
-$sql = "SELECT * FROM sis_subprefeitura" ;
+$sql = "SELECT * FROM sis_formacao_subprefeitura" ;
 $query = mysqli_query($con,$sql);
 while($subprefeitura = mysqli_fetch_array($query)){
 ?>
@@ -665,7 +738,7 @@ while($subprefeitura = mysqli_fetch_array($query)){
 <tr>
 <form action="?perfil=formacao&p=administrativo&pag=list_subprefeitura" method="post">
 <td><?php echo $subprefeitura['Id_Subprefeitura']; ?></td>
-<td><input type="text" name="Subprefeitura" class="form-control" value="<?php echo $subprefeitura['Subprefeitura']; ?>"/></td>
+<td><input type="text" name="subprefeitura" class="form-control" value="<?php echo $subprefeitura['Subprefeitura']; ?>"/></td>
 <td>
 <input type="hidden" name="atualizar" value="<?php echo $subprefeitura['Id_Subprefeitura']; ?>" />
 <input type ='submit' class='btn btn-theme  btn-block' value='atualizar'></td>
@@ -690,6 +763,25 @@ while($subprefeitura = mysqli_fetch_array($query)){
 <?php 
 /* =========== INÍCIO EDITAL ===========*/
 case 'add_edital':
+
+if(isset($_POST['add_edital'])){
+		$idEdital = $_POST['add_edital'];		   
+		$itensEdital = $_POST['itensEdital'];
+		$edital = $_POST['edital'];
+		$itensCredenciamento = $_POST['itensCredenciamento'];
+		$dataDO = $_POST['dataDO'];
+		$meses = $_POST['meses'];
+		$folhaPesquisa = $_POST['folhaPesquisa'];
+		$processoPesquisa = $_POST['processoPesquisa'];
+		$sql_atualiza_edital = "INSERT INTO `sis_formacao_edital`(`itensEdital`, `edital`, `itensCredenciamento`, `dataDO`, `meses`, `folhaPesquisa`, `processoPesquisa`) VALUES ($itensEdital, $edital, $itensCredenciamento, $dataDO, $meses, $folhaPesquisa, $processoPesquisa)";
+		$con = bancoMysqli();
+		$query_atualiza_edital = mysqli_query($con,$sql_atualiza_edital);
+		if($query_atualiza_edital){
+			$mensagem = "Edital ".$edital." cadastrado com sucesso!";
+		}else{
+			$mensagem = "Erro ao cadastrar.";	
+		}		   
+   }
 ?> 
 
 <section id="contact" class="home-section bg-white">
@@ -704,10 +796,10 @@ case 'add_edital':
 		<div class="col-md-offset-1 col-md-10">
 			<form class="form-horizontal" role="form" action="#" method="post">
 				<div class="form-group">
-					<div class="col-md-offset-2 col-md-6"><strong>Itens do Edital: *</strong>
-						<input type="text" class="form-control" id="itensEdital" name="itensEdital"> 
+					<div class="col-md-offset-2 col-md-6"><strong>Edital nº: *</strong>
+						<input type="text" class="form-control" id="edital" name="edital"> 
 					</div>
-					<div class="col-md-6"><strong>Edital nº: *</strong>
+					<div class="col-md-6"><strong>Itens do Edital: *</strong>
 						<input type="text" class="form-control" id="itensEdital" name="itensEdital"> 
 					</div>
 				</div>
@@ -717,7 +809,7 @@ case 'add_edital':
 						<input type="text" class="form-control" id="itensCredenciamento" name="itensCredenciamento"> 
 					</div>
 					<div class="col-md-6"><strong>Data do resultado no D.O.: *</strong>
-						<input type="text" class="form-control" id="dataDO" name="dataDO"> 
+						<input type="date" class="form-control" id="dataDO" name="dataDO">
 					</div>
 				</div>
                 
@@ -725,28 +817,20 @@ case 'add_edital':
 					<div class="col-md-offset-2 col-md-6"><strong>Período (meses): *</strong>
 						<input type="text" class="form-control" id="meses" name="meses"> 
 					</div>
-					<div class="col-md-6"><strong>Data do resultado no D.O.: *</strong>
-						<input type="text" class="form-control" id="dataDO" name="dataDO"> 
-					</div>
-				</div>
-                
-                 <div class="form-group">
-					<div class="col-md-offset-2 col-md-6"><strong>Período (meses): *</strong>
-						<input type="text" class="form-control" id="meses" name="meses"> 
-					</div>
 					<div class="col-md-6"><strong>Folha de Pesquisa: *</strong>
-						<input type="text" class="form-control" id="dataDO" name="dataDO"> 
+						<input type="text" class="form-control" id="folhaPesquisa" name="folhaPesquisa"> 
 					</div>
 				</div>
                 
                  <div class="form-group">
 					<div class="col-md-offset-2 col-md-6"><strong>Proceso de pesquisa: *</strong>
-						<input type="text" class="form-control" id="meses" name="meses"> 
+						<input type="text" class="form-control" id="processoPesquisa" name="processoPesquisa"> 
 					</div>
 				</div>
 					
 				<div class="form-group">
 					<div class="col-md-offset-2 col-md-8">
+						<input type="hidden" name="add_edital" value="1" />
 						<input type="submit" class="btn btn-theme btn-lg btn-block" value="Gravar">
 					</div>
 				</div>

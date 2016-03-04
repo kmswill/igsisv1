@@ -51,7 +51,7 @@ if(isset($_POST['pesquisar'])){ // inicia a busca por Razao Social ou CNPJ
 					if(isset($formacao['IdPessoaFisica'])){ 
 					echo "
 					<td class='list_description'>
-					<form method='POST' action='?perfil=formacao&p=frm_cadastra_dadoscontratacao'>
+					<form method='POST' action='?perfil=formacao&p=frm_cadastra_dadoscontratacao&id_pf=".$descricao['Id_PessoaFisica']."&novo=1'>
 					<input type='hidden' name='novo' value='".$descricao['Id_PessoaFisica']."'>
 					<input type ='submit' class='btn btn-theme btn-md btn-block' value='Novo cadastro formação'></td></form>"	;
 										echo "</tr>";

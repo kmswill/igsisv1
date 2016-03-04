@@ -19,7 +19,7 @@ if(isset($_POST['fisica'])OR ($_GET['tipoPessoa'] == 1)){
 
 if(isset($_POST["enviar"])){
 
-$sql_arquivos = "SELECT * FROM igsis_upload_docs";
+$sql_arquivos = "SELECT * FROM sis_formacao_upload";
 $query_arquivos = mysqli_query($con,$sql_arquivos);
 while($arq = mysqli_fetch_array($query_arquivos)){ 
 	$y = $arq['idTipoDoc'];
@@ -28,7 +28,7 @@ while($arq = mysqli_fetch_array($query_arquivos)){
 	if($nome_arquivo != ""){
 	$nome_temporario = $_FILES['arquivo']['tmp_name'][$x];
     //$ext = strtolower(substr($nome_arquivo[$i],-4)); //Pegando extensão do arquivo
-      $new_name = date("YmdHis")."_". $nome_arquivo; //Definindo um novo nome para o arquivo
+      $new_name = date("YmdHis")."_".semAcento($nome_arquivo); //Definindo um novo nome para o arquivo
 	  $hoje = date("Y-m-d H:i:s");
       $dir = '../uploadsdocs/'; //Diretório para uploads
 	  
@@ -59,7 +59,7 @@ if(isset($_POST['apagar'])){
 	$sql_apagar_arquivo = "UPDATE igsis_arquivos_pessoa SET publicado = 0 WHERE idArquivosPessoa = '$idArquivo'";
 	if(mysqli_query($con,$sql_apagar_arquivo)){
 		$arq = recuperaDados("igsis_arquivos_pessoa",$idArquivo,"idArquivosPessoa");
-		$mensagem =	"Arquivo ".$arq['arquivo']."apagado com sucesso!";
+		$mensagem =	"Arquivo<strong> ".$arq['arquivo']."</strong> apagado com sucesso!";
 		gravarLog($sql_apagar_arquivo);
 	}else{
 		$mensagem = "Erro ao apagar o arquivo. Tente novamente!";
@@ -80,7 +80,7 @@ $campo = recuperaPessoa($_REQUEST['idPessoa'],$_REQUEST['tipoPessoa']);
                                         
 					 <h3>Envio de Arquivos</h3>
                      <p><?php if(isset($mensagem)){echo $mensagem;} ?></p>
-<p>Nesta página, você envia documentos digitalizados. O tamanho máximo do arquivo deve ser 60MB.</p>
+<p>Nesta página, você envia documentos digitalizados. O tamanho máximo do arquivo deve ser 50MB.</p>
 
 
 <br />
@@ -91,14 +91,13 @@ $campo = recuperaPessoa($_REQUEST['idPessoa'],$_REQUEST['tipoPessoa']);
 <td width="50%"><td>
 </tr>
 <?php 
-$sql_arquivos = "SELECT * FROM igsis_upload_docs";
+$sql_arquivos = "SELECT * FROM sis_formacao_upload";
 $query_arquivos = mysqli_query($con,$sql_arquivos);
 while($arq = mysqli_fetch_array($query_arquivos)){ ?>
 
 <tr>
 <td><label><?php echo $arq['documento']?></label></td><td><input type='file' name='arquivo[<?php echo $arq['sigla']; ?>]'></td>
 </tr>
-	
 <?php } ?>
 
   </table>

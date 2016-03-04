@@ -10,8 +10,8 @@
 
 //recupera a data_inicial e data_final
 
-$dataInicio = $_GET['dataInicio'];
-$dataFinal = $_GET['dataFinal'];
+$dataInicio = exibirDataMysql($_GET['dataInicio']);
+$dataFinal = exibirDataMysql($_GET['dataFinal']);
 
 
 //gera a tabela temporária
@@ -45,7 +45,7 @@ header("Content-Disposition: attachment;Filename=revista.doc");
 	font-size: 12px;
 }
 </style>
-
+<p><?php echo $sql_temp ?></p>
 <?php
 	$t = "";
 	$p = "";
@@ -84,7 +84,11 @@ header("Content-Disposition: attachment;Filename=revista.doc");
 			
 		}
 	?>	
-	<p><?php echo $servico; ?></p>
+	<p><?php
+	if($t != 1){
+	 echo $servico; 
+	}
+	 ?></p>
 
 	
 	

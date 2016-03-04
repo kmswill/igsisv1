@@ -1,6 +1,7 @@
 <?php 
 
 // não precisa chamar a funcao porque o index contrato já chama.
+$con = bancoMysqli();
 
 ?>
 	

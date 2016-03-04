@@ -10,6 +10,52 @@ if(isset($_POST['idPedido'])){
 
 $con = bancoMysqli();
 
+if(isset($_POST['insereFisica'])){ //cadastra e insere pessoa física
+	$cpf = $_POST['CPF'];
+	$verificaCPF = verificaExiste("sis_pessoa_fisica","CPF",$cpf,"");
+	if($verificaCPF['numero'] > 0){ //verifica se o cpf já existe
+		$mensagem = "O CPF já consta no sistema. Faça uma busca e insira diretamente";
+	}else{ // o CPF não existe, inserir.
+		$Nome = $_POST['Nome'];
+		$NomeArtistico = $_POST['NomeArtistico'];
+		$RG = $_POST['RG'];
+		$CPF = $_POST['CPF'];
+		$CCM = $_POST['CCM'];
+		$IdEstadoCivil = $_POST['IdEstadoCivil'];
+		$DataNascimento = exibirDataMysql($_POST['DataNascimento']);
+		$Nacionalidade = $_POST['Nacionalidade'];
+		$CEP = $_POST['CEP'];
+		$Endereco = $_POST['Endereco'];
+		$Numero = $_POST['Numero'];
+		$Complemento = $_POST['Complemento'];
+		$Bairro = $_POST['Bairro'];
+		$Cidade = $_POST['Cidade'];
+		$Telefone1 = $_POST['Telefone1'];
+		$Telefone2 = $_POST['Telefone2'];
+		$Telefone3 = $_POST['Telefone3'];
+		$Email = $_POST['Email'];
+		$DRT = $_POST['DRT'];
+		$Funcao = $_POST['Funcao'];
+		$InscricaoINSS = $_POST['InscricaoINSS'];
+		$OMB = $_POST['OMB'];
+		$Observacao = $_POST['Observacao'];
+		$Pis = 0;
+		$data = date('Y-m-d');
+		$idUsuario = $_SESSION['idUsuario'];
+		$sql_insert_pf = "INSERT INTO `sis_pessoa_fisica` (`Id_PessoaFisica`, `Foto`, `Nome`, `NomeArtistico`, `RG`, `CPF`, `CCM`, `IdEstadoCivil`, `DataNascimento`, `LocalNascimento`, `Nacionalidade`, `CEP`, `Numero`, `Complemento`, `Telefone1`, `Telefone2`, `Telefone3`, `Email`, `DRT`, `Funcao`, `InscricaoINSS`, `Pis`, `OMB`, `DataAtualizacao`, `Observacao`, `IdUsuario`) VALUES (NULL, NULL, '$Nome', '$NomeArtistico', '$RG', '$CPF', '$CCM', '$IdEstadoCivil', '$DataNascimento', NULL, '$Nacionalidade', '$CEP', '$Numero', '$Complemento', '$Telefone1', '$Telefone2', '$Telefone3', '$Email', '$DRT', '$Funcao', '$InscricaoINSS', '$Pis', '$OMB', '$data', '$Observacao', '$idUsuario');";
+		$query_insert_pf = mysqli_query($con,$sql_insert_pf);
+		if($query_insert_pf){
+			gravarLog($sql_insert_pf);
+			echo "<h1>Inserido com sucesso!</h1>";
+			$ultimo = mysqli_insert_id($con);
+			}else{
+				echo "<h1>Erro ao inserir!</h1>";
+			}
+	}
+}
+
+
+
 	if(isset($_POST['cadastrarFisica'])){
 		$idPessoaFisica = $_POST['cadastrarFisica'];
 		$Nome = $_POST['Nome'];
@@ -144,7 +190,7 @@ $fisica = recuperaDados("sis_pessoa_fisica",$ultimo,"Id_PessoaFisica");
 					<div class="col-md-offset-2 col-md-6"><strong>Estado civil:</strong><br/>
 					  <select class="form-control" id="IdEstadoCivil" name="IdEstadoCivil" >
 					   <?php
-						geraOpcao("sis_estado_civil","","");
+						geraOpcao("sis_estado_civil",$fisica['IdEstadoCivil'],"");
 						?>  
 					  </select>
 					</div>				  
@@ -252,7 +298,7 @@ $fisica = recuperaDados("sis_pessoa_fisica",$ultimo,"Id_PessoaFisica");
 				  
 				  <div class="form-group">
 					<div class="col-md-offset-2 col-md-8"><strong>Observação:</strong><br/>
-					 <textarea name="Observacao" class="form-control" rows="10" placeholder=""></textarea>
+					 <textarea name="Observacao" class="form-control" rows="10" placeholder=""><?php echo $fisica['Observacao'] ?></textarea>
 					</div>
 				  </div>
 				  

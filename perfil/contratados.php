@@ -1407,7 +1407,13 @@ if(isset($_POST['atualizar'])){
 					</div>
                     
                     <div class="col-xs-6 col-sm-3"><strong>Data:</strong><br/>
-					  <input type='text' name="data<?php echo $i; ?>" id='' class='form-control datepicker' value="<?php echo exibirDataBr($parcela['vencimento']); ?>">
+					  <input type='text' name="data<?php echo $i; ?>" id='' class='form-control datepicker' value="<?php 
+					  if($parcela['vencimento'] == '0000-00-00 00:00:00' OR $parcela['vencimento'] == NULL){ 
+					  echo date('d/m/Y');
+					  }else{
+					  echo exibirDataBr($parcela['vencimento']); 
+					  } 
+					  ?>">
 					</div>
                     <div class="col-xs-6 col-sm-3"><strong>Descrição:</strong><br/>
 					  <input type='text'  name="descricao<?php echo $i; ?>" id='' class='form-control' value="<?php echo $parcela['descricao']; ?>">

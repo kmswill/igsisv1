@@ -493,16 +493,16 @@ if(isset($_GET['status'])){
 
 		$texto .= $pedido['estado']."<br />";	
 
-		if($pedido['aprovacaoFinanca'] == NULL){
+		if($pedido['aprovacaoFinanca'] == NULL OR $pedido['aprovacaoFinanca'] == 1 ){
 			
 		}else{
 		if(trim($pedido['NumeroProcesso']) != "" OR $pedido['NumeroProcesso'] != NULL){ // Se há número de processo
-			if(trim($pedido['NumeroNotaEmpenho']) != "" OR $pedido['NumeroProcesso'] != NULL){ // Se há número de Nota de Empenho
+			if(trim($pedido['NumeroNotaEmpenho']) != "" OR $pedido['NumeroNotaEmpenho'] != NULL){ // Se há número de Nota de Empenho
 				$idStatus = "10";
-			$texto .= "O status do pedido $idPedido é Número de Processo.<br />";
+			$texto .= "O status do pedido $idPedido é 10.<br />";
 			}else{
 				$idStatus = "4"; //Só tem número de processo	
-				$texto .= "O status do pedido $idPedido é Número de Processo.<br />";
+				$texto .= "O status do pedido $idPedido é 4.<br />";
 			}
 		}  		
 		// switch
@@ -546,6 +546,22 @@ if(isset($_GET['status'])){
 
 }
 
+if(isset($_GET['empenho'])){
+	$sql_pedido = "SELECT * FROM igsis_pedido_contratacao WHERE publicado = '1' and valor > 0";
+	$query_pedido = mysqli_query($con,$sql_pedido);
+	$texto = "";
+	while($pedido = mysqli_fetch_array($query_pedido)){
+		if($pedido['NumeroNotaEmpenho'] != "" OR $pedido['NumeroNotaEmpenho'] != NULL){
+			$con = bancoMysqli();
+			$idPedido = $pedido['idPedidoContratacao'];
+			$sql_atualiza_status = "UPDATE igsis_pedido_contratacao SET estado = '10' WHERE idPedidoContratacao = '$idPedido'"; 
+			$query_atualiza_status = mysqli_query($con,$sql_atualiza_status);
+			if($query_atualiza_status){
+				$texto .= "Pedido $idPedido atualizado para Entrega N.E.";
+			}	
+		}
+	}
+}
 
 if(isset($_GET['inst_agenda'])){
 	$con = bancoMysqli();	
@@ -599,6 +615,7 @@ if(isset($_GET['limpar_base'])){
                 <a href="?perfil=admin&p=scripts&status=1" class="btn btn-theme btn-lg btn-block">Atualizar status</a>
               <a href="?perfil=admin&p=scripts&inst_agenda=1" class="btn btn-theme btn-lg btn-block">Atualizar Instituições/Agenda</a>
                <a href="?perfil=admin&p=scripts&limpar_base=1" class="btn btn-theme btn-lg btn-block">Limpar base de eventos</a>
+              <a href="?perfil=admin&p=scripts&empenho=1" class="btn btn-theme btn-lg btn-block">Atualizar status N.E.</a>
 
 	            <!--<a href="?perfil=busca&p=pedidos" class="btn btn-theme btn-lg btn-block">Pedidos de contratação</a>-->
 

@@ -61,9 +61,7 @@ $codPed = "";
 <?php
 
 $sei = 
-  "<p align='right'>Folha de Informação nº ___________</p>".
   "<p><strong>Do processo nº:</strong> "."$NumeroProcesso"."</p>".
-  "<p align='right' class='style_01'>Data: _______ / _______ / 2015.  </p>".
   "<p>&nbsp;</p>".
   "<p><strong>INTERESSADO:</strong> "."$pjRazaoSocial"."  </span></p>".
   "<p><strong>ASSUNTO:</strong> "."$objeto"."  </p>".

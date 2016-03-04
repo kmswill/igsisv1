@@ -39,6 +39,7 @@ case 'inicio':
 	            <!--<a href="?perfil=busca&p=pedidos" class="btn btn-theme btn-lg btn-block">Pedidos de contratação</a>-->
 	            <a href="?perfil=busca&p=pessoa" class="btn btn-theme btn-lg btn-block">Pessoa física / Pessoa Jurídica</a>                
   	            <a href="?perfil=busca&p=igsis" class="btn btn-theme btn-lg btn-block">Instituições, usuários e espaços</a>
+				<a href="?perfil=busca_pedido" class="btn btn-theme btn-lg btn-block">Pedidos de contratação</a>
             </div>
           </div>
         </div>
@@ -615,3 +616,5 @@ break;
 }
 
  ?>
+ 
+ 

@@ -173,7 +173,7 @@ function listaOcorrenciasCinemaCom($idCinema){ //lista ocorrencias de determinad
 			$valor = dinheiroParaBr($campo['valorIngresso']);
 			$local = recuperaDados("ig_local",$campo['local'],"idLocal");
 			$espaco = $local['sala'];
-			$inst = recuperaDados("ig_instituicao",$local['ig_instituicao_idInstituicao'],"idInstituicao");
+			$inst = recuperaDados("ig_instituicao",$local['idInstituicao'],"idInstituicao");
 			$instituicao = $inst['instituicao'];
 			$id = $campo['idOcorrencia'];
 			
