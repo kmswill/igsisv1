@@ -71,5 +71,58 @@ function sqlVerbaIn($idUsuario){
 	return substr($verbaTxt,0,-1);
 }
 
+function somaVerbaPai($idVerba,$tipoPessoa){
+	$con = bancoMysqli();
+	if($tipoPessoa == 1){
+		$pessoa = "pf";	
+	}else{
+		$pessoa = "pj";	
+	}
+	$sql = "SELECT * FROM sis_verba WHERE pai = '$idVerba'";
+	$query = mysqli_query($con,$sql);
+	$total = 0;
+	while($verba = mysqli_fetch_array($query)){
+		$total = $total + $verba[$pessoa];
+	}	
+	
+	return $total;
+	
+}
 
+function somaEmpenhadosVerbaPai($pai,$tipo){
+	$con = bancoMysqli();
+	if($tipo == 1){
+		$pessoa = "pf";	
+	}else{
+		$pessoa = "pj";	
+	}
+	$sql = "SELECT * FROM sis_verba WHERE pai = '$pai'";
+	$query = mysqli_query($con,$sql);
+	$total = 0;
+	while($verba = mysqli_fetch_array($query)){
+		$total = $total + sunVerba($verba['Id_Verba'],$tipo);
+	}	
+	return $total;
+}
+
+/*
+function somaPedido($verba,$tipo){
+	$con = bancoMysqli();
+	$sql = "SELECT * FROM igsis_pedido_contratacao WHERE idVerba = '$idVerba' AND publicado = '1' AND tipoPessoa = '$tipoPessoa' AND NumeroNotaEmpenho <> '' AND NumeroNotaEmpenho IS NOT NULL";
+	$query = mysqli_query($con,$sql);	
+	$valor = 0;
+	while ($verba = mysqli_fetch_array($query)){
+		$idPedido = $verba['idPedidoContratacao'];
+		$valor = $valor + $verba['valor'];
+		$sql_multipla = "SELECT * FROM sis_verbas_multiplas WHERE idPedidoContratacao = '$idPedido' AND idVerba = '$idVerba'";
+		$query_mulitpla = mysqli_query($con,$sql_multipla);
+		while($multipla = mysqli_fetch_array($query_mulitpla)){
+			$valor = $valor + $multipla['valor'];
+		} 
+		
+	}	
+	
+	return $valor;
+}
+*/
 ?>

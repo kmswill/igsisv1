@@ -226,6 +226,7 @@ while($linha_tabela_pedido_contratacao = mysqli_fetch_array($query_pagina))
 						<tr class="list_menu">
                         <td>Pessoa Física</td>
 							<td>Empenhados</td>
+                            <td>Pedidos</td>
 							<td>Orçamento</td>
    							<td>Restante</td>
                             <td>Dotação</td>
@@ -247,6 +248,7 @@ while($x = mysqli_fetch_array($query_verba)){
 <tr>
 <td><?php echo $verba['Verba']; ?></td>
 <td><?php echo dinheiroParaBr(sunVerba($x['idVerba'],1)); ?></td>
+<td><?php //echo dinheiroParaBr(somaPedido($x['idVerba'],1)); ?></td>
 <td><?php echo dinheiroParaBr($orcamento);?></td>
 <td><?php echo dinheiroParaBr($restante); ?></td>
 <td><?php echo $dotacao['cod']; ?></td>
@@ -266,6 +268,7 @@ while($x = mysqli_fetch_array($query_verba)){
 						<tr class="list_menu">
                         <td>Pessoa Jurídica</td>
 							<td>Empenhados</td>
+                            <td>Pedidos</td>
 							<td>Orçamento</td>
    							<td>Restante</td>
                             <td>Dotação</td>
@@ -287,6 +290,7 @@ while($x = mysqli_fetch_array($query_verba)){
 <tr>
 <td><?php echo $verba['Verba']; ?></td>
 <td><?php echo dinheiroParaBr(sunVerba($x['idVerba'],2)); ?></td>
+<td><?php //echo dinheiroParaBr(somaPedido($x['idVerba'],2)); ?></td>
 <td><?php echo dinheiroParaBr($orcamento);?></td>
 <td><?php echo dinheiroParaBr($restante); ?></td>
 <td><?php echo $dotacao['cod']; ?></td>
@@ -304,7 +308,7 @@ while($x = mysqli_fetch_array($query_verba)){
 				<table class="table table-condensed"><script type=text/javascript language=JavaScript src=../js/find2.js> </script>
 					<thead>
 						<tr class="list_menu">
-                        <td>Verba Pai</td>
+                        <td>Verba Pai Pessoa Física</td>
 							<td>Empenhados</td>
 							<td>Orçamento</td>
    							<td>Restante</td>
@@ -315,25 +319,87 @@ while($x = mysqli_fetch_array($query_verba)){
 
 <?php
 $con = bancoMysqli();
-
-
-
+$idUsuario = $_SESSION['idUsuario'];
+$sql_verba = "SELECT * FROM igsis_controle_orcamento WHERE idUsuario = '$idUsuario'";
+$query_verba = mysqli_query($con,$sql_verba);
+$verba_antiga = "";
 while($x = mysqli_fetch_array($query_verba)){
 	$verba = recuperaDados("sis_verba",$x['idVerba'],"Id_Verba");
-	$orcamento = $verba['pj'];	
-	$restante = $orcamento - sunVerba($x['idVerba'],2);
-	$dotacao = recuperaDados("ig_detalhamento_acao",$verba['DotacaoOrcamentaria'],"idDetalhamentoAcao");	
-?>
+	$verbaPai = recuperaDados("sis_verba",$verba['pai'],"Id_Verba");
+	if($verba_antiga != $verba['pai']){ ?>
 <tr>
-<td><?php echo $verba['Verba']; ?></td>
-<td><?php echo dinheiroParaBr(sunVerba($x['idVerba'],2)); ?></td>
-<td><?php echo dinheiroParaBr($orcamento);?></td>
-<td><?php echo dinheiroParaBr($restante); ?></td>
+<td><?php echo $verbaPai['Verba']; ?></td>
+<td></td>
+<td><?php echo dinheiroParaBr(somaVerbaPai($verba['pai'],1)); ?></td>
+<td></td>
 <td><?php echo $dotacao['cod']; ?></td>
 
-</tr>
+</tr>		
+			
+<?php 
+	$verba_antiga = $verba['pai'];	
+	}
 
-<?php } ?>
+}
+
+
+
+
+?>
+	
+				
+					</tbody>
+				</table>
+
+			</div>
+            			<div class="table-responsive list_info">
+				<table class="table table-condensed"><script type=text/javascript language=JavaScript src=../js/find2.js> </script>
+					<thead>
+						<tr class="list_menu">
+                        <td>Verba Pai Pessoa Jurídica</td>
+							<td>Empenhados</td>
+							<td>Orçamento</td>
+   							<td>Restante</td>
+                            <td></td>
+						</tr>
+					</thead>
+					<tbody>
+
+<?php
+$con = bancoMysqli();
+$idUsuario = $_SESSION['idUsuario'];
+$sql_verba = "SELECT * FROM igsis_controle_orcamento WHERE idUsuario = '$idUsuario'";
+$query_verba = mysqli_query($con,$sql_verba);
+$verba_antiga = "";
+while($x = mysqli_fetch_array($query_verba)){
+	$verba = recuperaDados("sis_verba",$x['idVerba'],"Id_Verba");
+	$verbaPai = recuperaDados("sis_verba",$verba['pai'],"Id_Verba");
+	if($verba_antiga != $verba['pai']){ ?>
+<tr>
+<td><?php echo $verbaPai['Verba']; ?></td>
+<td><?php echo dinheiroParaBr(somaEmpenhadosVerbaPai($verba['pai'],2)); ?></td>
+<td><?php echo dinheiroParaBr(somaVerbaPai($verba['pai'],2)); ?></td>
+<td>
+<?php 
+$restante = somaVerbaPai($verba['pai'],2) - somaEmpenhadosVerbaPai($verba['pai'],2);
+
+echo dinheiroParaBr($restante); ?>
+
+</td>
+<td><?php //echo $dotacao['cod']; ?></td>
+
+</tr>		
+			
+<?php 
+	$verba_antiga = $verba['pai'];	
+	}
+
+}
+
+
+
+
+?>
 	
 				
 					</tbody>
