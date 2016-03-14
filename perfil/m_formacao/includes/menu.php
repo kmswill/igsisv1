@@ -23,7 +23,8 @@ $pasta = "?perfil=formacao&p=";
                 <li><a href="#">Pedido de Contratação</a>
                 	<ul class="dl-submenu">
                     	<li><a href="<?php echo $pasta ?>frm_listadadoscontratacao_cadastrapedido">Cadastrar</a></li>
-						<li><a href="<?php echo $pasta ?>frm_lista_pedidocontratacao_pf">Enviados</a></li>
+						<li><a href="<?php echo $pasta ?>frm_lista_pedidocontratacao_pf&enviados=0">Não enviados</a></li>
+						<li><a href="<?php echo $pasta ?>frm_lista_pedidocontratacao_pf&enviados=1">Enviados</a></li>
                     </ul>
                 </li>
             	<li><a href="index.php?secao=perfil">Carregar módulos</a></li>

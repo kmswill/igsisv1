@@ -2264,7 +2264,7 @@ function recuperaUsuarioCompleto($idUsuario){ //retorna dados do usuário
 function listaEventosEnviados($idUsuario){
 
 	$con = bancoMysqli();
-	$sql = "SELECT * FROM ig_evento WHERE (idUsuario = $idUsuario OR idResponsavel = $idUsuario OR suplente = $idUsuario) AND publicado = 1 AND dataEnvio IS NOT NULL";
+	$sql = "SELECT * FROM ig_evento WHERE (idUsuario = $idUsuario OR idResponsavel = $idUsuario OR suplente = $idUsuario) AND publicado = 1 AND dataEnvio IS NOT NULL ORDER BY idEvento DESC";
 	$query = mysqli_query($con,$sql);
 	echo "<table class='table table-condensed'>
 					<thead>
@@ -3183,5 +3183,7 @@ function recuperaPenalidades($id){
 	$x['txt'] = $penal['txt'];
 	return $x;		
 }
+
+
 
 ?>

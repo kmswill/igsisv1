@@ -56,9 +56,12 @@ if(isset($_POST['atualizar'])){
 	$linguagem  = $_POST['linguagem'];
 	$projeto  = $_POST['projeto'];
 	$cargo  = $_POST['cargo'];
-		$obs = addslashes($_POST['obs']);
+	$obs = addslashes($_POST['obs']);
 	$chamado = $_POST['chamados'];
+	$classificacao = $_POST['classificacao'];
 	$status = $_POST['status'];
+	$verba = $_POST['verba'];
+	$territorio = $_POST['territorios'];
 	$vigencia = $_POST['vigencia'];
 	$sql_atualiza_formacao = "UPDATE sis_formacao SET
 	`Ano` = '$ano',
@@ -66,23 +69,24 @@ if(isset($_POST['atualizar'])){
 	$equipamento2  
 	$equipamento3  
 	`IdCargo` = '$cargo', 
-	`Chamados` = '$chamado', 
+	`Chamados` = '$chamados', 
 	`Coordenarias` = '$coordenadoria', 
 	`IdPrograma` = '$programa', 
 	`IdLinguagem` = '$linguagem', 
 	`IdProjeto` = '$projeto', 
 	`Status` = '$status', 
+	`Pontuacao` = '$classificacao', 
+	`Territorio` = '$territorio', 
 	`publicado` = '1',
+	`Verba` = '$verba',
 	`subprefeitura` = '$subprefeitura',
-
 	`IdVigencia` = '$vigencia',
 
 	`Observacao` = '$obs'
 	WHERE Id_Formacao = '$id'";
 	$query_atualiza_formacao = mysqli_query($con,$sql_atualiza_formacao);
 	
-	verificaMysql($sql_atualiza_formacao);
-	
+
 	if($query_atualiza_formacao){
 		$mensagem = "Atualizado com sucesso!";	
 	}else{
@@ -218,12 +222,12 @@ $(function(){
                   <div class="form-group">
 					<div class="col-md-offset-2 col-md-6"><strong>Territórios:</strong>
 					   <select class="form-control" name="territorios" id="Verba">
-                       <?php geraOpcao("sis_formacao_territorio","","") ?>
+                       <?php geraOpcao("sis_formacao_territorio",$formacao['Territorio'],"") ?>
                       </select>
 					</div>
 					<div class="col-md-6"><strong>Coordenadoria:</strong><br/>
 					   <select class="form-control" name="coordenadoria" id="Verba">
-                       <?php geraOpcao("sis_subprefeitura",$formacao['Coordenadorias'],"") ?>
+                       <?php geraOpcao("sis_formacao_coordenadoria",$formacao['Coordenarias'],"") ?>
                       </select><br/>
 					</div>
 				  </div>
@@ -330,7 +334,15 @@ $(function(){
                      </select><br/>
                     </div>
                   </div>  
-
+                  <div class="form-group">
+					<div class="col-md-offset-2 col-md-8"><strong>Origem da Verba *:</strong>
+					   <select class="form-control" name="verba" id="Verba">
+                       <option value="1" <?php if($formacao['Verba'] == 1){ echo "selected";} ?>>Secretaria Municipal de Cultura (SMC)</option>
+                       <option value="2" <?php if($formacao['Verba'] == 2){ echo "selected";} ?>>Secretaria Municipal de Educação (SME)</option>
+                      </select>
+                      <br />
+					</div>
+                    </div>
                   
                   <div class="form-group">
 					<div class="col-md-offset-2 col-md-8"><strong>Observação:</strong><br/>

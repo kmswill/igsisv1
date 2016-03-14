@@ -1,11 +1,21 @@
 <?php
 $con = bancoMysqli();
 
-
 include 'includes/menu_administrativo.php';
 
+
+if(isset($_GET['pag'])){
+	$pag = $_GET['pag'];
+}else{
+	$pag = "inicial";	
+}
+
+switch($pag){
+
+case "inicial":
+
 if(isset($_GET['novo'])){
-	$sql_insere = "INSERT INTO `sis_formacao_vigencia` (`Id_Vigencia`) VALUES (NULL)";
+	$sql_insere = "INSERT INTO `sis_formacao_vigencia` (`Id_Vigencia`,`publicado`) VALUES (NULL,'1')";
 	$query_insere = mysqli_query($con,$sql_insere);
 	if($query_insere){
 		$idVigencia = mysqli_insert_id($con);
@@ -16,6 +26,10 @@ if(isset($_GET['novo'])){
 	}	
 
 }	
+
+if(isset($_POST['editar'])){
+	$idVigencia = $_POST['editar'];
+}
  
 if(isset($_POST['cadastrar'])){
 	$mensagem = "";
@@ -155,3 +169,54 @@ $vigencia = recuperaDados("sis_formacao_vigencia",$idVigencia,"Id_Vigencia");
 
 	  	</div>
 	  </section>  
+<?php 
+break;
+case "lista":
+?>
+	<section id="list_items">
+		<div class="container">
+             <div class="col-md-offset-2 col-md-8">
+                <br />
+                <h2>Lista de Vigências</h2>
+                    <p><?php if(isset($mensagem)){ echo $mensagem; } ?></p>
+    				<br/>
+                </div>
+			<div class="table-responsive list_info">
+				<table class="table table-condensed">
+					<thead>
+						<tr class="list_menu">
+							<td>Id</td>
+							<td colspan="2">Vigência</td>
+  							<td></td>
+						</tr>
+					</thead>
+					<tbody>
+<?php
+$sql = "SELECT * FROM sis_formacao_vigencia WHERE publicado = '1' AND descricao <> ''" ;
+$query = mysqli_query($con,$sql);
+while($vigencia = mysqli_fetch_array($query)){
+?>
+
+<tr>
+<form action="?perfil=formacao&p=frm_cadastra_vigencia" method="post">
+<td><?php echo $vigencia['Id_Vigencia']; ?></td>
+<td><?php echo $vigencia['descricao']; ?></td>
+<td>
+<input type="hidden" name="editar" value="<?php echo  $vigencia['Id_Vigencia']; ?>" />
+<input type ='submit' class='btn btn-theme  btn-block' value='editar'></td>
+</form>
+
+</tr>
+	
+    <?php } ?>
+					
+					</tbody>
+				</table>
+
+			</div>
+
+            </div>            
+		</div>
+	</section>
+<?php break; ?>
+<?php } ?>

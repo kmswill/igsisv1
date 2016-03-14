@@ -596,6 +596,150 @@ if(isset($_GET['limpar_base'])){
 	}
 }
 
+if(isset($_GET['formacao'])){ //script de importação da base de pessoas físicas formação
+	$con = bancoMysqli();
+	
+	$texto = "";
+
+	function mascara_cpf($cpf){ 
+		$a= substr("$cpf", 0,3); 
+		$b= substr("$cpf", 3,3); 
+		$c= substr("$cpf",6,3); 
+		$d= substr("$cpf",9,2); 
+		$novo_cpf = $a.'.'.$b.'.'.$c.'-'.$d; 
+	
+	return $novo_cpf; 
+	}
+	
+	function mask($val, $mask)
+	{
+	 $maskared = '';
+	 $k = 0;
+	 for($i = 0; $i<=strlen($mask)-1; $i++)
+	 {
+	 if($mask[$i] == '#')
+	 {
+	 if(isset($val[$k]))
+	 $maskared .= $val[$k++];
+	 }
+	 else
+	 {
+	 if(isset($mask[$i]))
+	 $maskared .= $mask[$i];
+	 }
+	 }
+	 return $maskared;
+	}
+
+	function estadoCivil($estado){
+		switch($estado){
+			case "SOLTEIRA":
+			$est = 3;
+			break;
+
+			case "DIVORCIADO(A)":
+			$est = 2;
+			break;
+			
+			case "SOLTEIRO(A)":
+			$est = 3;
+			break;
+			
+			case "DIVORCIADO":
+			$est = 2;
+			break;
+			
+			case "CASADA":
+			$est = 1;
+			break;
+			
+			case "CASADO":
+			$est = 1;
+			break;
+
+			case "VIUVA":
+			$est = 4;
+			break;
+			
+			case "OUTRO":
+			$est = 5;
+			break;
+			
+			case "DIVORCIADA":
+			$est = 2;
+			break;
+			
+			default:
+			$est = 5;
+		}
+		return $est;
+	}
+	
+	$sql_verificia = "SELECT * FROM tbl_pf";
+	$query_verifica = mysqli_query($con,$sql_verificia);
+	while($verifica = mysqli_fetch_array($query_verifica)){
+		$cpf_tbl = mascara_cpf($verifica['CPF']);
+		$sql_compara = "SELECT * FROM sis_pessoa_fisica WHERE CPF LIKE '$cpf_tbl'";
+		$query_compara = mysqli_query($con,$sql_compara);
+		$num_compara = mysqli_num_rows($query_compara);
+
+	if($num_compara > 0){ //verifica se há registro
+		$texto .= "O CPF $cpf_tbl já existe no sistema.<br />";
+	}else{ //
+		$texto .= "O CPF $cpf_tbl não existe no sistema.<br />";
+
+		$Nome = $verifica['Nome'];
+		$NomeArtistico = $verifica['Nome_Art'];
+		$RG = $verifica['RG'];
+		$CPF = $cpf_tbl;
+		$CCM = $verifica['CCM'];
+		$IdEstadoCivil = estadoCivil($verifica['Est_Civ']); //funcao para verificar
+		
+		if($verifica['D_nasc'] == NULL){
+		$DataNascimento == NULL;
+		}else{
+		$DataNascimento = exibirDataMysql($verifica['D_nasc']); //funcao para data em mysql
+		}
+		$LocalNascimento = $verifica['Loc_Nasc'];
+
+		$Nacionalidade = "Brasileiro(a)"; 
+		$CEP = mask($verifica['Cep'],'#####-###');
+			
+		
+		
+		$Telefone1 = $verifica['Telefone'];
+		$Telefone2 = $verifica['Telefon2']; 
+		$Telefone3 = $verifica['Telefon3']; 
+		$Email = $verifica['Email']; 
+		$DRT = $verifica['DRT'];
+		$Pis = $verifica['Pis'];
+		
+		$DataAtualizacao = date('Y-m-d'); 
+		$Observacao = $verifica['Endereco']."\n".$verifica['Regiao']."\n".$verifica['currric']."\n".$verifica['Grau_Ins']."\n";
+		
+		
+		$tipoDocumento = "1";
+		
+
+		
+		$sql_insere_cpf = "INSERT INTO `sis_pessoa_fisica` 
+		(`Nome`, `NomeArtistico`, `RG`, `CPF`, `CCM`, `IdEstadoCivil`, `DataNascimento`, `LocalNascimento`, `Nacionalidade`, `CEP`,  `Telefone1`, `Telefone2`, `Telefone3`, `Email`, `DRT`,  `Pis`,  `DataAtualizacao`, `Observacao`) VALUES ('$Nome', '$NomeArtistico', '$RG', '$cpf_tbl', '$CCM', '$IdEstadoCivil' ,$DataNascimento, '$LocalNascimento', '$Nacionalidade','$CEP', '$Telefone1', '$Telefone2', '$Telefone3', '$Email', '$DRT', '$Pis',  '$DataAtualizacao', '$Observacao')";
+		$query_insere_cpf = mysqli_query($con,$sql_insere_cpf);
+		if($query_insere_cpf){
+			$texto .= "O CPF $cpf_tbl foi inserido com sucesso no sistema.<br />";
+		}else{
+			$texto .= "Erro ao inserir CPF $cpf_tbl no sistema.<br />";
+		}
+	}
+
+	}
+	
+
+
+
+	
+}
+
 
 ?>
 <section id="contact" class="home-section bg-white">
@@ -616,6 +760,7 @@ if(isset($_GET['limpar_base'])){
               <a href="?perfil=admin&p=scripts&inst_agenda=1" class="btn btn-theme btn-lg btn-block">Atualizar Instituições/Agenda</a>
                <a href="?perfil=admin&p=scripts&limpar_base=1" class="btn btn-theme btn-lg btn-block">Limpar base de eventos</a>
               <a href="?perfil=admin&p=scripts&empenho=1" class="btn btn-theme btn-lg btn-block">Atualizar status N.E.</a>
+              <a href="?perfil=admin&p=scripts&formacao=1" class="btn btn-theme btn-lg btn-block">Importar Base PF Formação</a>
 
 	            <!--<a href="?perfil=busca&p=pedidos" class="btn btn-theme btn-lg btn-block">Pedidos de contratação</a>-->
 

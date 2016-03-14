@@ -127,7 +127,7 @@ function siscontrat($idPedido){
 			$usuario = recuperaDados("ig_usuario",$evento['idUsuario'],"idUsuario");
 			$instituicao = recuperaDados("ig_instituicao",$usuario['idInstituicao'],"idInstituicao");
 			$local = listaLocais($pedido['idEvento']);
-			$periodo = retornaPeriodo($pedido['idEvento']);
+			
 			$duracao = retornaDuracao($pedido['idEvento']);
 			$proponente = recuperaPessoa($pedido['idPessoa'],$pedido['tipoPessoa']);
 			$fiscal = recuperaUsuario($evento['idResponsavel']);
@@ -139,14 +139,35 @@ function siscontrat($idPedido){
 			}else{
 				$pagamento = $pedido['formaPagamento'];	
 			}
+			
+			if($pedido['tipoPessoa'] == 4){
+				$formacao = recuperaDados("sis_formacao",$pedido['idPedidoContratacao'],"idPedidoContratacao");
+				$cargo = recuperaDados("sis_formacao_cargo",$formacao['IdCargo'],"Id_Cargo");
+				$programa = recuperaDados("sis_formacao_programa",$formacao['IdPrograma'],"Id_Programa");
+				$objeto = "CONTRATAÇÃO COMO ".strtoupper($cargo['Cargo'])." DO ".strtoupper($programa['Programa'])." NOS TERMOS DO EDITAL ".$programa['edital']." – PROGRAMAS DA DIVISÃO DE FORMAÇÃO.";
+				if($cargo['coordenador'] == 1){ 
+					$loc = "SMC e equipamentos sobre sua supervisão";
+				}else{
+					$loc = retornaLocal($formacao['IdEquipamento01'])."\n".retornaLocal($formacao['IdEquipamento02'])."\n".retornaLocal($formacao['IdEquipamento03']);
+				}
+				$periodo = retornaPeriodoVigencia($idPedido);
+				$carga = retornaCargaHoraria($pedido['idPedidoContratacao'],$pedido['parcelas'])." horas";
+				//$carga = "";
+			}else{
+				$objeto = retornaTipo($evento['ig_tipo_evento_idTipoEvento'])." - ".$evento['nomeEvento'];
+				$loc = substr($local,1);
+				$periodo = retornaPeriodo($pedido['idEvento']);
+				$carga = "";
+			}
+			
 		$x = array(
 			"idEvento" => $pedido['idEvento'], 
 			"idSetor" => $usuario['idInstituicao'],
 			"Setor" => $instituicao['instituicao']  ,
 			"TipoPessoa" => $pedido['tipoPessoa'],
 			"CategoriaContratacao" => $evento['ig_modalidade_IdModalidade'] , //precisa ver se retorna o id
-			"Objeto" => retornaTipo($evento['ig_tipo_evento_idTipoEvento'])." - ".$evento['nomeEvento'] ,
-			"Local" => substr($local,1) , //retira a virgula no começo da string
+			"Objeto" => $objeto ,
+			"Local" => $loc , //retira a virgula no começo da string
 			"ValorGlobal" => $pedido['valor'],
 			"ValorIndividual" => $pedido['valorIndividual'],
 			"FormaPagamento" => $pagamento,
@@ -165,7 +186,7 @@ function siscontrat($idPedido){
 			"idRepresentante01" => $pedido['idRepresentante01'],
 			"idRepresentante02" => $pedido['idRepresentante02'],
 			"IdExecutante" => $pedido['IdExecutante'],
-			"CargaHoraria" => "",
+			"CargaHoraria" => $carga,
 			"NumeroProcesso" => $pedido['NumeroProcesso'],
 			"NotaEmpenho" => $pedido['NumeroNotaEmpenho'],
 			"EmissaoNE" => $pedido['DataEmissaoNotaEmpenho'],
@@ -459,6 +480,49 @@ function listaArquivosPessoaSiscontrat($idPessoa,$tipo,$pedido,$form,$pag){
 				";	
 				
 }
+
+function listaArquivosPessoaSiscontratFormacao($idPessoa,$tipo,$pedido,$form,$pag){
+	$con = bancoMysqli();
+	$sql = "SELECT * FROM igsis_arquivos_pessoa WHERE idPessoa = '$idPessoa' AND idTipoPessoa = '$tipo' AND publicado = '1'";
+	$query = mysqli_query($con,$sql);
+	echo "<table class='table table-condensed'>
+					<thead>
+						<tr class='list_menu'>
+							<td width='30%'>Tipo</td>
+							<td>Nome do arquivo</td>
+							<td width='10%'></td>
+						</tr>
+					</thead>
+					<tbody>";
+	while($campo = mysqli_fetch_array($query)){
+		$tipoDoc = recuperaDados("sis_formacao_upload",$campo['tipo'],"idTipoDoc");
+			echo "<tr>";
+			echo "<td class='list_description'>".$tipoDoc['documento']."</td>";
+			echo "<td class='list_description'><a href='../uploadsdocs/".$campo['arquivo']."' target='_blank'>".$campo['arquivo']."</a></td>";
+			echo "
+			<td class='list_description'>
+			<form method='POST' action='?perfil=".$pag."&p=frm_arquivos&id=".$idPessoa."&tipo=".$tipo."'>
+			<input type='hidden' name='idPessoa' value='".$idPessoa."' />
+			<input type='hidden' name='tipoPessoa' value='".$tipo."' />
+			<input type='hidden' name='$form' value='1' />
+			
+			<input type='hidden' name='apagar' value='".$campo['idArquivosPessoa']."' />
+			<input type ='submit' class='btn btn-theme  btn-block' value='apagar'></td></form>"	;
+			echo "</tr>";		
+	}
+					
+						
+
+                        
+
+						
+		
+	echo "					</tbody>
+				</table>
+				
+				";	
+				
+}
 	
 function buscaSiscontrat($busca,$tipo){
 
@@ -582,7 +646,9 @@ function txtParcelas($idPedido,$numero){
 		$k = 1;
 		$texto = "";
 		for($k = 1; $k <= $numero; $k++){
-			$texto .= $k."ª parcela de R$ ".dinheiroParaBr($x[$k]['valor'])." - liberável a partir de ".exibirDataBr($x[$k]['vencimento']).".\n";		
+			if($x[$k]['valor'] != 0){
+				$texto .= $k."ª parcela de R$ ".dinheiroParaBr($x[$k]['valor'])." - liberável a partir de ".exibirDataBr($x[$k]['vencimento']).".\n";		
+			}
 		}
 		$texto .= "O pagamento de cada parcela se dará em 15 (quinze) dias úteis após a data de confirmação da correta execução do(s) serviço(s).";
 		
@@ -690,14 +756,15 @@ function geraOpcaoEstado($select,$area){ //gera os options de um select
 }
 
 
-function atualizaEstado($idPedido){
+function atualizaStatus($idPedido){
 	$con = bancoMysqli();
 	$pedido = recuperaDados("igsis_pedido_contratacao",$idPedido,"idPedidoContratacao");
 	
 	//Inicio do algorítimo
 	
 	if($pedido['estado'] == 11){  //Se estão nesses estados, não haverá atualização
-
+		
+		$txt = "Não houve atualização de status (1)";
 
 		
 	}else{ // Esses estados restantes permitem alteração automática
@@ -706,11 +773,16 @@ function atualizaEstado($idPedido){
 
 			$sql = "UPDATE igsis_pedido_contratacao SET estado = '10' WHERE idPedidoContratacao = '$idPedido'";
 			
+			$txt = "O pedido $idPedido mudou seu status para 10 (2)";
+			
+			
 		}else{ // Se não há um Número de Empenho Válido
 			
 			if(trim($pedido['DataReserva']) != "" && $pedido['DataReserva'] != NULL && $pedido['DataReserva'] != '0000-00-00'){ //Se há um pedido de reserva
 
 				$sql = "UPDATE igsis_pedido_contratacao SET estado = '6' WHERE idPedidoContratacao = '$idPedido'";
+
+				$txt = "O pedido $idPedido mudou seu status para 6 (3)";
 				
 				
 			}else{ // Se não há um Pedido de Reserva
@@ -719,6 +791,8 @@ function atualizaEstado($idPedido){
 
 					$sql = "UPDATE igsis_pedido_contratacao SET estado = '5' WHERE idPedidoContratacao = '$idPedido'";
 
+					$txt = "O pedido $idPedido mudou seu status para 5 (4)";
+
 
 				}else{ //Caso não tenha sido gerado uma Proposta
 					
@@ -726,12 +800,77 @@ function atualizaEstado($idPedido){
 					
 						$sql = "UPDATE igsis_pedido_contratacao SET estado = '4' WHERE idPedidoContratacao = '$idPedido'";
 
+						$txt = "O pedido $idPedido mudou seu status para 4 (5)";
+
 					
 					}else{ // Caso não possua ainda um Número de Processo SEI
 						
 						if(trim($pedido['DataContrato']) != "" && $pedido['DataContrato'] != NULL && $pedido['DataContrato'] != '0000-00-00'){ //Caso o contrato tenha visto						
 							$sql = "UPDATE igsis_pedido_contratacao SET estado = '3' WHERE idPedidoContratacao = '$idPedido'";
+			
+							$txt = "O pedido $idPedido mudou seu status para 3 (6)";
 
+							
+						}else{
+							
+							$txt =  "Não houve atualização de status (7)";
+						}
+					
+						
+					}
+					
+				}
+				
+			}
+			
+		}
+	
+		
+	}
+	
+	if(isset($sql)){
+		$query = mysqli_query($con,$sql);
+		if($query){
+			return $txt;	
+		}else{
+			return "Erro ao atualizar status";	
+		}
+		
+	}
+}
+
+function atualizaEstado($idPedido){
+	$con = bancoMysqli();
+	$pedido = recuperaDados("igsis_pedido_contratacao",$idPedido,"idPedidoContratacao");
+	
+	//Inicio do algorítimo
+	
+	if($pedido['estado'] == 11){  //Se estão nesses estados, não haverá atualização
+		
+	}else{ // Esses estados restantes permitem alteração automática
+	
+		if(trim($pedido['NumeroNotaEmpenho']) != "" && $pedido['NumeroNotaEmpenho'] != NULL){ // Se há um Número de Empenho Válido
+			$sql = "UPDATE igsis_pedido_contratacao SET estado = '10' WHERE idPedidoContratacao = '$idPedido'";
+			
+		}else{ // Se não há um Número de Empenho Válido
+			
+			if(trim($pedido['DataReserva']) != "" && $pedido['DataReserva'] != NULL && $pedido['DataReserva'] != '0000-00-00'){ //Se há um pedido de reserva
+				$sql = "UPDATE igsis_pedido_contratacao SET estado = '6' WHERE idPedidoContratacao = '$idPedido'";
+				
+				
+			}else{ // Se não há um Pedido de Reserva
+				if(trim($pedido['DataProposta']) != "" && $pedido['DataProposta'] != NULL && $pedido['DataProposta'] != '0000-00-00'){ //Se já foi gerado uma Proposta
+					$sql = "UPDATE igsis_pedido_contratacao SET estado = '5' WHERE idPedidoContratacao = '$idPedido'";
+				}else{ //Caso não tenha sido gerado uma Proposta
+					
+					if($pedido['NumeroProcesso'] != NULL && trim($pedido['NumeroProcesso']) != ""){ // Caso possua um Número de Processo SEI
+					
+						$sql = "UPDATE igsis_pedido_contratacao SET estado = '4' WHERE idPedidoContratacao = '$idPedido'";
+					
+					}else{ // Caso não possua ainda um Número de Processo SEI
+						
+						if(trim($pedido['DataContrato']) != "" && $pedido['DataContrato'] != NULL && $pedido['DataContrato'] != '0000-00-00'){ //Caso o contrato tenha visto						
+							$sql = "UPDATE igsis_pedido_contratacao SET estado = '3' WHERE idPedidoContratacao = '$idPedido'";
 							
 						}else{
 							
@@ -791,6 +930,18 @@ function gravaPenalidade($idPedido,$idPenalidade){
 		return FALSE;
 	}
 	
+}
+
+function retornaPeriodoVigencia($idPedido){
+	$con = bancoMysqli();
+	$sql01 = "SELECT * FROM igsis_parcelas WHERE idPedido = '$idPedido' AND valor > '0' ORDER BY vigencia_inicio ASC  LIMIT 0,1 ";
+	$sql02 = "SELECT * FROM igsis_parcelas WHERE idPedido = '$idPedido' AND valor > '0' ORDER BY vigencia_final DESC LIMIT 0,1 ";	
+	$query01 = mysqli_query($con, $sql01);
+	$query02 = mysqli_query($con, $sql02);
+	$i = mysqli_fetch_array($query01);
+	$j = mysqli_fetch_array($query02);
+	return exibirDataBr($i['vigencia_inicio'])." a ".exibirDataBr($j['vigencia_final']);
+
 }
 
 ?>

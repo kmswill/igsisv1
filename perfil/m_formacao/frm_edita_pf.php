@@ -329,7 +329,7 @@ $fisica = recuperaDados("sis_pessoa_fisica",$ultimo,"Id_PessoaFisica");
 				</form>
 					</div>
                     <div class=" col-md-6">
-                     <a href="?perfil=formacao&p=frm_cadastra_pf_add&id_pf=<?php echo $_GET['id_pf'];  ?>"><input type="submit" value="Informações adicionais" class="btn btn-theme btn-block"></a>
+                     <a href="?perfil=formacao&p=frm_cadastra_pf_add&id_pf=<?php echo $ultimo;  ?>"><input type="submit" value="Informações adicionais" class="btn btn-theme btn-block"></a>
 					</div>
 				  </div>
                   

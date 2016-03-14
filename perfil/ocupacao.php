@@ -98,7 +98,7 @@ if(isset($_POST['atualizar'])){
 	`suplente` = '$idSuplente', 
 	`ig_tipo_evento_idTipoEvento` = '$ig_tipo_evento_idTipoEvento',
 	`sinopse` = '$sinopse', 
-	`ocupacao` = '$ocupacao', 
+	`ocupacao` = '1', 
 	
 	 `publicado` = 1
 	WHERE `ig_evento`.`idEvento` = ".$_SESSION['idEvento'].";";

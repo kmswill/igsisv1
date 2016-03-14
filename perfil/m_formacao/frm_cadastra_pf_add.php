@@ -21,8 +21,7 @@ $ultimo = $_GET['id_pf']; //recupera o id da pessoa
 		`Curriculo` = '$cv', 
 		`Id_Agente_Spcultura` = '$spcultura' WHERE IdPessoaFisica = '$idPessoaFisica'";
 		
-		verificaMysql($sql_atualizar_pessoa);
-		
+	
 		if(mysqli_query($con,$sql_atualizar_pessoa)){
 			$mensagem = "Atualizado com sucesso!";	
 		}else{
@@ -31,19 +30,24 @@ $ultimo = $_GET['id_pf']; //recupera o id da pessoa
 		
 	}
 
-$fisica = recuperaDados("sis_pessoa_fisica_formacao",$ultimo,"IdPessoaFisica"); //recupera tabela sis_pessoa_fisica_formacao
 
 
-if($fisica == NULL){
-	$sql_insert = "INSERT INTO `sis_pessoa_fisica_formacao` (`Id_PessoaFisicaFormacao`, `IdPessoaFisica`, `IdEtnia`, `IdRegiao`, `IdGrauInstrucao`, `Grupo`, `Curriculo`, `Id_Agente_Spcultura`) VALUES (NULL, '$ultimo', NULL, NULL, NULL, NULL, NULL, NULL)";
+
+	$sql_verifica = "SELECT * FROM sis_pessoa_formacao WHERE Id_PessoaFormacao = '$ultimo'";
+	$query_verifica = mysqli_query($con,$sql_verifica);
+	$num_verifica = mysqli_num_rows($query_verifica);
+	if ($num_verifica == 0){
+	$sql_insert = "INSERT INTO sis_pessoa_fisica_formacao (`IdPessoaFisica`) VALUES ('$ultimo')";
 	if(mysqli_query($con,$sql_insert)){
 		$mensagem = "OK";	
 	}else{
-		$mensagem = "Inserido com sucesso";	
+		$mensagem = "Erro";	
 		
 	}
+	}
 	
-}
+
+$fisica = recuperaDados("sis_pessoa_fisica_formacao",$ultimo,"IdPessoaFisica"); //recupera tabela sis_pessoa_fisica_formacao
 
 
 ?>

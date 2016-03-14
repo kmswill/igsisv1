@@ -66,14 +66,15 @@ header("Content-Disposition: attachment;Filename=revista.doc");
 	$p = $projeto['idProjetoEspecial'];
 	}?>
 	<?php if($consulta['idTipo'] != $t){ ?>
-    <h3>
+    <h2>
 	<br />
 	<?php echo $tipo['tipoEvento'] ?>
     <?php 
 	$t = $tipo['idTipoEvento'];	
 	} ?>
-    </h3>
-  	<h4><?php echo $evento['nomeEvento'] ?></h4>
+    </h2>
+  	<h3>[ <?php echo $evento['nomeEvento'] ?> ]</h3>
+    <h4>Projeto: <?php echo $evento['projeto'] ?></h4>
 	<p>Com: <?php echo nl2br($evento['autor']); ?></p>
 	<p>Ficha técnica: <?php echo nl2br($evento['fichaTecnica']); ?></p>
     <p><?php echo $evento['sinopse'] ?></p>

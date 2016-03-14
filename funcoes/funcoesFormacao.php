@@ -42,8 +42,8 @@ function retornaCargaHoraria($idPedido,$parcelas){
 
 function retornaPeriodoFormacao($idPedido,$parcelas){
 	$con = bancoMysqli();
-	$sql1 = "SELECT * FROM igsis_parcelas WHERE idPedido = '$idPedido' AND numero = '1'";
-	$sql2 = "SELECT * FROM igsis_parcelas WHERE idPedido = '$idPedido' AND numero = '$parcelas'";
+	$sql1 = "SELECT * FROM igsis_parcelas WHERE idPedido = '$idPedido' AND valor > '0' ORDER BY vigencia_inicio ASC LIMIT 0,1";
+	$sql2 = "SELECT * FROM igsis_parcelas WHERE idPedido = '$idPedido' AND valor > '0' ORDER BY vigencia_final ASC LIMIT 0,1";
 
 	$query1 = mysqli_query($con,$sql1);
 	$query2 = mysqli_query($con,$sql2);
@@ -58,5 +58,27 @@ function retornaPeriodoFormacao($idPedido,$parcelas){
 
 	
 }
+
+
+function pdfFormacao($idPedido){
+	$con = bancoMysqli();
+	$sql = "SELECT * FROM sis_formacao WHERE idPedidoContratacao = '$idPedido'";
+	$query = mysqli_query($con,$sql);
+	$formacao = mysqli_fetch_array($query);
+	$cargo = recuperaDados("sis_formacao_cargo",$formacao['IdCargo'],"Id_Cargo");
+	$programa = recuperaDados("sis_formacao_programa",$formacao['IdPrograma'],"Id_Programa");
+	$linguagem = recuperaDados("sis_formacao_linguagem",$formacao['IdLinguagem'],"Id_Linguagem");
+	
+	
+	$x['Cargo'] = $cargo['Cargo'];
+	$x['Programa'] = $programa['Programa'];
+	$x['descricaoPrograma'] = $programa['descricao'];
+	$x['edital'] = $programa['edital'];
+	$x['linguagem'] = $linguagem['Linguagem'];
+
+	return $x;
+	
+}
+
 
 ?>

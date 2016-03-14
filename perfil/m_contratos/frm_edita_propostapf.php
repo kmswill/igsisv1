@@ -452,6 +452,20 @@ $pedido = recuperaDados("igsis_pedido_contratacao",$_GET['id_ped'],"idPedidoCont
                     	<br />
                 </div>
 				</div>
+	                				<div class="form-group">
+					<div class="col-md-offset-2 col-md-8">
+			 <a href="?perfil=contratos&p=frm_chamados&pag=evento&idEvento=<?php echo $pedido['idEvento'];  ?>" class="btn btn-theme btn-block" target="_blank" >Chamados</a></div>	
+			</div>
+					<div class="form-group">
+                    <div class="col-md-offset-2 col-md-8">
+                    	<br />
+                </div>
+				</div>
+					<div class="form-group">
+                    <div class="col-md-offset-2 col-md-8">
+                    	<br />
+                </div>
+				</div>
 	
       			
 			

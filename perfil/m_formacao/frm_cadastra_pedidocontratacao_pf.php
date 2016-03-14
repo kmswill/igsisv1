@@ -1,7 +1,8 @@
 <?php
 
-
-
+if(isset($_GET['id_ped'])){
+	$idPedidoContratacao = $_GET['id_ped'];
+}
 $con = bancoMysqli();
 
 if(isset($_POST['action'])){
@@ -9,20 +10,21 @@ if(isset($_POST['action'])){
 	switch($_POST['action']){
 
 	case "novo": //caso seja um novo pedido
+	$id_formacao = $_POST['idFormacao'];
 	$formacao = recuperaDados("sis_formacao",$_POST['idFormacao'],"Id_Formacao");
 	$proponente = recuperaDados("sis_pessoa_fisica",$formacao['IdPessoaFisica'],"Id_PessoaFisica");
 	$proponenteFormacao = recuperaDados("sis_pessoa_fisica_formacao",$formacao['IdPessoaFisica'],"IdPessoaFisica");
 	$vigencia = $formacao['IdVigencia'];
 	$idPrograma = $formacao['IdPrograma'];
 	$idPessoa = $formacao['IdPessoaFisica'];
-	$idVerba;
+	$idVerba = "";
 	$instituicao = $_SESSION['idInstituicao'];
 	$justificativa = "Texto do Edital";
 	$parecer = $proponenteFormacao['Curriculo'];
 	$mensagem = "";
 	
 	// insere um novo pedido pf com pessoa = 4
-	$sql_pedido = "INSERT INTO `igsis_pedido_contratacao` (`idEvento`, `tipoPessoa`, `idPessoa`, `idVerba`,`instituicao`, `justificativa`, `parecerArtistico`) VALUES ('$idPrograma', '4', '$idPessoa', '$idVerba', $instituicao, '$justificativa', '$parecer')";
+	$sql_pedido = "INSERT INTO `igsis_pedido_contratacao` (`idEvento`, `tipoPessoa`, `idPessoa`, `instituicao`, `justificativa`, `parecerArtistico`, `publicado`) VALUES ('$idPrograma', '4', '$idPessoa',  $instituicao, '$justificativa', '$parecer', '1')";
 	$query_pedido = mysqli_query($con,$sql_pedido);
 	if($query_pedido){
 		$idPedidoContratacao = mysqli_insert_id($con);
@@ -30,7 +32,7 @@ if(isset($_POST['action'])){
 		$mensagem = "Pedido Criado.";
 
 		// atualiza o sis_formacao com o idPedidoContratacao
-		$sql_atualiza_formacao = "UPDATE sis_formacao SET idPedidoContratacao = '$idPedidoContratacao' WHERE IdVigencia = '$vigencia'";
+		$sql_atualiza_formacao = "UPDATE sis_formacao SET idPedidoContratacao = '$idPedidoContratacao' WHERE Id_Formacao = '$id_formacao'";
 		$query_atualiza_formacao = mysqli_query($con,$sql_atualiza_formacao);
 		if($query_atualiza_formacao){
 			$mensagem = $mensagem."<br /> Tabela formação atualizado com o número de Pedido de Contratacao";	
@@ -133,6 +135,16 @@ if(isset($_POST['action'])){
 }
 
 
+if(isset($_POST['enviar'])){
+	$sql_enviar = "UPDATE igsis_pedido_contratacao SET estado = '2' WHERE idPedidoContratacao = '$idPedidoContratacao'";
+	$query_enviar = mysqli_query($con,$sql_enviar);
+	if($query_enviar){
+		$mensagem = "Pedido enviado à area de contratos";	
+	}else{
+		$mensagem = "Erro ao enviar pedido";	
+	}
+	
+}
 
 /*
 $_SESSION['idPedido'] = $_GET['id_ped'];
@@ -268,10 +280,14 @@ $cargo = recuperaDados("sis_formacao_cargo",$formacao['IdCargo'],"Id_Cargo");
 $programa = recuperaDados("sis_formacao_programa",$formacao['IdPrograma'],"Id_Programa");
 
 $verba = recuperaDados("sis_verba",$programa['verba'],"Id_Verba");
-$objeto = "CONTRATAÇÃO COMO ".$cargo['Cargo']." DO ".$programa['Programa']." NOS TERMOS DO EDITAL xxx – PROGRAMAS DA DIVISÃO DE FORMAÇÃO.";
-$local = retornaLocal($formacao['IdEquipamento01'])."\n".retornaLocal($formacao['IdEquipamento02'])."\n".retornaLocal($formacao['IdEquipamento03']);
+$objeto = "CONTRATAÇÃO COMO ".$cargo['Cargo']." DO ".$programa['Programa']." NOS TERMOS DO EDITAL ".$programa['edital']." – PROGRAMAS DA DIVISÃO DE FORMAÇÃO.";
+if($cargo['coordenador'] == 1){ 
+	$local = "SMC e equipamentos sobre sua supervisão";
+}else{
+	$local = retornaLocal($formacao['IdEquipamento01'])."\n".retornaLocal($formacao['IdEquipamento02'])."\n".retornaLocal($formacao['IdEquipamento03']);
+}
 $carga = retornaCargaHoraria($pedido['idPedidoContratacao'],$pedido['parcelas']);
-$periodo = retornaPeriodoFormacao($pedido['idPedidoContratacao'],$pedido['parcelas']);
+$periodo = retornaPeriodoVigencia($pedido['idPedidoContratacao'],$pedido['parcelas']);
 
 ?>
 
@@ -407,15 +423,27 @@ $periodo = retornaPeriodoFormacao($pedido['idPedidoContratacao'],$pedido['parcel
 					 <input type="submit" class="btn btn-theme btn-lg btn-block" value="Gravar">
 					</div>
 				  </div>
-                  
 				</form>
-                                <form class="form-horizontal" role="form" action="?perfil=formacao&p=frm_cadastra_pedidocontratacao_pf" method="post">
+				<?php if($pedido['estado'] == NULL OR $pedido['estado'] == "" ){ ?>
+                                <form class="form-horizontal" role="form" action="?perfil=formacao&p=frm_cadastra_pedidocontratacao_pf&id_ped=<?php echo $idPedidoContratacao; ?>" method="post">
                   				  <div class="form-group">
 					<div class="col-md-offset-2 col-md-8">
-                    <input type="hidden" name="atualizar"  />
+                    <input type="hidden" name="enviar"  />
 					 <input type="submit" class="btn btn-theme btn-lg btn-block" value="Enviar pedido para contratos">
-					</div>
+                     </form>
+    				</div>
 				  </div>
+				<?php }else{ ?>
+				
+                                
+                  				  <div class="form-group">
+					<div class="col-md-offset-2 col-md-8">
+                     <a href="../pdf/rlt_proposta_formacao.php?id=<?php echo $pedido['idPedidoContratacao']; ?>&penal=20" class="btn btn-theme btn-lg btn-block" target="_blank">Gerar proposta</a>
+    				</div>
+				  </div>
+				<?php } ?>
+
+
 	  		</div>
 		</div>
 			

@@ -2167,9 +2167,9 @@ switch($action){
 case "inserir": 
 $novo = 1;
 if(isset($_POST['inserir'])){ //insere
-	$ig_sub_evento_titulo = $_POST['ig_sub_evento_titulo'];
+	$ig_sub_evento_titulo = addslashes($_POST['ig_sub_evento_titulo']);
 	$ig_sub_evento_idTipo  = $_POST['ig_sub_evento_idTipo'];
-	$ig_sub_evento_descricao  = $_POST['ig_sub_evento_descricao'];
+	$ig_sub_evento_descricao  = addslashes($_POST['ig_sub_evento_descricao']);
 	$idEvento = $_SESSION['idEvento'];
 	$publicado = 1;
 	$sql_inserir_sub = "INSERT INTO `ig_sub_evento` (`idSubEvento`, `idTipo`, `ig_evento_idEvento`, `titulo`, `descricao`, `publicado`) VALUES (NULL, '$ig_sub_evento_idTipo', '$idEvento', '$ig_sub_evento_titulo', '$ig_sub_evento_descricao', '$publicado')";
@@ -2182,9 +2182,9 @@ if(isset($_POST['inserir'])){ //insere
 }
 if(isset($_POST['atualizar'])){
 	$idSubEvento = $_POST['atualizar'];
-	$ig_sub_evento_titulo = $_POST['ig_sub_evento_titulo'];
+	$ig_sub_evento_titulo = addslashes($_POST['ig_sub_evento_titulo']);
 	$ig_sub_evento_idTipo  = $_POST['ig_sub_evento_idTipo'];
-	$ig_sub_evento_descricao  = $_POST['ig_sub_evento_descricao'];
+	$ig_sub_evento_descricao  = addslashes($_POST['ig_sub_evento_descricao']);
 	$sql_atualizar_sub = "UPDATE `ig_sub_evento` SET `idTipo` = '$ig_sub_evento_idTipo', `titulo` = '$ig_sub_evento_titulo', `descricao` = '$ig_sub_evento_descricao' WHERE `idSubEvento` = '$idSubEvento'";
 	$query_atualizar_sub = mysqli_query($con,$sql_atualizar_sub);	
 	if($query_atualizar_sub){

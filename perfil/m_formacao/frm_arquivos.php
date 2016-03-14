@@ -148,7 +148,7 @@ while($arq = mysqli_fetch_array($query_arquivos)){ ?>
 <h5>Se na lista abaixo, o seu arquivo começar com "http://", por favor, clique, grave em seu computador, faça o upload novamente e apague a ocorrência citada.</h5>
 					</div>
 			<div class="table-responsive list_info">
-                         <?php listaArquivosPessoaSiscontrat($idPessoa,$tipoPessoa,"",$p,"formacao"); ?>
+                         <?php listaArquivosPessoaSiscontratFormacao($idPessoa,$tipoPessoa,"",$p,"formacao"); ?>
 			</div>
 				  </div>
 			  </div>  

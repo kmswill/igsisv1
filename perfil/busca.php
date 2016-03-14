@@ -478,6 +478,7 @@ $pedido = listaPedidoContratacao($_GET['evento']);
 			$pessoa = siscontratDocs($dados['IdProponente'],$dados['TipoPessoa']);
 			?>
             <p align="left">
+            Número de Pedido Contratação: <b><?php echo $pedido[$i] ?></b><br /> 
 			Nome ou Razão Social: <b><?php echo $pessoa['Nome'] ?></b><br />
 			Tipo de pessoa: <b><?php echo retornaTipoPessoa($dados['TipoPessoa']);?></b><br />
 			Dotação: <b><?php echo retornaVerba($dados['Verba']);?></b><br />

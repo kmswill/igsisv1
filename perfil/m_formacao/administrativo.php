@@ -81,9 +81,11 @@ case 'list_cargo':
 
    if(isset($_POST['atualizar'])){
 		$idCargo = $_POST['atualizar'];		   
-		$cargo = $_POST['cargo'];		   
+		$cargo = $_POST['cargo'];	
+		$coordenador = $_POST['coordenador'];		   
 		$sql_atualiza_cargo = "UPDATE sis_formacao_cargo SET
-		Cargo = '$cargo'
+		Cargo = '$cargo',
+		coordenador = '$coordenador'
 		WHERE Id_Cargo = '$idCargo'";
 		$con = bancoMysqli();
 		$query_atualiza_cargo = mysqli_query($con,$sql_atualiza_cargo);
@@ -109,6 +111,7 @@ case 'list_cargo':
 						<tr class="list_menu">
 							<td>Id</td>
 							<td>Cargo</td>
+                            <td>Coordenador/Articulador</td>
   							<td></td>
 						</tr>
 					</thead>
@@ -123,6 +126,10 @@ while($cargo = mysqli_fetch_array($query)){
 <form action="?perfil=formacao&p=administrativo&pag=list_cargo" method="post">
 <td><?php echo $cargo['Id_Cargo']; ?></td>
 <td><input type="text" name="cargo" class="form-control" value="<?php echo $cargo['Cargo']; ?>"/></td>
+<td> <select class="form-control" name="coordenador" id="Status">
+                	<option value='0'<?php if($cargo['coordenador'] == 0){echo " selected ";} ?>>Não</option>
+					<option value='1'<?php if($cargo['coordenador'] == 1){echo " selected ";} ?>>Sim</option>
+					 </select></td>
 <td>
 <input type="hidden" name="atualizar" value="<?php echo $cargo['Id_Cargo']; ?>" />
 <input type ='submit' class='btn btn-theme  btn-block' value='atualizar'></td>

@@ -141,7 +141,7 @@ $query_pesquisar = mysqli_query($con,$sql_pesquisar);
 $data = "";
 $data_antigo = "1";
 while($evento = mysqli_fetch_array($query_pesquisar)){
-	$inst = recuperaDados("ig_local",$evento['idLocal'],"idLocal");
+	$inst = recuperaDados("ig_local",$evento['local'],"idLocal");
 	$idInst = $inst['idInstituicao'];
 	$idEvento = $evento['idEvento'];
 	$dataInicio = $evento['dataInicio'];
@@ -292,5 +292,7 @@ while($evento = mysqli_fetch_array($query_pesquisar)){
  	
 }	
 
-	
+return $mensagem;	
 }
+
+?>
