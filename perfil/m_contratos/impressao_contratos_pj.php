@@ -36,6 +36,7 @@ $link24 = $http."rlt_proposta_cinema_pj.php"."?id=".$id_ped."&penal=3";
 $link25 = $http."rlt_proposta_exposicao_pj.php"."?id=".$id_ped."&penal=10";
 $link26 = $http."rlt_termo_doacao_pj.php";
 $link27 = $http."rlt_termo_parceria_pj.php";
+$link28 = $http."rlt_pedido_reserva_portaria_pj.php";
 
 
 	 $last_id = mysqli_insert_id($conexao);
@@ -135,6 +136,9 @@ $link27 = $http."rlt_termo_parceria_pj.php";
 		<tr>
 			<td><a href='$link11?id=$id_ped' target='_blank'><strong>FEPAC</strong></a></td>
 			<td><a href='$link14?id=$id_ped' target='_blank'><strong>Vocacional</strong></a></td>
+		</tr>		
+		<tr>
+			<td><a href='$link28?id=$id_ped' target='_blank'><strong>Portaria nº 011/2016</strong></a></td>
 		</tr>
 		
 	  </tbody>

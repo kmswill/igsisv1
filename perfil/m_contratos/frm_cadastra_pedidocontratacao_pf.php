@@ -19,8 +19,7 @@ if(isset($_POST['action'])){
 	$idPessoa = $formacao['IdPessoaFisica'];
 	$idVerba = "";
 	$instituicao = $_SESSION['idInstituicao'];
-	$justificativa = $cargo['justificativa'];
-	//$justificativa = "Texto do Edital";
+	$justificativa = "Texto do Edital";
 	$parecer = $proponenteFormacao['Curriculo'];
 	$mensagem = "";
 	
@@ -138,20 +137,12 @@ if(isset($_POST['action'])){
 
 if(isset($_POST['enviar'])){
 	$dataEnvio = date('Y-m-d');
-	$idPedidoContracao = $_POST['idPedido'];
-	$sql_enviar = "UPDATE igsis_pedido_contratacao SET estado = '2'WHERE idPedidoContratacao = '$idPedidoContratacao'";
+	$sql_enviar = "UPDATE igsis_pedido_contratacao SET estado = '2', dataEnvio = '$dataEnvio' WHERE idPedidoContratacao = '$idPedidoContratacao'";
 	$query_enviar = mysqli_query($con,$sql_enviar);
 	if($query_enviar){
-		$sql_formacao = "UPDATE sis_formacao SET dataEnvio = '$dataEnvio' WHERE idPedidoContratacao = '$idPedidoContratacao'";
-		$query_formacao = mysqli_query($con,$sql_formacao);
-		if($query_formacao){
-		$mensagem = "Pedido enviado à area de contratos";
-		}else{
-		$mensagem = "Erro ao enviar pedido(1)";	
-			
-		}
+		$mensagem = "Pedido enviado à area de contratos";	
 	}else{
-		$mensagem = "Erro ao enviar pedido(2)";	
+		$mensagem = "Erro ao enviar pedido";	
 	}
 	
 }
@@ -290,7 +281,7 @@ $cargo = recuperaDados("sis_formacao_cargo",$formacao['IdCargo'],"Id_Cargo");
 $programa = recuperaDados("sis_formacao_programa",$formacao['IdPrograma'],"Id_Programa");
 
 $verba = recuperaDados("sis_verba",$programa['verba'],"Id_Verba");
-$objeto = "CONTRATAÇÃO COMO ".$cargo['Cargo']." DO ".$programa['Programa']." NOS TERMOS DO EDITAL ".$programa['edital']." - PROGRAMAS DA DIVISÃO DE FORMAÇÃO.";
+$objeto = "CONTRATAÇÃO COMO ".$cargo['Cargo']." DO ".$programa['Programa']." NOS TERMOS DO EDITAL ".$programa['edital']." – PROGRAMAS DA DIVISÃO DE FORMAÇÃO.";
 if($cargo['coordenador'] == 1){ 
 	$local = "SMC e equipamentos sobre sua supervisão";
 }else{
@@ -299,7 +290,6 @@ if($cargo['coordenador'] == 1){
 $carga = retornaCargaHoraria($pedido['idPedidoContratacao'],$pedido['parcelas']);
 $periodo = retornaPeriodoVigencia($pedido['idPedidoContratacao'],$pedido['parcelas']);
 
-$justif = $cargo['justificativa'];
 ?>
 
 
@@ -333,7 +323,7 @@ $justif = $cargo['justificativa'];
                   </div>
                     
 
-                  <!--
+                  
 				  <div class="form-group">                    
                     <div class=" col-md-offset-2 col-md-6"><strong>Setor:</strong> 
 					  <input type="text"  class="form-control" value="">
@@ -342,8 +332,7 @@ $justif = $cargo['justificativa'];
                     	<input type="text"  class="form-control" value="">
                     </div>
                   </div>
-                  -->
-				  
+                  
                   <div class="form-group"> 
 					<div class="col-md-offset-2 col-md-8"><strong>Proponente:</strong><br/>
 					  <input type='text' readonly class='form-control' name='nome' id='nome' value="<?php echo $proponente['Nome']." (".$proponente['CPF'].")"; ?>">                    	
@@ -394,7 +383,7 @@ $justif = $cargo['justificativa'];
                  <form class="form-horizontal" role="form" action="?perfil=formacao&p=frm_cadastra_pedidocontratacao_pf" method="post">
                   <div class="form-group">
 					<div class="col-md-offset-2 col-md-8"><strong>Justificativa:</strong><br/>
-                      <textarea name="Justificativa" cols="40" rows="5"><?php echo $justif ?></textarea>
+                      <textarea name="Justificativa" cols="40" rows="5"><?php echo $pedido['justificativa'] ?></textarea>
 					</div>
 				  </div>
                   

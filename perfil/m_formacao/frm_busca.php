@@ -125,22 +125,16 @@ if($id != "" AND $num_registro > 0){ // Foi inserido o número do pedido
 	
 	$x[0]['id']= $pedido['idPedidoContratacao'];
 	$x[0]['objeto'] = retornaTipo($evento['ig_tipo_evento_idTipoEvento'])." - ".$evento['nomeEvento'];
-	switch($pedido['tipoPessoa']){
-		case 1:
+	if($pedido['tipoPessoa'] == 1){
 		$pessoa = recuperaDados("sis_pessoa_fisica",$pedido['idPessoa'],"Id_PessoaFisica");
 		$x[0]['proponente'] = $pessoa['Nome'];
 		$x[0]['tipo'] = "Física";
-		break;
-		case 2:
+
+	}else{
 		$pessoa = recuperaDados("sis_pessoa_juridica",$pedido['idPessoa'],"Id_PessoaJuridica");
 		$x[0]['proponente'] = $pessoa['RazaoSocial'];
 		$x[0]['tipo'] = "Jurídica";
-		break;
-		case 4:
-		$pessoa = recuperaDados("sis_pessoa_fisica",$pedido['idPessoa'],"Id_PessoaFisica");
-		$x[0]['proponente'] = $pessoa['Nome'];
-		$x[0]['tipo'] = "Formação";
-		break;
+
 	}
 	$x[0]['local'] = substr($local,1);
 	$x[0]['instituicao'] = $instituicao['sigla'];

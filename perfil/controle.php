@@ -237,7 +237,7 @@ while($linha_tabela_pedido_contratacao = mysqli_fetch_array($query_pagina))
 <?php
 $con = bancoMysqli();
 $idUsuario = $_SESSION['idUsuario'];
-$sql_verba = "SELECT * FROM igsis_controle_orcamento WHERE idUsuario = '$idUsuario'";
+$sql_verba = "SELECT * FROM igsis_controle_orcamento WHERE idUsuario = '$idUsuario'  AND publicado = '1'";
 $query_verba = mysqli_query($con,$sql_verba);
 while($x = mysqli_fetch_array($query_verba)){
 	$verba = recuperaDados("sis_verba",$x['idVerba'],"Id_Verba");
@@ -428,7 +428,7 @@ echo dinheiroParaBr($restante); ?>
 	  		<div class="row">
 	  			<div class="col-md-offset-1 col-md-10">
 
-				<form class="form-horizontal" role="form" action="?perfil=controle&p=planilha" method="post">
+				<form class="form-horizontal" role="form" action="?perfil=financa&p=planilha" method="post">
 					  <div class="form-group">
 					<div class="col-md-offset-2 col-md-8"><strong>Tipo de pessoa</strong><br/>
 					            		
@@ -464,7 +464,7 @@ echo dinheiroParaBr($restante); ?>
 
 				  </div>
 				  <br />
-				  <!--<div class="form-group">
+				  <div class="form-group">
 					<div class="col-md-offset-2 col-md-8"><strong>Tipo de Evento</strong><br/>
 					            		
             		<select class="form-control" name="tipo_evento" id="inputSubject" >
@@ -472,7 +472,7 @@ echo dinheiroParaBr($restante); ?>
 						<?php echo geraOpcao("ig_tipo_evento",$campo['ig_tipo_evento_idTipoEvento'],"") ?>
                     </select>		
 					</div>
-				  </div>-->
+				  </div>
 				           <div class="form-group">
 	            <div class="col-md-offset-2 col-md-8">
     		        <label>Responsável</label>
@@ -549,9 +549,10 @@ echo dinheiroParaBr($restante); ?>
     
                 </div>
 			<div class="table-responsive list_info">
-				<table class="table table-condensed">
+				<table class="table table-condensed"><script type=text/javascript language=JavaScript src=../js/find2.js> </script>
 					<thead>
 						<tr class="list_menu">
+                        	<td></td>
 							<td>Verba</td>
 							<td>Pessoa Física</td>
 							<td>Pessoa Jurídica</td>
@@ -562,16 +563,18 @@ echo dinheiroParaBr($restante); ?>
 					</thead>
 					<tbody>
 <?php
+$con = bancoMysqli();
 $idUsuario = $_SESSION['idUsuario'];
-$sql_verba = "SELECT * FROM igsis_controle_orcamento WHERE idUsuario = '$idUsuario'";
+$sql = "SELECT * FROM igsis_controle_orcamento WHERE idUsuario = '$idUsuario' AND publicado = '1' ORDER BY idVerba ASC ";
+$query = mysqli_query($con,$sql);
 
-$query_verba = mysqli_query($con,$sql_verba);
-while($v = mysqli_fetch_array($query_verba)){
+while($v = mysqli_fetch_array($query)){
 	$verba = recuperaDados("sis_verba",$v['idVerba'],"Id_Verba");
 ?>
 
 <tr>
 <form action="?perfil=controle&p=verbas" method="post">
+<td><?php echo $verba['Id_Verba']; ?></td>
 <td><?php echo $verba['Verba']; ?></td>
 <td><input type="text" name="pf" class="valor" value="<?php echo dinheiroParaBr($verba['pf']); ?>"/></td>
 <td><input type="text" name="pj" class="valor" value="<?php echo dinheiroParaBr($verba['pj']); ?>"/></td>
@@ -653,7 +656,6 @@ case "planilha":
 
 $tipo_pessoa = $_POST['tipo_pessoa']; 
 if($tipo_pessoa == 0){
-	$pessoa = "";
 	$men_pessoa = "Pessoa: física e jurídica <br />";	
 }else{
 	$pessoa = " AND igsis_pedido_contratacao.tipoPessoa = '$tipo_pessoa' ";
@@ -665,31 +667,28 @@ if($tipo_pessoa == 0){
 	}
 }
 
+$data_final  = exibirDataMysql($_POST['data_final']);
+$data_inicial  = exibirDataMysql($_POST['data_inicial']); 
 if(($_POST['data_inicial'] != "") AND ($_POST['data_inicial'] != "")){
-	$data_final  = exibirDataMysql($_POST['data_final']);
-	$data_inicial  = exibirDataMysql($_POST['data_inicial']); 
-	$data = "AND ig_evento.dataEnvio >= '$data_inicial' AND ig_evento.dataEnvio <= '$data_final' ";
+	$data = "BETWEEN ig_evento.dataEnvio = '$data_inicial' AND ig_evento.dataEnvio = '$data_final' ";
 	$men_data = "Data de envio: entre ".exibirDataBr($data_inicial)." e ".exibirDataBr($data_final)."<br />";
 }else{
-	$data = "";
 	$men_data = "Data de envio: sem data definida.<br />";
 
 }
 
 //refazer	
-
-if((($valor_de != "") AND $valor_de != '0,00') AND (($valor_ate != "") AND ($valor_ate != '0,00'))){
-	$valor_de  = dinheiroDeBr($_POST['valor_de']); 
-	$valor_ate  = dinheiroDeBr($_POST['valor_ate']);
+  $valor_de  = dinheiroDeBr($_POST['valor_de']); 
+  $valor_ate  = dinheiroDeBr($_POST['valor_ate']);
+if((($valor_de != "") OR $valor_de != '0.00') AND (($data_ate != "") OR ($data_ate != '0.00'))){
 	$valor = "AND igsis_pedido_contratacao.valor >= '$valor_de' AND igsis_pedido_contratacao.valor <= '$valor_ate' ";
 	$men_valor = "Valores: entre ".dinheiroParaBr($valor_de)." e ".dinheiroParaBr($valor_ate)."<br />";
 }else{
-	$valor = "";
 	$men_valor = "Valores: sem valores definidos.<br />";
 
 }
 
-/*
+
 
   $tipo_evento = $_POST['tipo_evento'];
 if($tipo_evento != "0"){
@@ -700,21 +699,18 @@ if($tipo_evento != "0"){
 	
 }
 
-  */
-if(isset($_POST['verba'])){
-  $v = $_POST['verba'];
-if($v == "0"){
-  $verba = "";
-  $men_verba = "Sem verba definida";
+  $verba = $_POST['verba'];
+if($tipo_evento != "0"){
+  $responsavel = $_POST['responsavel'];
+  $men_resp = "Responsável: ".$responsavel;
 }else{
-	$verba = " AND idVerba = '$v' ";
-  $men_verba = "Verba definida.";
+  $men_resp = "Responsável: não definido.";
 	
 }  
+  
 
-}
-$sql_filtro = "SELECT * FROM igsis_pedido_contratacao, ig_evento WHERE igsis_pedido_contratacao.idEvento = ig_evento.idEvento $verba $valor $data $pessoa AND igsis_pedido_contratacao.publicado = '1' AND ig_evento.publicado = '1' ORDER BY idPedidoContratacao DESC";
-$query_filtro = mysqli_query($con,$sql_filtro);
+$sql_filtro = "SELECT * FROM igsis_pedido_contratacao, ig_evento WHERE ig_pedido_contratacao.idEvento = ig_evento.idEvento $valor $data $tipo";
+
 ?>
 <br />
 <br />
@@ -724,17 +720,18 @@ $query_filtro = mysqli_query($con,$sql_filtro);
              <div class="col-md-offset-2 col-md-8">
                 <div class="text-hide">
                 <h2>Relatório de Pedidos de contratação</h2>
-	                <h6>Você filtrou por: <br /><?php echo $men_pessoa; echo $men_data; echo $men_valor; ?></h6>
+	                <h6>Você filtrou por: <br /><?php echo $men_pessoa; echo $men_data; echo $men_valor; echo $men_tipo ?></h6>
                 </div>
             </div>
 			<div class="table-responsive list_info">
 				<table class="table table-condensed"><script type=text/javascript language=JavaScript src=../js/find2.js> </script>
 					<thead>
 						<tr class="list_menu">
-							<td>NumPed</td>
+							<td>Cod.</td>
    							<td>Tipo Pessoa</td>
 							<td>Proponente</td>
 							<td>Objeto</td>
+							<td>Local/Periodo</td>
 							<td>Verba</td>
 							<td>Valor</td>
 
@@ -744,21 +741,24 @@ $query_filtro = mysqli_query($con,$sql_filtro);
 					</thead>
 					<tbody>
 <?php
+$idInstituicao = $_SESSION['idInstituicao'];
+$sql = "SELECT idPedidoContratacao, tipoPessoa, idPessoa FROM igsis_pedido_contratacao WHERE publicado = '1' AND instituicao = '$idInstituicao'";
+$query = mysqli_query($con,$sql);
+
 $data=date('Y');
-while($linha_tabela_pedido_contratacao = mysqli_fetch_array($query_filtro))
+while($linha_tabela_pedido_contratacao = mysqli_fetch_array($query))
  {
 	$pedido = siscontrat($linha_tabela_pedido_contratacao['idPedidoContratacao']);
 	$pessoa = siscontratDocs($linha_tabela_pedido_contratacao['idPessoa'],$linha_tabela_pedido_contratacao['tipoPessoa']);
-	$estado = recuperaDados("sis_estado",$pedido['Status'],"idEstado");
 	echo "<tr><td class='lista'> <a href=''>".$linha_tabela_pedido_contratacao['idPedidoContratacao']."</a></td>";
 	echo '<td class="list_description">'.retornaPessoa($pedido['TipoPessoa']).					'</td> ';
 	echo '<td class="list_description">'.$pessoa['Nome'].						'</td> ';
 	echo '<td class="list_description">'.$pedido['Objeto'].				'</td> ';
-	//echo '<td class="list_description">'.$pedido['Local'].						'</td> ';
+	echo '<td class="list_description">'.$pedido['Local'].						'</td> ';
 	echo '<td class="list_description">'.retornaVerba($pedido['Verba']).						'</td> ';
 	echo '<td class="list_description">'.dinheiroParaBr($pedido['ValorGlobal']).						'</td> ';
 
-	echo '<td class="list_description">'.$estado['estado'].'</td> </tr>';
+	echo '<td class="list_description">OK						</td> </tr>';
 	}
 
 ?>
@@ -769,7 +769,7 @@ while($linha_tabela_pedido_contratacao = mysqli_fetch_array($query_filtro))
 			</div>
 		</div>
 	</section>
-<?php var_dump($estado); ?>
+<?php var_dump($_POST); ?>
 <?php var_dump($sql_filtro); ?>
 
 <?php

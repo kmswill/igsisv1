@@ -27,7 +27,6 @@ if(isset($_POST['reabertura'])){
 	$sql_reabrir = "UPDATE ig_evento SET dataEnvio = NULL WHERE idEvento = '$idEvento'";
 	$query_reabrir = mysqli_query($con,$sql_reabrir);
 	if($query_reabrir){
-		gravarLog($sql_reabrir);
 		$evento = recuperaDados("ig_evento",$idEvento,"idEvento");
 		$mensagem = $mensagem."O evento ".$evento['nomeEvento']." foi reaberto.<br />";
 		$sql_pedido = "UPDATE igsis_pedido_contratacao SET estado = NULL WHERE idEvento = '$idEvento'";

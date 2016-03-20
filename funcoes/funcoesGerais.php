@@ -593,7 +593,7 @@ function recuperaProdutor($idProdutor){ //recupera dados da tabela produtor
 
 function listaEventosGravados($idUsuario){ //tabela para gerenciar eventos em aberto
 	$con = bancoMysqli();
-	$sql = "SELECT * FROM ig_evento WHERE idUsuario = $idUsuario AND publicado = 1 AND dataEnvio IS NULL";
+	$sql = "SELECT * FROM ig_evento WHERE publicado = 1 AND (idUsuario = '$idUsuario' OR suplente = '$idUsuario' OR idResponsavel = '$idUsuario') AND dataEnvio IS NULL ORDER BY idEvento DESC";
 	$query = mysqli_query($con,$sql);
 	echo "<table class='table table-condensed'>
 					<thead>
@@ -980,6 +980,49 @@ function descricaoEspecificidades($idEvento,$tipo){
 	break;
 	case 4: //oficinas e paletras
 	case 5:
+	
+	$oficinas = recuperaDados("ig_oficinas",$idEvento,"idEvento");
+	if($oficinas['certificado'] == 1){
+		echo "<b>Certificado:</b> Sim<br />";	
+	}
+	if($oficinas['vagas'] != 0){
+		echo "<b>Vagas:</b> ".$oficinas['vagas']."<br />"; 	
+	}
+		if($oficinas['publico'] != ""){
+		echo "<b>Público:</b> ".$oficinas['publico']."<br />"; 	
+	}
+
+		if($oficinas['vagas'] != ""){
+		echo "<b>Vagas:</b> ".$oficinas['vagas']."<br />"; 	
+	}
+	if($oficinas['material'] != ""){
+		echo "<b>Material:</b> ".$oficinas['material']."<br />"; 	
+	}
+	switch($oficinas['inscricao']){
+		case 1:
+		echo "<b>Inscrição:</b> Sem necessidade.</br />"; 	
+		
+		break;
+		case 2:
+		echo "<b>Inscrição:</b>Pelo site - ficha de inscrição.</br />"; 	
+		break;
+		case 3:
+		echo "<b>Inscrição:</b>Pelo site - por email.</br />"; 	
+		break;
+		case 4:
+		echo "<b>Inscrição:</b> Pessoalmente.</br />"; 	
+		break;
+	}
+	if($oficinas['valorHora'] != 0){
+		echo "<b>Valor/Hora (em reais):</b> ".$oficinas['valorHora']."<br />"; 	
+	}
+	if($oficinas['divulgacao'] != "0000-00-00"){
+		echo "<b>Divulgação dos resultados da inscrição:</b> ".exibirDataBr($oficinas['divulgacao'])."(ver data da inscrição em ocorrências).<br />"; 	
+	}
+	if($oficinas['cargaHoraria'] != 0){
+		echo "<b>Carga Horária:</b> ".$oficinas['cargaHoraria']."<br />"; 	
+	}
+
 		
 	
 	break;
@@ -2944,7 +2987,7 @@ $query_pesquisar = mysqli_query($con,$sql_pesquisar);
 $data = "";
 $data_antigo = "1";
 while($evento = mysqli_fetch_array($query_pesquisar)){
-	$inst = recuperaDados("ig_local",$evento['idLocal'],"idLocal");
+	$inst = recuperaDados("ig_local",$evento['local'],"idLocal");
 	$idInst = $inst['idInstituicao'];
 	$idEvento = $evento['idEvento'];
 	$dataInicio = $evento['dataInicio'];

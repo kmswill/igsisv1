@@ -39,9 +39,9 @@ $ultimo = $_GET['id_pf']; //recupera o id da pessoa
 	if ($num_verifica == 0){
 	$sql_insert = "INSERT INTO sis_pessoa_fisica_formacao (`IdPessoaFisica`) VALUES ('$ultimo')";
 	if(mysqli_query($con,$sql_insert)){
-		$mensagem = "OK";	
+		$mensagem = "Atualizado com sucesso!";	
 	}else{
-		$mensagem = "Erro";	
+		$mensagem = "Erro ao atualizar! Tente novamente.";	
 		
 	}
 	}

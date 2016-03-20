@@ -154,6 +154,7 @@ $ped = recuperaDados("igsis_pedido_contratacao",$id_ped,"idPedidoContratacao");
 $fisico = siscontratDocs($linha_tabelas['IdProponente'],1);		
 $evento = recuperaDados("ig_evento",$linha_tabelas['idEvento'],"idEvento");
 $pedido = recuperaDados("igsis_pedido_contratacao",$_GET['id_ped'],"idPedidoContratacao");
+$formacao = recuperaDados("sis_formacao",$id_ped,"idPedidoContratacao");
 ?>
 
 <!-- MENU -->	
@@ -176,7 +177,7 @@ $pedido = recuperaDados("igsis_pedido_contratacao",$_GET['id_ped'],"idPedidoCont
 				$coord = recuperaDados("ig_usuario",$_SESSION['idUsuario'],"idUsuario");
 				if($coord['contratos'] ==  2){
 				?>	
-				<form class="form-horizontal" role="form" action="?perfil=contratos&p=frm_edita_propostapf&id_ped=<?php echo $id_ped; ?>" method="post">
+				<form class="form-horizontal" role="form" action="?perfil=contratos&p=frm_edita_proposta_formacao&id_ped=<?php echo $id_ped; ?>" method="post">
 
 			   <div class="form-group">
 					<div class="col-md-offset-2 col-md-5"><strong>Responsável no Setor de Contratos Artísticos:</strong><br/>
@@ -220,7 +221,7 @@ $pedido = recuperaDados("igsis_pedido_contratacao",$_GET['id_ped'],"idPedidoCont
 					<div class="col-md-offset-2 col-md-6"><strong>Código do Pedido de Contratação:</strong><br/> <?php echo "$ano-$id_ped"; ?><br/>					  
 					</div>
 					<div class="col-md-6"><strong>Data do Cadastro:</strong><br/>
-						<?php echo exibirDataBr($evento['dataEnvio']);?><br/>
+						<?php echo exibirDataBr($formacao['dataEnvio']);?><br/>
 					</div>
 				  </div>
                   
@@ -230,10 +231,10 @@ $pedido = recuperaDados("igsis_pedido_contratacao",$_GET['id_ped'],"idPedidoCont
                   
 				  <div class="form-group">                    
                     <div class=" col-md-offset-2 col-md-6"><strong>Setor:</strong><br/>
-						<?php echo $linha_tabelas['Setor'];?> <br /><br />
+						Formação <br /><br />
                     </div>
                     <div class="col-md-6"><strong>Categoria da Contratação:</strong><br/>
-						<?php echo retornaTipo($evento['ig_tipo_evento_idTipoEvento']);?> <br /><br />
+						<?php echo retornaProgramaFormcao($formacao['IdPrograma']);?> <br /><br />
 					</div>
 				  </div>
 				  
@@ -376,9 +377,14 @@ $pedido = recuperaDados("igsis_pedido_contratacao",$_GET['id_ped'],"idPedidoCont
 
                   <div class="form-group">
 					<div class="col-md-offset-2 col-md-8"><strong>Verba:</strong><br/>
-					   <select disabled class="form-control" name="Verba" id="Verba">
-                       <?php geraOpcao("sis_verba",$linha_tabelas['Verba'],"") ?>
-                      </select>
+					  <p> <input type='text' disabled name="Valor" id='valor' class='form-control' value="<?php switch($formacao['Verba']){
+						  case 1:
+						  	echo "Secretaria Municipal de Cultural (SMC)";
+						  break;
+						  case 2:
+						  	echo "Secretaria Municipal de Educação (SME)";
+						  break;
+						  } ?>"  /></p>
 					</div>
 				  </div>
 				  
@@ -456,30 +462,13 @@ $pedido = recuperaDados("igsis_pedido_contratacao",$_GET['id_ped'],"idPedidoCont
 					<div class="col-md-offset-2 col-md-8">
 			 <a href="?perfil=contratos&p=frm_chamados&pag=evento&idEvento=<?php echo $pedido['idEvento'];  ?>" class="btn btn-theme btn-block" target="_blank" >Chamados</a></div>	
 			</div>
+            </div>
 					<div class="form-group">
                     <div class="col-md-offset-2 col-md-8">
                     	<br />
                 </div>
 				</div>
-					<div class="form-group">
-                    <div class="col-md-offset-2 col-md-8">
-                    <h4>Pedidos Relacionados</h4>
-                    <?php $outros = listaPedidoContratacao($pedido['idEvento']); 
-					 for($i = 0; $i < count($outros); $i++){
-					$dados = siscontrat($outros[$i]);
-						?>
-            <p align="left">
-            Número do Pedido de Contratação:<b> <a href="?perfil=contratos&p=frm_edita_propostapf&id_ped=<?php echo $outros[$i]; ?>"></b><?php echo $outros[$i]; ?></a><br />
-			</p>
-            <?php 
 
-			}		
-	
-			?>
-                    
-                    	<br />
-                </div>
-				</div>
 	
       			
 			

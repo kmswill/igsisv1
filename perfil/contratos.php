@@ -9,6 +9,7 @@ if(isset($_GET['p'])){
 	$p = "index";
 	}
 include "../funcoes/funcoesSiscontrat.php";	
+include "../funcoes/funcoesFormacao.php";
 include "m_contratos/".$p.".php";
 
 ?>

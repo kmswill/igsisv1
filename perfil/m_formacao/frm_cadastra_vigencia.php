@@ -127,7 +127,7 @@ $vigencia = recuperaDados("sis_formacao_vigencia",$idVigencia,"Id_Vigencia");
 					  <input type='text' disabled name="Valor" id='valor<?php echo $i ?>' class='form-control' value="<?php echo $i ?>" >
 					</div>					
                     <div class=" col-sm-2"><strong>Valor</strong><br/>
-					  <input type='text'  name="parcela<?php echo $i ?>" id='valor' class='form-control valor' value="<?php echo $parcela['Valor'] ?>" >
+					  <input type='text'  name="parcela<?php echo $i ?>" id='valor' class='form-control valor' value="<?php echo dinheiroParaBr($parcela['Valor']) ?>" >
 					</div>
                     
                     <div class="col-sm-2"><strong>Data inicial:</strong><br/>

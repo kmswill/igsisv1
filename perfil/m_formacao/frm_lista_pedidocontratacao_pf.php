@@ -47,7 +47,7 @@ while($pedido = mysqli_fetch_array($query_enviados))
 	echo '<td class="list_description">'.$ped['Objeto'].						'</td> ';
 	echo '<td class="list_description">'.$ped['Local'].				'</td> ';
 	echo '<td class="list_description">'.$ped['Periodo'].						'</td> ';
-	echo '<td class="list_description">'.$ped['Status'].						'</td> </tr>';
+	echo '<td class="list_description">'.retornaEstado($ped['Status']).						'</td> </tr>';
 	}
 
 ?>
@@ -95,7 +95,9 @@ while($pedido = mysqli_fetch_array($query_n_enviados))
 	echo '<td class="list_description">'.$ped['Objeto'].						'</td> ';
 	echo '<td class="list_description">'.$ped['Local'].				'</td> ';
 	echo '<td class="list_description">'.$ped['Periodo'].						'</td> ';
-	echo '<td class="list_description">'.$ped['Status'].						'</td> </tr>';
+	//echo '<td class="list_description">'.$ped['Status'].						'</td> </tr>';
+	echo '<td class="list_description"></td> </tr>';
+
 	}
 
 ?>

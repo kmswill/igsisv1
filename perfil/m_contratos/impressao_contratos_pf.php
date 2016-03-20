@@ -34,6 +34,12 @@ $link22 = $http."rlt_proposta_comissaojulgadora_pf.php"."?id=".$id_ped."&penal=5
 $link23 = $http."rlt_proposta_exposicao_pf.php"."?id=".$id_ped."&penal=10";
 $link24 = $http."rlt_proposta_oficinassemedital_pf.php"."?id=".$id_ped."&penal=12";
 $link25 = $http."rlt_proposta_palestra_pf.php"."?id=".$id_ped."&penal=15";
+$link26 = $http."rlt_termo_doacaoobradearte_pf.php";
+$link27 = $http."rlt_termo_doacaoservico_pf.php";
+$link28 = $http."rlt_termo_parceria_pf.php";
+$link29 = $http."rlt_proposta_formacao.php"."?id=".$id_ped."&penal=20";
+$link30 = $http."rlt_proposta_pia_pf.php"."?id=".$id_ped."&penal=21";
+$link31 = $http."rlt_pedido_reserva_portaria_pf.php";
  
  
 	 $last_id = mysqli_insert_id($conexao);
@@ -90,6 +96,11 @@ $link25 = $http."rlt_proposta_palestra_pf.php"."?id=".$id_ped."&penal=15";
 			<td><a href='$link16?id=$id_ped' target='_blank'><strong>Reversão Longa Temporada</strong></a></td>
 		</tr>
 		
+		<tr>
+			<td><a href='$link29' target='_blank'><strong>Vocacional</strong></a></td>
+			<td><a href='$link30?id=$id_ped' target='_blank'><strong>PIÁ</strong></a></td>
+		</tr>
+		
 		<tr><td class='list_description'><br/></td></tr>
 		
 		<tr class='list_menu'><td colspan='2'><strong>DECLARAÇÃO</strong></td></tr>
@@ -113,7 +124,11 @@ $link25 = $http."rlt_proposta_palestra_pf.php"."?id=".$id_ped."&penal=15";
 		</tr>
 		<tr>
 			<td><a href='$link19?id=$id_ped' target='_blank'><strong>Ordem de serviço</strong></a></td>
-			<td></td>
+			<td><a href='$link26?id=$id_ped' target='_blank'><strong>Termo de Doação de Obra de Arte</strong></a></td>
+		</tr>
+		<tr>
+			<td><a href='$link27?id=$id_ped' target='_blank'><strong>Termo de Doação de Serviço</strong></a></td>
+			<td><a href='$link28?id=$id_ped' target='_blank'><strong>Termo de Parceria</strong></a></td>
 		</tr>
 		
 		<tr><td class='list_description'><br/></td></tr>
@@ -127,6 +142,9 @@ $link25 = $http."rlt_proposta_palestra_pf.php"."?id=".$id_ped."&penal=15";
 		<tr>
 			<td><a href='$link8?id=$id_ped' target='_blank'><strong>FEPAC</strong></a></td>
 			<td><a href='$link10?id=$id_ped' target='_blank'><strong>Vocacional</strong></a></td>
+		</tr>
+		<tr>
+			<td><a href='$link31?id=$id_ped' target='_blank'><strong>Portaria nº 011/2016</strong></a></td>
 		</tr>
 		
 	  </tbody>

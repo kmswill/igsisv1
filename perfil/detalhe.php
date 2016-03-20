@@ -5,7 +5,6 @@ require "../funcoes/funcoesSiscontrat.php";
 <?php
 	if(isset($_GET['evento'])){
 		$evento = recuperaDados('ig_evento',$_GET['evento'],'idEvento');
-if($evento['ocupacao'] == 1){
 ?>
 
 	 <section id="services" class="home-section bg-white">
@@ -21,50 +20,7 @@ if($evento['ocupacao'] == 1){
 			  
 	        <div class="row">
 			<div class="table-responsive list_info" >
-            <h4><?php echo $evento['nomeEvento'] ?> - Ocuapção / Evento Interno</h4>
-            <p align="left">
-              <?php descricaoEvento($_GET['evento']); ?>
-                  </p>      
-            <h5>Ocorrências</h5>
-            <?php echo resumoOcorrencias($_GET['evento']); ?><br /><br />
-            <?php listaOcorrenciasTexto($_GET['evento']); ?>
-
-						<h4>Arquivos anexos</h4>
-			<div class="left">
-		<?php listaArquivosDetalhe($_GET['evento']) ?>
-			</div>
-
-			<div class="table-responsive list_info" >
-            <h4></h4>
-            <div class="left">
-            <br />
-            <br />
-            <h5>Previsão de serviços externos</h5>
-            <?php listaServicosExternos($_GET['evento']); ?><br /><br />
-
-			<h5>Serviços Internos</h5>
-			<?php listaServicosInternos($_GET['evento']) ?>
-
-</div>
-</div>
-            </div>
-</section>
-<?php var_dump($evento);?>
-<?php }else { ?>
-	 <section id="services" class="home-section bg-white">
-		<div class="container">
-			  <div class="row">
-				  <div class="col-md-offset-2 col-md-8">
-					<div class="section-heading">
-					                     
-
-					</div>
-				  </div>
-			  </div>
-			  
-	        <div class="row">
-			<div class="table-responsive list_info" >
-            <h4><?php echo $evento['nomeEvento'] ?>(Ocupação)</h4>
+            <h4><?php echo $evento['nomeEvento'] ?></h4>
             <p align="left">
               <?php descricaoEvento($_GET['evento']); ?>
                   </p>      
@@ -137,7 +93,6 @@ $pedido = listaPedidoContratacao($_GET['evento']);
 </div>
             </div>
 </section>
-<?php } ?>
 <?php } ?>
 
 

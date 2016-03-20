@@ -190,7 +190,7 @@ function espacoExistente ($idUsuario) {
 	FROM ig_local local
 		INNER JOIN ig_instituicao inst 
 			ON local.idInstituicao = inst.idInstituicao 
-			WHERE local.publicado = 1  ";   // editar para só adicionar instituicao do LOCAL
+			WHERE local.publicado = 1 ";   // editar para só adicionar instituicao do LOCAL
 //$sql = "SELECT * FROM ig_espaco WHERE idEspaco AND publicado = 1";
 	  $query = mysqli_query($con,$sql); 
 	  	echo " 
@@ -273,7 +273,6 @@ function listaEventosAdministrador($idUsuario){
 							<td>Instituição</td>
   							<td></td>
 							<td width='10%'></td>
-							<td width='10%'></td>
 						</tr>
 					</thead>
 					<tbody>";
@@ -288,12 +287,14 @@ function listaEventosAdministrador($idUsuario){
 			<input type='hidden' name='carregar' value='".$campo['idEvento']."' />
 			<input type ='submit' class='btn btn-theme btn-block' value='recuperar'></td></form>"	;
 			
+			/* Botão APAGAR
 			echo "
 			<td class='list_description'>
 			<form method='POST' action='?perfil=administrador&p=eventos'>
 			<input type='hidden' name='apagar' value='".$campo['idEvento']."' />
 			<input type ='submit' class='btn btn-theme  btn-block' value='apagar'></td></form>"	;
-			echo "</tr>";		
+			echo "</tr>";
+			*/
 	}
 	echo "					</tbody>
 				</table>";
@@ -320,7 +321,8 @@ $sql = "SELECT * FROM $tabela WHERE ".$campo." = '$idEvento' LIMIT 0,1";
 
 function listaAlteracoes($idUsuario){ 
 	$con = bancoMysqli();
-	$sql = "SELECT * FROM igsis_chamado	ORDER BY idChamado DESC";
+	$sql = "SELECT * FROM igsis_chamado	
+	WHERE estado = 1 ORDER BY idChamado DESC";
 /*		$sql = "SELECT  cham.idChamado, cham.justificativa,cham.data,
         usu.nomeUsuario, usu.idUsuario, usu.nomeCompleto,
           tip_cham.chamado,
@@ -371,6 +373,62 @@ left JOIN  igsis_tipo_chamado tip_cham
 	echo "					</tbody>
 				</table>";
 				}
+			
+function listaAlteracoesFinalizado($idUsuario){ 
+	$con = bancoMysqli();
+	$sql = "SELECT * FROM igsis_chamado
+	WHERE estado = 2 ORDER BY idChamado DESC";
+/*		$sql = "SELECT  cham.idChamado, cham.justificativa,cham.data,
+        usu.nomeUsuario, usu.idUsuario, usu.nomeCompleto,
+          tip_cham.chamado,
+        stat.status 
+FROM igsis_chamado cham
+INNER JOIN ig_usuario usu
+	on cham.idUsuario = usu.idUsuario
+INNER JOIN igsis_status stat
+	ON stat.idStatus = cham.estado
+left JOIN  igsis_tipo_chamado tip_cham
+	ON tip_cham.idTipoChamado = cham.titulo
+	WHERE  usu.idInstituicao = $idUsuario"; */
+	$query = mysqli_query($con,$sql);
+	echo "<table class='table table-condensed'>
+					<thead>
+						<tr class='list_menu'>
+							<td>Cod. Chamado</td>
+							<td>Nome Completo</td>
+							<td>Titulo</td>
+							<td>Data do chamado</td>
+							<td>Status</td>
+  							
+							<td width='3%'></td>
+							<td width='10%'></td>
+						</tr>
+					</thead>
+					<tbody>";
+				
+	while($campo = mysqli_fetch_array($query)){
+			$usuario = recuperaDados("ig_usuario",$campo['idUsuario'],"idUsuario");
+			$tipo = recuperaDados("igsis_tipo_chamado",$campo['tipo'],"idTipoChamado");
+			echo "<tr>";
+			echo "<td class='list_description'>".$campo['idChamado']."</td>";
+			echo "<td class='list_description'>".$usuario['nomeCompleto']."</td>";
+			echo "<td class='list_description'>".$tipo['chamado']." - ".$campo['titulo']."</td>";
+			echo "<td class='list_description'>".$campo['data']."</td>";
+			echo "<td class='list_description'>".estadoChamado($campo['estado'])."</td>";
+		
+			echo "<td class='list_description'></td>";
+		
+			echo "
+			<td class='list_description'>
+			<form method='POST' action='?perfil=administrador&p=formularioalteracoes'>
+			<input type='hidden' name='carregaChamado' value='".$campo['idChamado']."' />
+			<input type ='submit' class='btn btn-theme btn-block' value='visualizar chamado'></td></form>"	;
+				echo "</tr>";		
+	}
+	echo "					</tbody>
+				</table>";
+				}
+
  function listaLogAdministrador($idUsuario){ 
 	$con = bancoMysqli();
 	$sql = "SELECT * FROM ig_log WHERE idLog";
@@ -422,8 +480,8 @@ function enviarEmailContratos($conteudo_email, $instituicao, $subject, $email, $
 	  $mail->SMTPSecure = "ssl";                 // sets the prefix to the servier
 	  $mail->Host       = "smtp.gmail.com";      // sets GMAIL as the SMTP server
 	  $mail->Port       = 465;                   // set the SMTP port for the GMAIL server
-	  $mail->Username   = "";  // GMAIL username
-	  $mail->Password   = "";            // GMAIL password
+	  $mail->Username   = "sistema.igsis";  // GMAIL username
+	  $mail->Password   = "dec1935!";            // GMAIL password
 	  $mail->AddReplyTo('sistema.igsis@gmail.com', 'IGSIS');
 	
 	  //criar laço com todos os interessados
@@ -478,33 +536,5 @@ function enviarEmailContratos($conteudo_email, $instituicao, $subject, $email, $
 
 
 }
-
-
-	function limpaCPF_CNPJ($valor){
-	 $valor = trim($valor);
-	 $valor = str_replace(".", "", $valor);
-	 $valor = str_replace(",", "", $valor);
-	 $valor = str_replace("-", "", $valor);
-	 $valor = str_replace("/", "", $valor);
-	 return $valor;
-	}
-	
-	function verificaCPF($cpf){ //verifica se existe na base sis_pessoa_fisica
-		$con = bancoMysqli();
-		$i = 1;
-		$x['cpf'] = 0;
-		$x['num'] = 0;
-		$sql = "SELECT CPF FROM sis_pessoa_fisica";
-		$query = mysqli_query($con,$sql);
-		while($certidao = mysqli_fetch_array($query)){
-			if($cpf == limpaCPF_CNPJ($certidao['CPF'])){
-				$x['cpf'] = 1;
-				$x['num'] = $i;
-				$i++;	
-			}	
-		}
-		return $x;
-		
-	}	
 
 ?>

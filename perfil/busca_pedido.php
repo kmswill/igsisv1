@@ -1,10 +1,10 @@
 ﻿<!-- BUSCA POR PEDIDO -->
  <?php 
  
- require_once("../funcoes/funcoesVerifica.php");
+require_once("../funcoes/funcoesVerifica.php");
 require_once("../funcoes/funcoesSiscontrat.php");
 
- include "../include/menuBusca.php"; ?>
+include "../include/menuBusca.php"; ?>
  
  <?php
  
@@ -100,7 +100,6 @@ if($id == "" AND $evento == "" AND $fiscal == 0 AND $tipo == 0 AND $instituicao 
 <?php
 }else{
 $con = bancoMysqli();
-
 	$sql_existe = "SELECT idPedidoContratacao,idEvento,estado FROM igsis_pedido_contratacao WHERE idEvento = '$evento' AND publicado = '1' AND estado IS NOT NULL ORDER BY idPedidoContratacao DESC";
 	$query_existe = mysqli_query($con, $sql_existe);
 	$num_registro = mysqli_num_rows($query_existe);
@@ -151,7 +150,7 @@ if($id != "" AND $num_registro > 0){ // Foi inserido o número do pedido
 	}
 }else{ //Não foi inserido o número do pedido
 		if($evento != ''){
-			$filtro_evento = " AND nomeEvento LIKE '%$evento%' OR autor LIKE '%autor%' ";
+			$filtro_evento = " AND nomeEvento LIKE '%$evento%' OR autor LIKE '%$evento%' ";
 		}else{
 			$filtro_evento = "";
 			
@@ -293,9 +292,9 @@ for($h = 0; $h < $x['num']; $h++)
  {
 	 $status = recuperaDados("sis_estado",$x[$h]['status'],"idEstado");
 	if($x[$h]['tipo'] == 'Física'){
-		echo "<tr><td class='lista'> <a href='?perfil=contratos&p=frm_edita_propostapf&id_ped=".$x[$h]['id']."'>".$x[$h]['id']."</a></td>";
+		echo "<tr><td class='lista'> <a target='_blank' href='?perfil=busca_pedido_resultadopf&id_ped=".$x[$h]['id']."'>".$x[$h]['id']."</a></td>";
 	}else{
-		echo "<tr><td class='lista'> <a href='?perfil=contratos&p=frm_edita_propostapj&id_ped=".$x[$h]['id']."'>".$x[$h]['id']."</a></td>";
+		echo "<tr><td class='lista'> <a target='_blank' href='?perfil=busca_pedido_resultadopj&id_ped=".$x[$h]['id']."'>".$x[$h]['id']."</a></td>";
 		
 	}
 	echo '<td class="list_description">'.$x[$h]['NumeroProcesso'].		'</td>';

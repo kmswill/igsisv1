@@ -34,6 +34,19 @@ $cpf = $linha_tabelas_pessoa["CPF"];
 $setor = $linha_tabelas["Setor"];
 
 $ano=date('Y');
+
+$id = $linha_tabelas['idEvento'];
+$ocor = listaOcorrenciasContrato($id);
+$tudo = "";
+
+for($i = 0; $i < $ocor['numero']; $i++)
+	{
+	$dia = $ocor[$i]['data'];
+	$hour = $ocor[$i]['hora'];
+	$lugar = $ocor[$i]['espaco'];
+	$tudo = $tudo . $ocor[$i]['espaco']."<br>" . $ocor[$i]['data']. " às ". $ocor[$i]['hora']."<br>"."<br>";
+	}
+	
   
  ?>
  
@@ -68,7 +81,7 @@ $sei =
   "<p><strong>Contratado:</strong> "."$nome".", CPF ("."$cpf".")</p>".
   "<p><strong>Objeto:</strong> "."$objeto"."</p>".
   "<p><strong>Data / Período:</strong> "."$periodo"."</p>".
-  "<p><strong>Local:</strong> "."$local"."</p>".
+  "<p><br><strong>Locais e Horários:</strong><br><br> ".$tudo."</p>".
   "<p><strong> Valor:</strong> "."R$ $ValorGlobal"."  "."($ValorPorExtenso)"."</p>".
   "<p><strong>Forma de Pagamento:</strong> "."$FormaPagamento"."</p>".
   "<p><strong>Dotação Orçamentária:</strong> "."dotação"."</p>".

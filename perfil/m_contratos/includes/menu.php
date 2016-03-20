@@ -34,6 +34,10 @@ $usuario = recuperaDados("ig_usuario",$_SESSION['idUsuario'],"idUsuario");
         
 		<li><a href="<?php echo $pasta ?>frm_busca">Contratos</a></li>
   		<li><a href="<?php echo $pasta ?>frm_busca_periodo">Contratos por período</a></li>
+  		<?php if($_SESSION['idUsuario'] == 1){ ?>
+        <li><a href="<?php echo $pasta ?>frm_lista_pedidocontratacao_pf&enviados=1">Formação</a></li>
+  		<?php } ?>
+        
         <?php if($usuario['contratos'] == 2){ ?>
 					<li><a href="<?php echo $pasta ?>frm_reabertura">Reabertura de Eventos/Pedidos</a></li>
         <?php } ?>

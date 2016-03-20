@@ -77,6 +77,18 @@ $rep02Nacionalidade = $rep02["Nacionalidade"];
 $rep02RG = $rep02["RG"];
 $rep02CPF = $rep02["CPF"];
 
+$id = $linha_tabelas['idEvento'];
+$ocor = listaOcorrenciasContrato($id);
+$tudo = "";
+
+for($i = 0; $i < $ocor['numero']; $i++)
+	{
+	$dia = $ocor[$i]['data'];
+	$hour = $ocor[$i]['hora'];
+	$lugar = $ocor[$i]['espaco'];
+	$tudo = $tudo . $ocor[$i]['espaco']."<br>" . $ocor[$i]['data']. " às ". $ocor[$i]['hora']."<br>"."<br>";
+	}
+
  ?>
  
  
@@ -109,7 +121,7 @@ $sei =
   "<p><strong>Contratado:</strong> ".$exNome." (CPF ".$exCPF."), nome artístico ´´".$exNomeArtistico."´´ e demais integrantes relacionados na declaração de exclusividade , por intermédio de ".$pjRazaoSocial.", CNPJ ("."$pjCNPJ"."), legalmente representada por ".$rep01Nome." CPF (".$rep01CPF.").</p>".
   "<p><strong>Objeto:</strong> "."$objeto"."</p>".
   "<p><strong>Data / Período:</strong> "."$periodo"." - conforme cronograma</p>".
-  "<p><strong>Local:</strong> "."$local"."</p>".
+  "<p><br><strong>Locais e Horários:</strong><br><br> ".$tudo."</p>".
   "<p><strong>Valor:</strong> "."R$ $ValorGlobal"."  "."($ValorPorExtenso )"."</p>".
   "<p><strong>Forma de Pagamento:</strong> "."$FormaPagamento"."</p>".
   "<p><strong>Dotação Orçamentária:</strong> "."$complementoDotacao"."</p>".

@@ -35,18 +35,14 @@ if(isset($_POST['insereFisica'])){ //cadastra e insere pessoa física
 		$Telefone3 = $_POST['Telefone3'];
 		$Email = $_POST['Email'];
 		$DRT = $_POST['DRT'];
-		$cbo = $_POST['cbo'];
 		$Funcao = $_POST['Funcao'];
 		$InscricaoINSS = $_POST['InscricaoINSS'];
 		$OMB = $_POST['OMB'];
-		$codBanco = $_POST['codBanco'];
-		$agencia = $_POST['agencia'];
-		$conta = $_POST['conta'];
 		$Observacao = $_POST['Observacao'];
 		$Pis = 0;
 		$data = date('Y-m-d');
 		$idUsuario = $_SESSION['idUsuario'];
-		$sql_insert_pf = "INSERT INTO `sis_pessoa_fisica` (`Id_PessoaFisica`, `Foto`, `Nome`, `NomeArtistico`, `RG`, `CPF`, `CCM`, `IdEstadoCivil`, `DataNascimento`, `LocalNascimento`, `Nacionalidade`, `CEP`, `Numero`, `Complemento`, `Telefone1`, `Telefone2`, `Telefone3`, `Email`, `DRT`, `Funcao`, `InscricaoINSS`, `Pis`, `OMB`, `DataAtualizacao`, `Observacao`, `IdUsuario`, `codBanco`, `agencia`, `conta`, `cbo`) VALUES (NULL, NULL, '$Nome', '$NomeArtistico', '$RG', '$CPF', '$CCM', '$IdEstadoCivil', '$DataNascimento', NULL, '$Nacionalidade', '$CEP', '$Numero', '$Complemento', '$Telefone1', '$Telefone2', '$Telefone3', '$Email', '$DRT', '$Funcao', '$InscricaoINSS', '$Pis', '$OMB', '$data', '$Observacao', '$idUsuario', '$codBanco', '$agencia', '$conta', '$cbo');";
+		$sql_insert_pf = "INSERT INTO `sis_pessoa_fisica` (`Id_PessoaFisica`, `Foto`, `Nome`, `NomeArtistico`, `RG`, `CPF`, `CCM`, `IdEstadoCivil`, `DataNascimento`, `LocalNascimento`, `Nacionalidade`, `CEP`, `Numero`, `Complemento`, `Telefone1`, `Telefone2`, `Telefone3`, `Email`, `DRT`, `Funcao`, `InscricaoINSS`, `Pis`, `OMB`, `DataAtualizacao`, `Observacao`, `IdUsuario`) VALUES (NULL, NULL, '$Nome', '$NomeArtistico', '$RG', '$CPF', '$CCM', '$IdEstadoCivil', '$DataNascimento', NULL, '$Nacionalidade', '$CEP', '$Numero', '$Complemento', '$Telefone1', '$Telefone2', '$Telefone3', '$Email', '$DRT', '$Funcao', '$InscricaoINSS', '$Pis', '$OMB', '$data', '$Observacao', '$idUsuario');";
 		$query_insert_pf = mysqli_query($con,$sql_insert_pf);
 		if($query_insert_pf){
 			gravarLog($sql_insert_pf);

@@ -127,7 +127,7 @@ function siscontrat($idPedido){
 			$usuario = recuperaDados("ig_usuario",$evento['idUsuario'],"idUsuario");
 			$instituicao = recuperaDados("ig_instituicao",$usuario['idInstituicao'],"idInstituicao");
 			$local = listaLocais($pedido['idEvento']);
-			
+			$periodo = retornaPeriodo($pedido['idEvento']);
 			$duracao = retornaDuracao($pedido['idEvento']);
 			$proponente = recuperaPessoa($pedido['idPessoa'],$pedido['tipoPessoa']);
 			$fiscal = recuperaUsuario($evento['idResponsavel']);
@@ -139,44 +139,21 @@ function siscontrat($idPedido){
 			}else{
 				$pagamento = $pedido['formaPagamento'];	
 			}
-			
-			if($pedido['tipoPessoa'] == 4){
-				$formacao = recuperaDados("sis_formacao",$pedido['idPedidoContratacao'],"idPedidoContratacao");
-				$cargo = recuperaDados("sis_formacao_cargo",$formacao['IdCargo'],"Id_Cargo");
-				$programa = recuperaDados("sis_formacao_programa",$formacao['IdPrograma'],"Id_Programa");
-				$objeto = "CONTRATAÇÃO COMO ".strtoupper($cargo['Cargo'])." DO ".strtoupper($programa['Programa'])." NOS TERMOS DO EDITAL ".$programa['edital']." - PROGRAMAS DA DIVISÃO DE FORMAÇÃO.";
-				if($cargo['coordenador'] == 1){ 
-					$loc = "SMC e equipamentos sobre sua supervisão";
-				}else{
-					$loc = retornaLocal($formacao['IdEquipamento01'])."\n".retornaLocal($formacao['IdEquipamento02'])."\n".retornaLocal($formacao['IdEquipamento03']);
-				}
-				$periodo = retornaPeriodoVigencia($idPedido);
-				$carga = retornaCargaHoraria($pedido['idPedidoContratacao'],$pedido['parcelas'])." horas";
-				//$carga = "";
-				$justificativa = $cargo['justificativa'];
-			}else{
-				$objeto = retornaTipo($evento['ig_tipo_evento_idTipoEvento'])." - ".$evento['nomeEvento'];
-				$loc = substr($local,1);
-				$periodo = retornaPeriodo($pedido['idEvento']);
-				$carga = "";
-				$justificativa = $pedido['justificativa'];
-			}
-			
 		$x = array(
 			"idEvento" => $pedido['idEvento'], 
 			"idSetor" => $usuario['idInstituicao'],
 			"Setor" => $instituicao['instituicao']  ,
 			"TipoPessoa" => $pedido['tipoPessoa'],
 			"CategoriaContratacao" => $evento['ig_modalidade_IdModalidade'] , //precisa ver se retorna o id
-			"Objeto" => $objeto ,
-			"Local" => $loc , //retira a virgula no começo da string
+			"Objeto" => retornaTipo($evento['ig_tipo_evento_idTipoEvento'])." - ".$evento['nomeEvento'] ,
+			"Local" => substr($local,1) , //retira a virgula no começo da string
 			"ValorGlobal" => $pedido['valor'],
 			"ValorIndividual" => $pedido['valorIndividual'],
 			"FormaPagamento" => $pagamento,
 			"Periodo" => $periodo, 
 			"Duracao" => $duracao." min", 
 			"Verba" => $pedido['idVerba'] ,
-			"Justificativa" => $justificativa,
+			"Justificativa" => $pedido['justificativa'],
 			"ParecerTecnico" => $pedido['parecerArtistico'],
 			"DataCadastro" => $evento['dataEnvio'],
 			"Fiscal" => $fiscal['nomeCompleto'] ,
@@ -188,7 +165,7 @@ function siscontrat($idPedido){
 			"idRepresentante01" => $pedido['idRepresentante01'],
 			"idRepresentante02" => $pedido['idRepresentante02'],
 			"IdExecutante" => $pedido['IdExecutante'],
-			"CargaHoraria" => $carga,
+			"CargaHoraria" => "",
 			"NumeroProcesso" => $pedido['NumeroProcesso'],
 			"NotaEmpenho" => $pedido['NumeroNotaEmpenho'],
 			"EmissaoNE" => $pedido['DataEmissaoNotaEmpenho'],
@@ -932,23 +909,6 @@ function gravaPenalidade($idPedido,$idPenalidade){
 		return FALSE;
 	}
 	
-}
-
-function retornaPeriodoVigencia($idPedido){
-	$con = bancoMysqli();
-	$sql01 = "SELECT * FROM igsis_parcelas WHERE idPedido = '$idPedido' AND valor > '0' ORDER BY vigencia_inicio ASC  LIMIT 0,1 ";
-	$sql02 = "SELECT * FROM igsis_parcelas WHERE idPedido = '$idPedido' AND valor > '0' ORDER BY vigencia_final DESC LIMIT 0,1 ";	
-	$query01 = mysqli_query($con, $sql01);
-	$query02 = mysqli_query($con, $sql02);
-	$i = mysqli_fetch_array($query01);
-	$j = mysqli_fetch_array($query02);
-	return exibirDataBr($i['vigencia_inicio'])." a ".exibirDataBr($j['vigencia_final']);
-
-}
-
-function retornaEstado($idEstado){
-	$estado = recuperaDados("sis_estado",$idEstado,"idEstado");
-	return $estado['estado'];
 }
 
 ?>

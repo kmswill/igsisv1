@@ -64,7 +64,7 @@ case "inicio":
 			<!--	<a href="?perfil=administrador&p=logsLocais" class="btn btn-theme btn-lg btn-block">Logs Locais</a> 
 	<a href="?perfil=administrador&p=reabertura" class="btn btn-theme btn-lg btn-block">Reabrir pedidos enviados</a> !-->
 				<a href="?perfil=administrador&p=alteracoes" class="btn btn-theme btn-lg btn-block">Alterações</a>
-   				<a href="?perfil=administrador&p=verba" class="btn btn-theme btn-lg btn-block">Verba / Controle Orçamentário / Usuário</a>
+   				<a href="?perfil=administrador&atualizar=agenda" class="btn btn-theme btn-lg btn-block">Atualizar agenda</a>
   	        </div>
           </div>
         </div>
@@ -628,7 +628,7 @@ if(isset($_POST['apagar'])){
 				  <div class="col-md-offset-2 col-md-8">
 					<div class="section-heading">
 					 <h2>Eventos excluidos</h2>
-					<h4>Selecione o evento para recuperar ou editar.</h4>
+					<h4>Selecione o evento para recuperar.</h4>
                     <h5><?php if(isset($mensagem)){echo $mensagem;} ?></h5>
 					</div>
 				  </div>
@@ -642,98 +642,9 @@ if(isset($_POST['apagar'])){
 
 
 
-<?php 
-break;
-case "verba":
-if(isset($_GET['action'])){
-	$action = $_GET['action'];	
-}else{
-	$action = "inicial";	
-}
-switch($action){
-case "inicial":
-?>
 
-	<section id="contact" class="home-section bg-white">
-	<div class="container">
-        <div class="row">
-            <div class="col-md-offset-2 col-md-8">
-                <div class="text-hide">
-	                <h4>Escolha uma opção</h4>
-					<p><?php if(isset($mensagem)){echo $mensagem;} ?></p>
-                </div>
-            </div>
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-8">
-	            <a href="?perfil=administrador&p=verba&action=insere" class="btn btn-theme btn-lg btn-block">Insere/atualizar usuários</a>
-				<a href="?perfil=administrador&p=verba&action=lista" class="btn btn-theme btn-lg btn-block">Listar usuários</a>
-  	        </div>
-          </div>
-        </div>
-    </div>
-	</section>  
-    <?php 
-	break;
-	case "insere":
-	?>
-    	 <section id="services" class="home-section bg-white">
-		<div class="container">
-			  <div class="row">
-				  <div class="col-md-offset-2 col-md-8">
-					<div class="section-heading">
-					 <h2>Digite o ID do usuário que irá controlar o orçamento</h2>
-                    
-                    
-
-					</div>
-				  </div>
-			  </div>
-			  
-	        <div class="row">
-            <div class="form-group">
-            	<div class="col-md-offset-2 col-md-8">
-            <h5><?php if(isset($mensagem)){ echo $mensagem; } ?>
-                        <form method="POST" action="?perfil=administrador&p=verba&action=lista" class="form-horizontal" role="form">
-            		<input type="text" name="pesquisa" class="form-control" id="palavras" placeholder="" ><br />
-
-            	</div>
-             </div>
-				<br />             
-	            <div class="form-group">
-		            <div class="col-md-offset-2 col-md-8">
-                	<input type="hidden" name="inserir" value="1" />
-    		        <input type="submit" class="btn btn-theme btn-lg btn-block" value="inserir">
-                    </form>
-        	    	</div>
-        	    </div>
-
-            </div>
-	</section>
-    <?php 
-	break;
-	case "lista":
-	if(isset($_POST['inserir'])){
-		$con = bancoMysqli();
-		$idUsuario = $_SESSION['idUsuario'];
-		$sql_verba = "SELECT * FROM sis_verba";
-		$query_verba = mysqli_query($con,$sql_verba);
-		while($verba = mysqli_fetch_array($query_verba)){
-			$idVerba = $verba['Id_Verba'];
-			$sql_verifica = "SELECT * FROM igsis_controle_orcamento WHERE idUsuario = '$idUsuario' AND idVerba = '$idVerba'";
-			$query_verifica = mysqli_query($con,$sql_verifica);
-			$num_verifica = mysqli_num_rows($query_verifica);
-			if($num_verifica = 0){
-				$sql_insere = "INSERT INTO igsis_controle_orcamento (`idVerba`,`idUsuario`) VALUES ('$idVerba','$idUsuario')";
-				$query_insere = mysqli_query($con,$sql_insere);
-					
-			}		
-		}
-			
-	}
-	?>
 		
 <?php	
-	}// fim da swicth da action da verba
 break; // FIM EVENTOS
 case "logsLocais": // VISUALIZAR LOGS DE USUARIO
 ?>

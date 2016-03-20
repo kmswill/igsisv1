@@ -30,6 +30,7 @@
 <?php
 require_once("../funcoes/funcoesVerifica.php");
 require_once("../funcoes/funcoesSiscontrat.php");
+include "../funcoes/funcoesFormacao.php";
 require_once("../funcoes/funcoesFinanca.php");
 $con = bancoMysqli();
 if(isset($_GET['p'])){

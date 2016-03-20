@@ -1,17 +1,13 @@
 ﻿<?php
-
 // Funções específicas do módulo Formação
-
 function retornaPrograma($id){
 	$programa = recuperaDados("sis_formacao_programa",$id,"Id_Programa");
 	return $programa['Programa'];	
 }
-
 function retornaCargo($id){
 	$programa = recuperaDados("sis_formacao_cargo",$id,"Id_Cargo");
 	return $programa['Cargo'];	
 }
-
 function retornaStatus($id){
 	if($id != 0){
 		return "Ativo";
@@ -19,7 +15,6 @@ function retornaStatus($id){
 		return "Inativo";	
 	}	
 }
-
 function retornaCargaHoraria($idPedido,$parcelas){
 	$con = bancoMysqli();
 	$sql = "SELECT * FROM igsis_parcelas WHERE idPedido = '$idPedido' ORDER BY numero ASC";
@@ -35,19 +30,14 @@ function retornaCargaHoraria($idPedido,$parcelas){
 	for($i = 1; $i <= $parcelas; $i++){
 		$total = $total + $carga[$i];
 	}
-
 	return $total;
-
 }
-
 function retornaPeriodoFormacao($idPedido,$parcelas){
 	$con = bancoMysqli();
 	$sql1 = "SELECT * FROM igsis_parcelas WHERE idPedido = '$idPedido' AND valor > '0' ORDER BY vigencia_inicio ASC LIMIT 0,1";
-	$sql2 = "SELECT * FROM igsis_parcelas WHERE idPedido = '$idPedido' AND valor > '0' ORDER BY vigencia_final ASC LIMIT 0,1";
-
+	$sql2 = "SELECT * FROM igsis_parcelas WHERE idPedido = '$idPedido' AND valor > '0' ORDER BY vigencia_final DESC LIMIT 0,1";
 	$query1 = mysqli_query($con,$sql1);
 	$query2 = mysqli_query($con,$sql2);
-
 	$data1 = mysqli_fetch_array($query1);
 	$data2 = mysqli_fetch_array($query2);
 	
@@ -55,11 +45,8 @@ function retornaPeriodoFormacao($idPedido,$parcelas){
 	
 	
 	return $periodo;
-
 	
 }
-
-
 function pdfFormacao($idPedido){
 	$con = bancoMysqli();
 	$sql = "SELECT * FROM sis_formacao WHERE idPedidoContratacao = '$idPedido'";
@@ -75,10 +62,13 @@ function pdfFormacao($idPedido){
 	$x['descricaoPrograma'] = $programa['descricao'];
 	$x['edital'] = $programa['edital'];
 	$x['linguagem'] = $linguagem['Linguagem'];
-
 	return $x;
 	
 }
 
-
+function retornaProgramaFormcao($id){
+	$con = bancoMysqli();
+	$x = recuperaDados("sis_formacao_programa",$id,"Id_Programa");
+	return $x['Programa'];	
+}
 ?>
