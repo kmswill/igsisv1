@@ -1,5 +1,5 @@
 <?php
-include "../../funcoes/funcoesFormacao.php";
+//include "../../funcoes/funcoesFormacao.php";
 // não precisa chamar a funcao porque o index contrato já chama.
 //$linha_tabela_lista = siscontratLista(4,$_SESSION['idInstituicao'],100,1,"DESC","2"); //esse gera uma array com os pedidos
 

@@ -4,6 +4,7 @@
    require_once("../funcoes/funcoesConecta.php");
    require_once("../funcoes/funcoesGerais.php");
    require_once("../funcoes/funcoesSiscontrat.php");
+   require_once("../funcoes/funcoesFormacao.php");
 
 //CONEXÃO COM BANCO DE DADOS 
    $conexao = bancoMysqli();

@@ -4,6 +4,7 @@
    require_once("../funcoes/funcoesConecta.php");
    require_once("../funcoes/funcoesGerais.php");
    require_once("../funcoes/funcoesSiscontrat.php");
+   require_once("../funcoes/funcoesFormacao.php");
 
 //CONEXÃO COM BANCO DE DADOS 
    $conexao = bancoMysqli();
@@ -71,7 +72,7 @@ $sei =
   "<p>&nbsp;</p>".
   "<p> Valor: "."R$ $ValorGlobal"."  "."($ValorPorExtenso)"."</p>".
   "<p>&nbsp;</p>".
-  "<p>Após, enviar para _________________________ para prosseguimento. </p>".
+  "<p>Após, enviar para SMC/CAF - Contabilidade para prosseguimento.</p>".
   "<p>&nbsp;</p>"
 
 ?>

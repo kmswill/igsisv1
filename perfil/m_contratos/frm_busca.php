@@ -213,13 +213,14 @@ if($id != "" AND $num_registro > 0){ // Foi inserido o número do pedido
 			{
 			while($ped = mysqli_fetch_array($query_existe)){	
 			$pedido = recuperaDados("igsis_pedido_contratacao",$ped['idPedidoContratacao'],"idPedidoContratacao");
+			$tipoPessoa = $pedido['tipoPessoa'];
 			$evento = recuperaDados("ig_evento",$pedido['idEvento'],"idEvento"); //$tabela,$idEvento,$campo
 			$usuario = recuperaDados("ig_usuario",$evento['idUsuario'],"idUsuario");
 			$instituicao = recuperaDados("ig_instituicao",$evento['idInstituicao'],"idInstituicao");
 			$local = listaLocais($pedido['idEvento']);
 			$periodo = retornaPeriodo($pedido['idEvento']);
 			$duracao = retornaDuracao($pedido['idEvento']);
-			$pessoa = recuperaPessoa($pedido['idPessoa'],$pedido['tipoPessoa']);
+			//$pessoa = recuperaPessoa($pedido['idPessoa'],$pedido['tipoPessoa']);
 			$fiscal = recuperaUsuario($evento['idResponsavel']);
 			$suplente = recuperaUsuario($evento['suplente']);
 			$protocolo = ""; //recuperaDados("sis_protocolo",$pedido['idEvento'],"idEvento");
@@ -234,16 +235,17 @@ if($id != "" AND $num_registro > 0){ // Foi inserido o número do pedido
 			if($pedido['publicado'] == 1){		
 			$x[$i]['id']= $pedido['idPedidoContratacao'];
 			$x[$i]['objeto'] = retornaTipo($evento['ig_tipo_evento_idTipoEvento'])." - ".$evento['nomeEvento'];
-			switch($pedido['tipoPessoa']){
-			case 1:
+			if($tipoPessoa == 1){
 				$pessoa = recuperaDados("sis_pessoa_fisica",$pedido['idPessoa'],"Id_PessoaFisica");
 				$x[$i]['proponente'] = $pessoa['Nome'];
 				$x[$i]['tipo'] = "Física";
-			case 2:
+			}
+			if($tipoPessoa == 2){
 				$pessoa = recuperaDados("sis_pessoa_juridica",$pedido['idPessoa'],"Id_PessoaJuridica");
 				$x[$i]['proponente'] = $pessoa['RazaoSocial'];
 				$x[$i]['tipo'] = "Jurídica";
-			case 4:
+			}
+			if($tipoPessoa == 4){
 				$pessoa = recuperaDados("sis_pessoa_fisica",$pedido['idPessoa'],"Id_PessoaFisica");
 				$x[$i]['proponente'] = $pessoa['Nome'];
 				$x[$i]['tipo'] = "Formação";
@@ -275,6 +277,7 @@ $mensagem = "Foram encontradas ".$x['num']." pedido(s) de contratação.";
 			 <h3>Resultado da busca</3>
              <h5>Foram encontrados <?php echo $x['num']; ?> pedidos de contratação.</h5>
                <h5><a href="?perfil=contratos&p=frm_busca">Fazer outra busca</a></h5>
+
 			<div class="table-responsive list_info">
 			<?php if($x['num'] == 0){ ?>
 			
