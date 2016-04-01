@@ -4,6 +4,7 @@
    require_once("../funcoes/funcoesConecta.php");
    require_once("../funcoes/funcoesGerais.php");
    require_once("../funcoes/funcoesSiscontrat.php");
+   require_once("../funcoes/funcoesFormacao.php");
 
 //CONEXÃO COM BANCO DE DADOS 
    $conexao = bancoMysqli();
@@ -26,6 +27,7 @@ $assinatura = $linha_tabelas["Assinatura"];
 $cargo = $linha_tabelas["Cargo"];
 $amparo = nl2br($linha_tabelas["AmparoLegal"]);
 $final = nl2br($linha_tabelas["Finalizacao"]);
+$dotacao = $linha_tabelas["ComplementoDotacao"];
 
 $linha_tabelas_pessoa = siscontratDocs($linha_tabelas['IdProponente'],1);
 $nome = $linha_tabelas_pessoa["Nome"];
@@ -84,7 +86,7 @@ $sei =
   "<p><br><strong>Locais e Horários:</strong><br><br> ".$tudo."</p>".
   "<p><strong> Valor:</strong> "."R$ $ValorGlobal"."  "."($ValorPorExtenso)"."</p>".
   "<p><strong>Forma de Pagamento:</strong> "."$FormaPagamento"."</p>".
-  "<p><strong>Dotação Orçamentária:</strong> "."dotação"."</p>".
+  "<p><strong>Dotação Orçamentária:</strong> "."$dotacao"."</p>".
   "<p>&nbsp;</p>".
   "<p align='justify'>"."$final"."</p>".
   "<p>&nbsp;</p>".

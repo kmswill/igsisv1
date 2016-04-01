@@ -6,7 +6,7 @@ $linha_tabela_lista = siscontratLista(1,"",1000,1,"DESC",6); //esse gera uma arr
 
 //$tipoPessoa,$num_registro,$pagina,$ordem,$estado
 
-$link="index.php?perfil=juridico&p=frm_cadastra_juridico_pf&id_ped=";
+$link="index.php?perfil=juridico&p=frm_lista_modelo_pf&id_ped=";
 
 
 ?>
@@ -22,11 +22,11 @@ $link="index.php?perfil=juridico&p=frm_cadastra_juridico_pf&id_ped=";
 				<table class="table table-condensed">
 					<thead>
 						<tr class="list_menu">
+							<td>Processo</td>
 							<td>Código do Pedido</td>
                             <td>Proponente</td>
 							<td>Objeto</td>
 							<td>Local</td>
-							<td>Processo</td>
 						</tr>
 					</thead>
 					<tbody>
@@ -39,7 +39,8 @@ for($i = 0; $i < count($linha_tabela_lista); $i++)
 	 
 	$linha_tabela_pedido_contratacaopf = recuperaDados("sis_pessoa_fisica",$linha_tabela_lista[$i]['IdProponente'],"Id_PessoaFisica");
 	$chamado = recuperaAlteracoesEvento($linha_tabela_lista[$i]['idEvento']);	 
-	echo "<tr><td class='lista'> <a href='".$link.$linha_tabela_lista[$i]['idPedido']."'>".$linha_tabela_lista[$i]['idPedido']."</a></td>";
+	echo "<tr><td class='lista'> <a href='".$link.$linha_tabela_lista[$i]['idPedido']."'>".$linha_tabela_lista[$i]['NumeroProcesso']."</a></td>";
+	echo '<td class="list_description">'.$linha_tabela_lista[$i]['idPedido'].'</td>';
 	echo '<td class="list_description">'.$linha_tabela_pedido_contratacaopf['Nome'].'</td> ';
 	echo '<td class="list_description">'.$linha_tabela_lista[$i]['Objeto'].' [';
 					if($chamado['numero'] == '0'){
@@ -49,8 +50,7 @@ for($i = 0; $i < count($linha_tabela_lista); $i++)
 					}
 					
 	echo '] </td> ';
-	echo '<td class="list_description">'.$linha_tabela_lista[$i]['Local'].'</td> ';
-	echo '<td class="list_description">'.$linha_tabela_lista[$i]['NumeroProcesso'].'</td> </tr>';
+	echo '<td class="list_description">'.$linha_tabela_lista[$i]['Local'].'</td> </tr> ';
 	}
 
 	?>

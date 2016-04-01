@@ -289,7 +289,75 @@ while($coordenadoria = mysqli_fetch_array($query)){
 <?php 
 /* =========== INÍCIO EQUIPAMENTO ===========*/
 case 'add_equipamento':
-?>
+
+if(isset($_POST['add_equipamento'])){
+	$id_equipamento = $_POST['add_equipamento'];
+	$equipamento = $_POST['Equipamento'];
+	$idterritorio = $_POST['IdTerritorio'];
+	$idregiao = $_POST['IdRegiao'];
+	$numero = $_POST['Numero'];
+	$idendereco = $_POST['IdEndereco'];
+	$complemento = $_POST['Complemento'];
+	$linkacessomapa = $_POST['LinkAcessoMapa'];
+	$telefone1 = $_POST['Telefone1'];
+	$telefone2 = $_POST['Telefone2'];
+	$email = $_POST['Email'];
+	$idsubprefeitura = $_POST['IdSubprefeitura'];
+	$contato = $_POST['Contato'];
+	$tel1responsavel = $_POST['Telefone1Responsavel'];
+	$tel2responsavel = $_POST['Telefone2Responsavel'];
+	$emailresponsavel = $_POST['EmailResponsavel'];
+	$observacao = $_POST['Observacao'];
+	$sql_novo = "INSERT INTO `sis_equipamento`(`Equipamento`, `IdTerritorio`, `IdRegiao`, `Numero`, `IdEndereco`,`Complemento`, `LinkAcessoMapa`, `Telefone1`, `Telefone2`, `Email`, `IdSubprefeitura`, `Contato`, `Telefone1Responsavel`, `Telefone2Responsavel`, `EmailResponsavel`, `Observacao`) VALUES(
+	'$equipamento',
+	'$idterritorio',
+	'$idregiao',
+	'$numero',
+	'$idendereco',
+	'$complemento',
+	'$linkacessomapa',
+	'$telefone1',
+	'$telefone2',
+	'$email',
+	'$idsubprefeitura',
+	'$contato',
+	'$tel1responsavel',
+	'$tel2responsavel',
+	'$emailresponsavel',
+	'$observacao'
+	)";
+	$query_novo = mysqli_query($con,$sql_novo);
+	if($query_novo){
+		$mensagem = "Gerado novo registro";
+		gravarLog($sql_novo);
+	}else{
+		$mensagem = "Erro ao gerar novo registro";
+	}
+}
+
+ include 'includes/menu.php';?>
+<script type="application/javascript">
+$(function(){
+	$('#instituicao1').change(function(){
+		if( $(this).val() ) {
+			$('#Equipamento').hide();
+			$('.carregando').show();
+			$.getJSON('local.ajax.php?instituicao=',{instituicao: $(this).val(), ajax: 'true'}, function(j){
+				var options = '<option value=""></option>';	
+				for (var i = 0; i < j.length; i++) {
+					options += '<option value="' + j[i].idEspaco + '">' + j[i].espaco + '</option>';
+				}	
+				$('#Equipamento').html(options).show();
+				$('.carregando').hide();
+			});
+		} else {
+			$('#Equipamento').html('<option value="">-- Escolha uma instituição --</option>');
+		}
+	});
+});
+</script>
+
+
 <section id="contact" class="home-section bg-white">
 	<div class="container">
 		<div class="form-group">
@@ -301,49 +369,76 @@ case 'add_equipamento':
 	<div class="row">
 		<div class="col-md-offset-1 col-md-10">
 			<form class="form-horizontal" role="form" action="#" method="post">
+			
 				<div class="form-group">
-					<div class="col-md-offset-2 col-md-8"><strong>Equipamento: *</strong>
-                        <select class="form-control" id="IdEquipamento" name="IdEquipamento">  
-					    </select>
+					<div class="col-md-offset-2 col-md-6"><strong>Instituição</strong>
+                		<select class="form-control" name="instituicao1" id="instituicao1" >
+                		<option>Selecione</option>
+                		<?php geraOpcao("ig_instituicao","","") ?>
+                		</select>
 					</div>
-				</div>
-                
-                <div class="form-group">
+					<div class="col-md-6"><strong>Equipamento*:</strong><br/>
+                		<select class="form-control" name="Equipamento" id="Equipamento" ></select><br/>
+					</div>
+				  </div>
+				  
+				  <div class="form-group">
+					<div class="col-md-offset-4 col-md-4"><strong>Território: *</strong><br/>
+						<select class="form-control" id="IdTerritorio" name="IdTerritorio">
+						<option>Selecione</option>
+						<?php geraOpcao("sis_formacao_territorio","","") ?>
+						</select><br/>
+					</div>
+					
+				<div class="form-group">
 					<div class="col-md-offset-2 col-md-6"><strong>Região:</strong>
-                    	<select class="form-control" id="IdRegiao" name="IdRegiao">  
+                    	<select class="form-control" id="IdRegiao" name="IdRegiao"> 
+						<option>Selecione</option>
+						<?php geraOpcao("sis_formacao_regiao","","") ?>
 					 	</select>
 					</div>
 					<div class="col-md-6"><strong>Subprefeitura:</strong>
-                    	<select class="form-control" id="IdSubprefeitura" name="IdSubprefeitura">  
+                    	<select class="form-control" id="IdSubprefeitura" name="IdSubprefeitura"> 
+						<option>Selecione</option>
+						<?php geraOpcao("sis_formacao_subprefeitura","","") ?>
 					 	</select>
 					</div>
 				</div>
                 
                 <div class="form-group">
 					<div class="col-md-offset-2 col-md-6"><strong>Telefone #1 do Equipamento: *</strong>
-                    	<input type="text" class="form-control" id="Tel1Responsavel" name="Tel1Responsavel" />
+                    	<input type="text" class="form-control" id="Telefone1" name="Telefone1" />
 					</div>
                     <div class="col-md-6"><strong>Telefone #2 do Equipamento:</strong>
-                    	<input type="text" class="form-control" id="Tel2Responsavel" name="Tel2Responsavel" />
+                    	<input type="text" class="form-control" id="Telefone2" name="Telefone2" />
 					</div>
 				</div>
                 
                 <div class="form-group">
-					<div class="col-md-offset-2 col-md-6"><strong>E-mail do equipamento:</strong><br/>
-					  <input type="text" class="form-control" id="EmailEquipamento" name="EmailEquipamento">
+					<div class="col-md-offset-2 col-md-6"><strong>E-mail do Equipamento:</strong><br/>
+					  <input type="text" class="form-control" id="Email" name="Email">
 					</div>
-                    <div class="col-md-6"><strong>CEP: *</strong>
-                    	<input type="text" class="form-control" id="CEP" name="CEP" />
+					<div class="col-md-offset col-md-6"><strong>Localização:</strong>
+                    	<input type="text" class="form-control" id="LinkAcessoMapa" name="LinkAcessoMapa" />
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<div class="col-md-offset-5 col-md-2"><strong>CEP: *</strong>
+                    	<input type="text" class="form-control" id="CEP" name="IdEndereco" />
 					</div>
 				</div>
                 
                 <div class="form-group">
-					<div class="col-md-offset-2 col-md-8"><strong>Endereço *:</strong><br/>
-					  <input type="text" class="form-control" id="Endereco" name="Endereco" placeholder="Endereço">
+					<div class="col-md-offset-2 col-md-6"><strong>Endereço *:</strong><br/>
+					  <input type="text" class="form-control" id="Endereco" name="Endereco">
+					</div>
+					<div class="col-md-6"><strong>Bairro: *</strong><br/>
+						<input type="text" class="form-control" id="Bairro" name="Bairro" />  
 					</div>
 				</div>
                 
-                <div class="form-group">
+				<div class="form-group">
 					<div class="col-md-offset-2 col-md-6"><strong>Número *:</strong><br/>
 					  <input type="text" class="form-control" id="Numero" name="Numero" placeholder="Numero">
 					</div>				  
@@ -352,11 +447,6 @@ case 'add_equipamento':
 					</div>
 				</div>
                 
-                <div class="form-group">
-					<div class="col-md-offset-2 col-md-8"><strong>Bairro: *</strong><br/>
-						<input type="text" class="form-control" id="Bairro" name="Bairro" placeholder="Bairro">  
-					</div>
-                </div>
                 
                 <div class="form-group">
 					<div class="col-md-offset-2 col-md-6"><strong>Cidade: *</strong><br/>
@@ -368,25 +458,23 @@ case 'add_equipamento':
                 </div>
                                                 
                 <div class="form-group">
-					<div class="col-md-offset-2 col-md-8"><strong>Nome do Responsável: *</strong>
-                    	<input type="text" class="form-control" id="NomeResponsavel" name="NomeResponsavel" />
+					<div class="col-md-offset-2 col-md-6"><strong>Nome do Responsável: *</strong>
+                    	<input type="text" class="form-control" id="Contato" name="Contato"/>
+					</div>
+					<div class="col-md-6"><strong>Email do Responsável:</strong>
+                    	<input type="text" class="form-control" id="EmailResponsavel" name="EmailResponsavel" />
 					</div>
 				</div>
                 
                 <div class="form-group">
 					<div class="col-md-offset-2 col-md-6"><strong>Telefone #1 do Responsável: *</strong>
-                    	<input type="text" class="form-control" id="Tel1Responsavel" name="Tel1Responsavel" />
+                    	<input type="text" class="form-control" id="Tel1Responsavel" name="Telefone1Responsavel" />
 					</div>
                     <div class="col-md-6"><strong>Telefone #2 do Responsável:</strong>
-                    	<input type="text" class="form-control" id="Tel2Responsavel" name="Tel2Responsavel" />
+                    	<input type="text" class="form-control" id="Tel2Responsavel" name="Telefone2Responsavel" />
 					</div>
 				</div>
-                
-                <div class="form-group">
-					<div class="col-md-offset-2 col-md-8"><strong>Email do Responsável:</strong>
-                    	<input type="text" class="form-control" id="EmailResponsavel" name="EmailResponsavel" />
-					</div>
-                </div>
+				
                 <div class="form-group">
 					<div class="col-md-offset-2 col-md-8"><strong>Observação:</strong><br/>
 					 <textarea name="Observacao" class="form-control" rows="5"></textarea>
@@ -395,7 +483,7 @@ case 'add_equipamento':
 					
 				<div class="form-group">
 					<div class="col-md-offset-2 col-md-8">
-						<input type="submit" class="btn btn-theme btn-lg btn-block" value="Gravar">
+						<input type="submit" class="btn btn-theme btn-lg btn-block" name="add_equipamento" value="Gravar">
 					</div>
 				</div>
 			</form>
@@ -404,9 +492,43 @@ case 'add_equipamento':
 </div>
 </section>
 
-<?php 
+<?php
 break;
 case 'list_equipamento':
+
+if(isset($_POST['atualizar'])){
+	/*if(isset($_POST['equipamento1'])){
+		$e1  = $_POST['equipamento1'];
+		$equipamento = " `Id_Equipamento` = '$e1', ";
+	}else{
+		$equipamento = "";			
+	}
+*/
+	$id_equipamento = $_POST['atualizar'];
+	$equipamento = $_POST['equipamento'];
+	$territorios  = $_POST['territorios'];
+	$obs = addslashes($_POST['obs']);
+	$territorio = $_POST['territorios'];
+	$sql_atualiza_equipamento = "UPDATE sis_equipamento SET
+	Equipamento '$equipamento'
+	IdCargo = '$cargo', 
+	Territorio = '$territorio',
+	Observacao = '$obs'
+	WHERE Id_Equipamento = '$id_equipamento'";
+	$query_atualiza_equipamento = mysqli_query($con,$sql_atualiza_equipamento);
+	
+
+	if($query_atualiza_equipamento){
+		$mensagem = "Atualizado com sucesso!";	
+	}else{
+		$mensagem = "Erro ao atualizar. Tente novamente.";	
+		
+	}
+	
+	;
+	
+}
+
 ?> 
 
 	<section id="list_items">
@@ -416,24 +538,187 @@ case 'list_equipamento':
 				<table class="table table-condensed">
 					<thead>
 						<tr class="list_menu">
-							<td>Id</td>
 							<td>Equipamento</td>
+							<td>Território</td>
                             <td>Região</td>
-                            <td>Telefone Equipamento</td>
+                            <td>Telefone1 Equipamento</td>
 						</tr>
 					</thead>
 					<tbody>
-                    </tbody>
+	
+<?php
+
+$consulta_tabela_equipamento = mysqli_query ($con,"SELECT `Id_Equipamento`,  `Equipamento`,`IdTerritorio`,`IdRegiao`,`Telefone1` FROM `sis_equipamento` ORDER BY Id_Equipamento");
+$linha_tabela_equipamento= mysqli_fetch_assoc($consulta_tabela_equipamento);
+
+	
+	$link1= "?perfil=formacao&p=administrativo&pag=altera_equipamento&Id_equipamento=";
+
+	do{
+		$equipamento = recuperaDados("ig_local",$linha_tabela_equipamento["Equipamento"],"idLocal");
+		$territorio = recuperaDados("sis_formacao_territorio",$linha_tabela_equipamento["IdTerritorio"],"Id_Territorio");
+		$regiao = recuperaDados("sis_formacao_regiao",$linha_tabela_equipamento["IdRegiao"],"Id_Regiao");
+		
+		echo "<tr><td class='lista'> <a href='".$link1.$linha_tabela_equipamento['Id_Equipamento']."'>".$equipamento['sala']."</a></td>";
+		echo '<td class="lista">'.$territorio['Territorio'].	'</td> ';
+		echo '<td class="lista">'.$regiao['Regiao'].		'</td> ';
+		echo '<td class="lista">'.$linha_tabela_equipamento['Telefone1'].		'</td></tr>';
+	}while($linha_tabela_equipamento = mysqli_fetch_assoc($consulta_tabela_equipamento));
+?>
+
+</tbody>
 				</table>
 			</div>
 		</div>
-	</section>    
+	</section>
 
-<?php /* =========== FIM EQUIPAMENTO ===========*/ break; ?>
+<?php
+break;
+case 'altera_equipamento':    
+
+$id_eq=$_GET['Id_equipamento'];
+$recuperar = recuperaDados("sis_equipamento",$_GET['Id_equipamento'],"Id_Equipamento");
+$a = $recuperar['Equipamento'];
+/*
+$innerequipamento = mysqli_query($con,"SELECT ig_local.sala, sis_equipamento.Equipamento FROM ig_local INNER JOIN sis_equipamento ON ig_local.idLocal = sis_equipamento.Equipamento WHERE sis_equipamento.Equipamento = $a");
+
+$row = mysql_fetch_row($innerequipamento);
+$base_pay = $row[0];
+*/
+
+?>
+
+<section id="contact" class="home-section bg-white">
+	<div class="container">
+		<div class="form-group">
+			<div class="sub-title">
+            	<h2>ALTERAR DETALHES DO EQUIPAMENTO</h2>
+                <h5><?php if(isset($mensagem)){echo $mensagem;} ?></h5>
+			</div>
+		</div>
+	<div class="row">
+		<div class="col-md-offset-1 col-md-10">
+			<form class="form-horizontal" role="form" action="#" method="post">
+			
+				<div class="col-md-6"><strong>Equipamento*:</strong><br/>
+                		 <?php echo $recuperar['Equipamento'] ?>
+					</div>
+				  </div>
+				  
+				  <div class="form-group">
+					<div class="col-md-offset-4 col-md-4"><strong>Território: *</strong><br/>
+						<select class="form-control" id="IdTerritorio" name="IdTerritorio">
+						<option>Selecione</option>
+						<?php geraOpcao("sis_formacao_territorio","","") ?>
+						</select><br/>
+					</div>
+					
+				<div class="form-group">
+					<div class="col-md-offset-2 col-md-6"><strong>Região:</strong>
+                    	<select class="form-control" id="IdRegiao" name="IdRegiao"> 
+						<option>Selecione</option>
+						<?php geraOpcao("sis_formacao_regiao","","") ?>
+					 	</select>
+					</div>
+					<div class="col-md-6"><strong>Subprefeitura:</strong>
+                    	<select class="form-control" id="IdSubprefeitura" name="IdSubprefeitura"> 
+						<option>Selecione</option>
+						<?php geraOpcao("sis_formacao_subprefeitura","","") ?>
+					 	</select>
+					</div>
+				</div>
+                
+                <div class="form-group">
+					<div class="col-md-offset-2 col-md-6"><strong>Telefone #1 do Equipamento: *</strong>
+                    	<input type="text" class="form-control" id="Telefone1" name="Telefone1" value="<?php echo $recuperar['Telefone1'] ?>" />
+					</div>
+                    <div class="col-md-6"><strong>Telefone #2 do Equipamento:</strong>
+                    	<input type="text" class="form-control" id="Telefone2" name="Telefone2" value="<?php echo $recuperar['Telefone2'] ?>" />
+					</div>
+				</div>
+                
+                <div class="form-group">
+					<div class="col-md-offset-2 col-md-6"><strong>E-mail do Equipamento:</strong><br/>
+					  <input type="text" class="form-control" id="Email" name="Email" value="<?php echo $recuperar['Email'] ?>" />
+					</div>
+					<div class="col-md-offset col-md-6"><strong>Localização:</strong>
+                    	<input type="text" class="form-control" id="LinkAcessoMapa" name="LinkAcessoMapa" value="<?php echo $recuperar['LinkAcessoMapa'] ?>" />
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<div class="col-md-offset-5 col-md-2"><strong>CEP: *</strong>
+                    	<input type="text" class="form-control" id="CEP" name="CEP" value="<?php echo $recuperar['IdEndereco']?>" />
+					</div>
+				</div>
+                
+                <div class="form-group">
+					<div class="col-md-offset-2 col-md-6"><strong>Endereço *:</strong><br/>
+					  <input type="text" class="form-control" id="Endereco" name="Endereco" />
+					</div>
+					<div class="col-md-6"><strong>Bairro: *</strong><br/>
+						<input type="text" class="form-control" id="Bairro" name="Bairro"  />  
+					</div>
+				</div>
+                
+				<div class="form-group">
+					<div class="col-md-offset-2 col-md-6"><strong>Número *:</strong><br/>
+					  <input type="text" class="form-control" id="Numero" name="Numero" placeholder="Numero" value="<?php echo $recuperar['Numero']?>" />
+					</div>				  
+					<div class=" col-md-6"><strong>Complemento:</strong><br/>
+					  <input type="text" class="form-control" id="Complemento" name="Complemento" value="<?php echo $recuperar['Complemento']?>">
+					</div>
+				</div>
+                
+                
+                <div class="form-group">
+					<div class="col-md-offset-2 col-md-6"><strong>Cidade: *</strong><br/>
+						<input type="text" class="form-control" id="Cidade" name="Cidade" placeholder="Cidade">
+					</div>
+                    <div class="col-md-6"><strong>Estado: *</strong><br/>
+					  <input type="text" class="form-control" id="Estado" name="Estado" placeholder="Estado">
+					</div>
+                </div>
+                                                
+                <div class="form-group">
+					<div class="col-md-offset-2 col-md-6"><strong>Nome do Responsável: *</strong>
+                    	<input type="text" class="form-control" id="Contato" name="Contato" value="<?php echo $recuperar['Contato']?>" />
+					</div>
+					<div class="col-md-6"><strong>Email do Responsável:</strong>
+                    	<input type="text" class="form-control" id="EmailResponsavel" name="EmailResponsavel" value="<?php echo $recuperar['EmailResponsavel']?>" />
+					</div>
+				</div>
+                
+                <div class="form-group">
+					<div class="col-md-offset-2 col-md-6"><strong>Telefone #1 do Responsável: *</strong>
+                    	<input type="text" class="form-control" id="Tel1Responsavel" name="Telefone1Responsavel" value="<?php echo $recuperar['Telefone1Responsavel']?>" />
+					</div>
+                    <div class="col-md-6"><strong>Telefone #2 do Responsável:</strong>
+                    	<input type="text" class="form-control" id="Tel2Responsavel" name="Telefone2Responsavel" value="<?php echo $recuperar['Telefone2Responsavel']?>" />
+					</div>
+				</div>
+				
+                <div class="form-group">
+					<div class="col-md-offset-2 col-md-8"><strong>Observação:</strong><br/>
+					 <textarea name="Observacao" class="form-control" rows="5" > <?php echo $recuperar['Observacao']?>  </textarea>
+					</div>
+				</div>
+					
+				<div class="form-group">
+					<div class="col-md-offset-2 col-md-8">
+						<input type="submit" class="btn btn-theme btn-lg btn-block" name="add_equipamento" value="Gravar">
+					</div>
+				</div>
+			</form>
+		</div>		
+	</div>
+</div>
+</section>
 
 
 
 
+<?php /* =========== FIM EQUIPAMENTO ===========*/ break?>
 <?php 
 /* =========== INÍCIO LINGUAGEM ===========*/
 case 'add_linguagem':

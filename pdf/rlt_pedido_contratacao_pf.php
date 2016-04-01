@@ -76,7 +76,7 @@ $INSS = $pessoa["INSS"];
 <?php
 
 $sei = 
-"<p align='center'><strong>PEDIDO DE  CONTRATAÇÃO DE PESSOA JURÍDICA </strong></p>".
+"<p align='center'><strong>PEDIDO DE  CONTRATAÇÃO DE PESSOA FÍSICA</strong></p>".
 "<p>&nbsp;</p>".
 "<p><strong>Pedido de Contratação nº:</strong> "."$ano-$id_ped"."</p>".
 "<p><strong>Setor  solicitante:</strong> "."$setor"."</p>".

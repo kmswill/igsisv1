@@ -4,7 +4,9 @@ $conexao = bancoMysqli();
 $server = "http://".$_SERVER['SERVER_NAME']."/igsis/";
 $http = $server."/pdf/";
 $link1=$http."rlt_despacho_padrao_pf.php";
-$link2=$http."rlt_manifestacaojuridica_pf.php";
+$link2=$http."rlt_despacho_vocacional_pf.php";
+$link3=$http."rlt_manifestacaojuridica_pf.php";
+
 
 $id_ped=$_GET['id_ped'];
 
@@ -35,9 +37,13 @@ if(mysqli_stmt_execute($stmt))
                                               
                 <div class='form-group'>
 					<div class='col-md-offset-2 col-md-6'>
-                        <a href='$link1?id=$id_ped' class='btn btn-theme btn-lg btn-block' target='_blank'>Despacho</a></div>
+                        <a href='$link1?id=$id_ped' class='btn btn-theme btn-lg btn-block' target='_blank'>Despacho Padrão</a></div>
 					<div class='col-md-6'>
-                        <a href='$link2?id=$id_ped' class='btn btn-theme btn-lg btn-block' target='_blank'>Manifestação Jurídica</a></div>
+                        <a href='$link2?id=$id_ped' class='btn btn-theme btn-lg btn-block' target='_blank'>Despacho Formação</a></div>
+				</div>
+				<div class='form-group'>
+					<div class='col-md-offset-2 col-md-6'>
+                        <a href='$link3?id=$id_ped' class='btn btn-theme btn-lg btn-block' target='_blank'>Manifestação Jurídica</a></div>
 				</div>
                
                 <br/>

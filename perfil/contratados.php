@@ -1822,7 +1822,7 @@ if(isset($_POST['insereRepresentante'])){
 					<div class="col-md-offset-2 col-md-6"><strong>Estado civil:</strong><br/>
 					  <select class="form-control" id="IdEstadoCivil" name="IdEstadoCivil" >
 					   <?php
-						geraOpcao("sis_estado_civil","","");
+						geraOpcao("sis_estado_civil",$fisica['IdEstadoCivil'],"");
 						?>  
 					  </select>
 					</div>				  

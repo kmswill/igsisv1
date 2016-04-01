@@ -3,6 +3,8 @@
    require_once("../funcoes/funcoesConecta.php");
    require_once("../funcoes/funcoesGerais.php");
    require_once("../funcoes/funcoesSiscontrat.php");
+   require_once("../funcoes/funcoesFormacao.php");
+   
 //CONEXÃO COM BANCO DE DADOS 
    $conexao = bancoMysqli();
 //CONSULTA 
@@ -55,7 +57,7 @@ echo "<body>";
 echo "<p align='justify'>((TITULO))CONTRATAÇÃO DE SERVIÇOS NATUREZA  ARTÍSTICA</p>";
 echo "<p align='justify'>((TEXTO))((NG))Processo SEI ".$NumeroProcesso."((CL))</p>";
 echo "<p align='justify'>".$amparo."</p>";
-echo "<p align='justify'>((NG))Contratado((CL)): ".$nome.", CPF (".$cpf.").</p>";
+echo "<p align='justify'>((NG))Contratado((CL)): ".$Nome.", CPF (".$CPF.").</p>";
 echo "<p align='justify'>((NG))Objeto((CL)): ".$Objeto."</p>";
 echo "<p align='justify'>((NG))Data / Período((CL)): ".$Periodo." - conforme proposta/cronograma  .</p>";
 echo "<p align='justify'>((NG))Local((CL)): ".$Local.".</p>";

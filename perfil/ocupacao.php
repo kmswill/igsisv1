@@ -26,6 +26,7 @@ case 'inicio':
             <div class="col-md-offset-2 col-md-8">
 	            <a href="?perfil=ocupacao&p=basica&inserir=novo" class="btn btn-theme btn-lg btn-block">Inserir um novo evento</a>
 	            <a href="?perfil=ocupacao&p=carregar" class="btn btn-theme btn-lg btn-block">Carregar um evento</a>
+                <a href="http://www.centrocultural.cc/smcproducao/" target = "_blank" class="btn btn-theme btn-lg btn-block">Informações de produção / riders / mapas de luz</a>            
             </div>
           </div>
         </div>
@@ -98,7 +99,7 @@ if(isset($_POST['atualizar'])){
 	`suplente` = '$idSuplente', 
 	`ig_tipo_evento_idTipoEvento` = '$ig_tipo_evento_idTipoEvento',
 	`sinopse` = '$sinopse', 
-	`ocupacao` = '1', 
+	`ocupacao` = '$ocupacao', 
 	
 	 `publicado` = 1
 	WHERE `ig_evento`.`idEvento` = ".$_SESSION['idEvento'].";";

@@ -1,6 +1,6 @@
 <?php
 // não precisa chamar a funcao porque o index contrato já chama.
-$linha_tabela_lista = siscontratLista(1,"",2000,1,"DESC",10); //esse gera uma array com os pedidos
+$linha_tabela_lista = siscontratLista(1,"",2000,1,"DESC","todos"); //esse gera uma array com os pedidos
 
 $link="index.php?perfil=pagamento&p=frm_cadastra_pagamento_pf&id_ped=";
 

@@ -153,7 +153,7 @@ $l=6; //DEFINE A ALTURA DA LINHA
    
    $pdf->SetX($x);
    $pdf->SetFont('Arial','', 11);
-   $pdf->MultiCell(170,$l,utf8_decode("Nós, abaixo assinados, declaramos, que somos representados COM EXCLUSIVIDADE pela empresa "."$pjRazaoSocial".", CNPJ sob nº "."$pjCNPJ". ", representada por "."$rep01Nome". ", RG nº "."$rep01RG"." e CPF nº "."$rep01CPF"."."));
+   $pdf->MultiCell(170,$l,utf8_decode("Nós, abaixo assinados, declaramos, que somos representados COM EXCLUSIVIDADE pela empresa "."$pjRazaoSocial".", CNPJ sob nº "."$pjCNPJ". ", representada por "."$rep01Nome". ", RG nº "."$rep01RG".", CPF nº "."$rep01CPF"." e por "."$rep02Nome". ", RG nº "."$rep02RG".", CPF nº "."$rep02CPF"."."));
    
    $pdf->Ln();
    

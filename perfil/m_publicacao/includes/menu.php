@@ -11,6 +11,7 @@ $pasta = "?perfil=publicacao&p=";
 		<li><a href="#">Pessoa Fisica</a>
 			<ul class="dl-submenu">
                 <li><a href="<?php echo $pasta ?>frm_lista_publicacaopf">Cadastrar</a></li>
+				<li><a href="<?php echo $pasta ?>frm_lista_publicacao_vocacional_pf">Formação</a></li>
 				<li><a href="<?php echo $pasta ?>frm_listaedita_publicacaopf">Listar Gerados</a></li> 
             </ul>
 		</li>

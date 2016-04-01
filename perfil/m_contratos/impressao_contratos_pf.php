@@ -40,6 +40,7 @@ $link28 = $http."rlt_termo_parceria_pf.php";
 $link29 = $http."rlt_proposta_formacao.php"."?id=".$id_ped."&penal=20";
 $link30 = $http."rlt_proposta_pia_pf.php"."?id=".$id_ped."&penal=21";
 $link31 = $http."rlt_pedido_reserva_portaria_pf.php";
+$link32 = $http."rlt_pedido_reserva_chefiagabinete_pf.php";
  
  
 	 $last_id = mysqli_insert_id($conexao);
@@ -145,6 +146,7 @@ $link31 = $http."rlt_pedido_reserva_portaria_pf.php";
 		</tr>
 		<tr>
 			<td><a href='$link31?id=$id_ped' target='_blank'><strong>Portaria nº 011/2016</strong></a></td>
+			<td><a href='$link32?id=$id_ped' target='_blank'><strong>Vocacional - Gabinete</strong></a></td>
 		</tr>
 		
 	  </tbody>
