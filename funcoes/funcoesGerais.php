@@ -422,7 +422,7 @@ function geraOpcaoPublicado($tabela,$select,$instituicao){ //gera os options de 
 
 
 
-function geraOpcao($tabela,$select,$instituicao){ //gera os options de um select
+function geraOpcao($tabela,$select,$instituicao,$ordenacao){ //gera os options de um select
 	if($instituicao != ""){
 		$sql = "SELECT * FROM $tabela WHERE idInstituicao = $instituicao OR idInstituicao = 999";
 	}else{

@@ -4,6 +4,7 @@ $id_ped = $_GET['id_ped'];
 $server = "http://".$_SERVER['SERVER_NAME']."/igsis/";
 $http = $server."/pdf/";
 $link1=$http."rlt_recibo_ne_pf.php";
+$link2=$http."rlt_recibo_ne_vocacional_pf.php";
 
 $_SESSION['idPedido'] = $_GET['id_ped'];
 $pedido = recuperaDados("igsis_pedido_contratacao",$_GET['id_ped'],"idPedidoContratacao");
@@ -26,8 +27,11 @@ if(isset($_POST['atualizar'])){ // atualiza o pedido
 	if(mysqli_query($con,$sql_atualiza_pedido)){
 			$mensagem = "<h5>Deseja gerar o recibo?</h5>
 			
-			<div class='col-md-offset-2 col-md-8'>
+			<div class='col-md-offset-2 col-md-6'>
 				<a href='$link1?id=$id_ped' class='btn btn-theme btn-lg btn-block' target='_blank'>Recibo Padrão</a>
+			</div>
+			<div class='col-md-6'>
+				<a href='$link2?id=$id_ped' class='btn btn-theme btn-lg btn-block' target='_blank'>Recibo Formação</a>	
 			</div>			 
 		
 			<div class='col-md-offset-2 col-md-8'>

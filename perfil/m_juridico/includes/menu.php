@@ -20,6 +20,7 @@ $pasta = "?perfil=juridico&p=";
 					<li><a href="<?php echo $pasta ?>frm_listaedita_juridico_pj">Listar Gerados</a></li> 
                 </ul>
             </li>
+			<li><a href="<?php echo $pasta ?>frm_busca_juridico">Busca</a></li>
 			<li>------------------------------</li>
 			<li><a href="index.php?secao=perfil">Carregar módulos</a></li>
 			<li><a href="#">Ajuda</a></li>

@@ -37,7 +37,7 @@ if($id == "" AND $evento == "" AND $fiscal == 0 AND $tipo == 0 AND $instituicao 
             <div class="form-group">
             	<div class="col-md-offset-2 col-md-8">
             <h5><?php if(isset($mensagem)){ echo $mensagem; } ?>
-                      <form method="POST" action="?perfil=contratos&p=frm_busca" class="form-horizontal" role="form">
+                      <form method="POST" action="?perfil=publicacao&p=frm_busca_publicacao" class="form-horizontal" role="form">
             		<label>Código do Pedido</label>
             		<input type="text" name="id" class="form-control" id="palavras" placeholder="Insira o Código do Pedido" ><br />
 					<label>Número do Processo</label>
@@ -276,7 +276,7 @@ $mensagem = "Foram encontradas ".$x['num']." pedido(s) de contratação.";
 		<div class="container">
 			 <h3>Resultado da busca</3>
              <h5>Foram encontrados <?php echo $x['num']; ?> pedidos de contratação.</h5>
-             <h5><a href="?perfil=contratos&p=frm_busca">Fazer outra busca</a></h5>
+             <h5><a href="?perfil=publicacao&p=frm_busca_publicacao">Fazer outra busca</a></h5>
 			<div class="table-responsive list_info">
 			<?php if($x['num'] == 0){ ?>
 			
@@ -284,16 +284,11 @@ $mensagem = "Foram encontradas ".$x['num']." pedido(s) de contratação.";
 				<table class="table table-condensed">
 					<thead>
 						<tr class="list_menu">
-							<td>Codigo do Pedido</td>
 							<td>Processo</td>
+							<td>Codigo do Pedido</td>
 							<td>Proponente</td>
 							<td>Tipo</td>
 							<td>Objeto</td>
-							<td width="20%">Local</td>
-                            <td>Instituição</td>
-							<td>Periodo</td>
-							<td>Status</td>
-   							<td>Operador</td>
 						</tr>
 					</thead>
 					<tbody>
@@ -304,20 +299,15 @@ for($h = 0; $h < $x['num']; $h++)
  {
 	 $status = recuperaDados("sis_estado",$x[$h]['status'],"idEstado");
 	if($x[$h]['tipo'] == 'Física'){
-		echo "<tr><td class='lista'> <a href='?perfil=contratos&p=frm_edita_propostapf&id_ped=".$x[$h]['id']."'>".$x[$h]['id']."</a></td>";
+		echo "<tr><td class='lista'> <a href='?perfil=publicacao&p=frm_cadastra_publicacaopf&id_ped=".$x[$h]['id']."'>".$x[$h]['NumeroProcesso']."</a></td>";
 	}else{
-		echo "<tr><td class='lista'> <a href='?perfil=contratos&p=frm_edita_propostapj&id_ped=".$x[$h]['id']."'>".$x[$h]['id']."</a></td>";
+		echo "<tr><td class='lista'> <a href='?perfil=publicacao&p=frm_cadastra_publicacaopj&id_ped=".$x[$h]['id']."'>".$x[$h]['NumeroProcesso']."</a></td>";
 		
 	}
-	echo '<td class="list_description">'.$x[$h]['NumeroProcesso'].		'</td>';
+	echo '<td class="list_description">'.$x[$h]['id'].		'</td>';
 	echo '<td class="list_description">'.$x[$h]['proponente'].					'</td> ';
 	echo '<td class="list_description">'.$x[$h]['tipo'].					'</td> ';
 	echo '<td class="list_description">'.$x[$h]['objeto'].						'</td> ';
-	echo '<td class="list_description">'.$x[$h]['local'].				'</td> ';
-	echo '<td class="list_description">'.$x[$h]['instituicao'].				'</td> ';
-	echo '<td class="list_description">'.$x[$h]['periodo'].						'</td> ';
-	echo '<td class="list_description">'.$status['estado'].						'</td> ';
-	echo '<td class="list_description">'.$x[$h]['operador'].						'</td> </tr>';
 
 	}
 ?>
@@ -351,7 +341,7 @@ for($h = 0; $h < $x['num']; $h++)
             <div class="form-group">
             	<div class="col-md-offset-2 col-md-8">
             <h5><?php if(isset($mensagem)){ echo $mensagem; } ?>
-                        <form method="POST" action="?perfil=contratos&p=frm_busca" class="form-horizontal" role="form">
+                        <form method="POST" action="?perfil=publicacao&p=frm_busca_publicacao" class="form-horizontal" role="form">
             		<label>Código do Pedido</label>
             		<input type="text" name="id" class="form-control" id="palavras" placeholder="Insira o Código do Pedido" ><br />
 					
@@ -441,7 +431,7 @@ case 'periodo': //
             <div class="form-group">
             	<div class="col-md-offset-2 col-md-8">
             <h5><?php if(isset($mensagem)){ echo $mensagem; } ?>
-                      <form method="POST" action="?perfil=contratos&p=frm_busca" class="form-horizontal" role="form">
+                      <form method="POST" action="?perfil=publicacao&p=frm_busca_publicacao" class="form-horizontal" role="form">
             		<label>Código do Pedido</label>
             		<input type="text" name="id" class="form-control" id="palavras" placeholder="Insira o Código do Pedido" ><br />
             		<label>Objeto/Evento</label>
@@ -514,7 +504,7 @@ case 'periodo': //
             <div class="form-group">
             	<div class="col-md-offset-2 col-md-8">
             <h5><?php if(isset($mensagem)){ echo $mensagem; } ?>
-            <form method="POST" action="?perfil=contratos&p=frm_busca&b=periodo" class="form-horizontal" role="form">
+            <form method="POST" action="?perfil=publicacao&p=frm_busca_publicacao&b=periodo" class="form-horizontal" role="form">
                 <div class="form-group">
                 	<div class="col-md-offset-2 col-md-6">
                			 <label>Data início *</label>
@@ -621,21 +611,16 @@ $mensagem = "Foram encontradas ".$x['num']." pedido(s) de contratação.";
 		<div class="container">
 			 <h3>Resultado da busca</3>
              <h5>Foram encontrados <?php echo $x['num']; ?> pedidos de contratação.</h5>
-             <h5><a href="?perfil=contratos&p=frm_busca">Fazer outra busca</a></h5>
+             <h5><a href="?perfil=publicacao&p=frm_busca_publicacao">Fazer outra busca</a></h5>
 			<div class="table-responsive list_info">
 				<table class="table table-condensed">
 					<thead>
 						<tr class="list_menu">
-							<td>Codigo do Pedido</td>
 							<td>Processo</td>
+							<td>Codigo do Pedido</td>
 							<td>Proponente</td>
 							<td>Tipo</td>
 							<td>Objeto</td>
-							<td width="20%">Local</td>
-                            <td>Instituição</td>
-							<td>Periodo</td>
-							<td>Status</td>
-   							<td>Operador</td>
 						</tr>
 					</thead>
 					<tbody>
@@ -646,20 +631,15 @@ for($h = 0; $h < $x['num']; $h++)
  {
 	 $status = recuperaDados("sis_estado",$x[$h]['status'],"idEstado");
 	if($x[$h]['tipo'] == 'Física'){
-		echo "<tr><td class='lista'> <a href='?perfil=contratos&p=frm_edita_propostapf&id_ped=".$x[$h]['id']."'>".$x[$h]['id']."</a></td>";
+		echo "<tr><td class='lista'> <a href='?perfil=publicacao&p=frm_cadastra_publicacaopf&id_ped=".$x[$h]['id']."'>".$x[$h]['NumeroProcesso']."</a></td>";
 	}else{
-		echo "<tr><td class='lista'> <a href='?perfil=contratos&p=frm_edita_propostapj&id_ped=".$x[$h]['id']."'>".$x[$h]['id']."</a></td>";
+		echo "<tr><td class='lista'> <a href='?perfil=publicacao&p=frm_cadastra_publicacaopj&id_ped=".$x[$h]['id']."'>".$x[$h]['NumeroProcesso']."</a></td>";
 		
 	}
-	echo '<td class="list_description">'.$x[$h]['NumeroProcesso'].		'</td>';
+	echo '<td class="list_description">'.$x[$h]['id'].		'</td>';
 	echo '<td class="list_description">'.$x[$h]['proponente'].					'</td> ';
 	echo '<td class="list_description">'.$x[$h]['tipo'].					'</td> ';
 	echo '<td class="list_description">'.$x[$h]['objeto'].						'</td> ';
-	echo '<td class="list_description">'.$x[$h]['local'].				'</td> ';
-	echo '<td class="list_description">'.$x[$h]['instituicao'].				'</td> ';
-	echo '<td class="list_description">'.$x[$h]['periodo'].						'</td> ';
-	echo '<td class="list_description">'.$status['estado'].						'</td> ';
-	echo '<td class="list_description">'.$x[$h]['operador'].						'</td> </tr>';
 
 	}
 ?>

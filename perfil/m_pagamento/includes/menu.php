@@ -11,6 +11,7 @@ $pasta = "?perfil=pagamento&p=";
 		<li><a href="#">Pessoa Física</a>
 			<ul class="dl-submenu">
 				<li><a href="<?php echo $pasta ?>frm_listapedidocontratacaopf_cadastrane">Nota de Empenho</a></li>
+				<li><a href="<?php echo $pasta ?>frm_listapedidocontratacaopf_cadastrane_vocacional">N.E. Formação</a></li>
 				<li><a href="<?php echo $pasta ?>frm_listapedidocontratacaopf_pagamento">Pagamento</a></li>
 			</ul>
 		</li>

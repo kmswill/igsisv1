@@ -49,12 +49,6 @@ IV - Publique-se e encaminhe-se à CAF/Contabilidade para as providências cabí
                     </div>
                   </div>
 				  
-				  <div class="form-group"> 
-					<div class="col-md-offset-2 col-md-8"><strong>Modelo de Documento:</strong><br/>
-					<select class="form-control" id="idModelo" name="idModelo" ></select>
-                    </div>
-                  </div>
-				  
 				  <div class="form-group">
 					<div class="col-md-offset-2 col-md-8"><strong>Objeto:</strong><br/><?php echo $linha_tabelas['Objeto'];?>
 					</div>
